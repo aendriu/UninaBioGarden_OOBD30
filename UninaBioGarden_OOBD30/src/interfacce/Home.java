@@ -1,16 +1,37 @@
 package interfacce;
 
-import java.awt.EventQueue;
+import javax.swing.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.net.URL;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 public class Home extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-
+	private JPanel Home;
+	private Image HomeImage;
+	private JTextField txtUninabioGarden;
 	/**
 	 * Launch the application.
 	 */
@@ -31,12 +52,122 @@ public class Home extends JFrame {
 	 * Create the frame.
 	 */
 	public Home() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	    setResizable(false);
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setTitle("Home");
 
-		setContentPane(contentPane);
+	    // Ottengo dimensione schermo
+	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+	    // Setto i bounds a tutta la dimensione dello schermo
+	    setBounds(0, 0, screenSize.width , screenSize.height);
+
+	    // Carico immagine di sfondo
+	    URL imageUrl = Home.class.getResource("/interfacce/images/PROGGETTO_home.jpg");
+
+	    if (imageUrl != null) {
+	        setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
+	        HomeImage = new ImageIcon(imageUrl).getImage();
+	    } else {
+	        System.out.println("Immagine non trovata!");
+	    }
+
+	    // JPanel con sfondo
+	    JPanel Home = new JPanel() {
+	        @Override
+	        protected void paintComponent(Graphics g) {
+	            super.paintComponent(g);
+	            if (HomeImage != null) {
+	                Graphics2D g2d = (Graphics2D) g;
+	                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	                g2d.drawImage(HomeImage, 0, 0, getWidth(), getHeight(), this);
+	            }
+	        }
+	    };
+	    Home.setForeground(new Color(255, 255, 255));
+	    Home.setBackground(new Color(240, 240, 240));
+	    Home.setBorder(null);
+	    Home.setLayout(null);
+	    setContentPane(Home);
+	    Home.setLayout(null);
+
+	    // Creo JTextField
+	    JLabel HOME_TXT = new JLabel("UNINABIOGARDEN");
+	    HOME_TXT.setBounds(0, 30, 1502, 93);
+	    HOME_TXT.setForeground(new Color(255, 255, 102,0));
+	    HOME_TXT.setFont(new Font("Times New Roman", Font.PLAIN, 99));
+	    HOME_TXT.setHorizontalAlignment(SwingConstants.CENTER);
+	    getContentPane().add(HOME_TXT);
+
+	    JTextPane Home_small_txt = new JTextPane();
+	    Home_small_txt.setText("Agenzia altamente specializzata nella gestione di attività agricole e pianificazione degli eventi relativi a quest'ultime, far crescere il tuo lotto è il nostro motto e non cambierà tanto facilmente");
+	    Home_small_txt.setOpaque(false);
+	    Home_small_txt.setEditable(false);
+	    Home_small_txt.setFocusable(false);
+	    Home_small_txt.setFont(new Font("Times New Roman", Font.ITALIC, 42));
+	    
+	    // Imposto il colore azzurro con alpha iniziale 0 (trasparente)
+	    Home_small_txt.setForeground(new Color(0, 153, 255, 0));
+
+	    Home_small_txt.setBounds(155, 145, 1186, 174);
+	    Home_small_txt.setHighlighter(null);
+
+	    // Imposta testo giustificato
+	    StyledDocument doc = Home_small_txt.getStyledDocument();
+	    SimpleAttributeSet just = new SimpleAttributeSet();
+	    StyleConstants.setAlignment(just, StyleConstants.ALIGN_JUSTIFIED);
+	    doc.setParagraphAttributes(0, doc.getLength(), just, false);
+	    Home.add(Home_small_txt);
+
+	    // Bottone entra e altro come nel tuo codice
+	    JButton Enter = new JButton("Entra");
+	    Enter.setBackground(new Color(0, 51, 255));
+	    Enter.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+	    Enter.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            // Azione bottone
+	        }
+	    });
+	    Enter.setBounds(580, 438, 250, 60);
+	    Home.add(Enter);
+
+	    JButton Sudinoi = new JButton("Su di noi");
+	    Sudinoi.setBackground(new Color(0, 51, 255));
+	    Sudinoi.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+	    Sudinoi.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    	}
+	    });
+	    Sudinoi.setBounds(580, 508, 250, 60);
+	    Home.add(Sudinoi);
+
+	    // Timer fade-in
+	    Timer timer = new Timer(100, null);
+	    timer.addActionListener(new ActionListener() {
+	        int alpha = 0;  // per HOME_TXT
+	        int beta = 0;   // per Home_small_txt
+	        boolean firstDone = false;
+
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	            if (!firstDone) {
+	                alpha += 30;  
+	                if (alpha > 255) alpha = 255;
+	                HOME_TXT.setForeground(new Color(255, 255, 102, alpha));
+	                if (alpha == 255) {
+	                    firstDone = true;
+	                }
+	            } else {
+	                beta += 30;  
+	                if (beta > 255) beta = 255;
+	                // Qui mantengo il colore azzurro fisso e aumento solo l'alpha
+	                Home_small_txt.setForeground(new Color(0, 153, 255, beta));
+	                if (beta == 255) {
+	                    timer.stop();
+	                }
+	            }
+	        }
+	    });
+	    timer.start();
 	}
-
 }
