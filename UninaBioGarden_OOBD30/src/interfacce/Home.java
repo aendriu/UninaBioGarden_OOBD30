@@ -128,7 +128,7 @@ public class Home extends JFrame {
 	            // Azione bottone
 	        }
 	    });
-	    Enter.setBounds(580, 438, 250, 60);
+	    Enter.setBounds(637, 440, 250, 60);
 	    Home.add(Enter);
 
 	    JButton Sudinoi = new JButton("Su di noi");
@@ -138,7 +138,7 @@ public class Home extends JFrame {
 	    	public void actionPerformed(ActionEvent e) {
 	    	}
 	    });
-	    Sudinoi.setBounds(580, 508, 250, 60);
+	    Sudinoi.setBounds(637, 510, 250, 60);
 	    Home.add(Sudinoi);
 
 	    // Timer fade-in
