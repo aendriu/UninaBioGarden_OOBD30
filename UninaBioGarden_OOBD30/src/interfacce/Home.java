@@ -93,7 +93,7 @@ public class Home extends JFrame {
 
 	    // Creo JTextField
 	    JLabel HOME_TXT = new JLabel("UNINABIOGARDEN");
-	    HOME_TXT.setBounds(0, 30, 1502, 93);
+	    HOME_TXT.setBounds(79, 72, 1502, 93);
 	    HOME_TXT.setForeground(new Color(255, 255, 102,0));
 	    HOME_TXT.setFont(new Font("Times New Roman", Font.PLAIN, 99));
 	    HOME_TXT.setHorizontalAlignment(SwingConstants.CENTER);
@@ -109,7 +109,7 @@ public class Home extends JFrame {
 	    // Imposto il colore azzurro con alpha iniziale 0 (trasparente)
 	    Home_small_txt.setForeground(new Color(0, 153, 255, 0));
 
-	    Home_small_txt.setBounds(155, 145, 1186, 174);
+	    Home_small_txt.setBounds(163, 209, 1186, 174);
 	    Home_small_txt.setHighlighter(null);
 
 	    // Imposta testo giustificato
