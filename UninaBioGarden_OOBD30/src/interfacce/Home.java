@@ -63,7 +63,7 @@ public class Home extends JFrame {
 	    setBounds(0, 0, screenSize.width , screenSize.height);
 
 	    // Carico immagine di sfondo
-	    URL imageUrl = Home.class.getResource("/interfacce/images/PROGGETTO_home.jpg");
+	    URL imageUrl = Home.class.getResource("Images/PROGGETTO_home.jpg");
 
 	    if (imageUrl != null) {
 	        setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
