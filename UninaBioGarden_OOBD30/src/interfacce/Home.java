@@ -25,6 +25,8 @@ import java.awt.event.ComponentEvent;
 import java.net.URL;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Home extends JFrame {
 
@@ -32,6 +34,7 @@ public class Home extends JFrame {
 	private JPanel Home;
 	private Image HomeImage;
 	private JTextField txtUninabioGarden;
+	private Login LoginFrame;
 	/**
 	 * Launch the application.
 	 */
@@ -99,55 +102,65 @@ public class Home extends JFrame {
 	    HOME_TXT.setHorizontalAlignment(SwingConstants.CENTER);
 	    getContentPane().add(HOME_TXT);
 
-	    JTextPane Home_small_txt = new JTextPane();
+	    JTextArea Home_small_txt = new JTextArea();
 	    Home_small_txt.setText("Agenzia altamente specializzata nella gestione di attività agricole e pianificazione degli eventi relativi a quest'ultime, far crescere il tuo lotto è il nostro motto e non cambierà tanto facilmente");
 	    Home_small_txt.setOpaque(false);
 	    Home_small_txt.setEditable(false);
 	    Home_small_txt.setFocusable(false);
+	    Home_small_txt.setLineWrap(true);
+		Home_small_txt.setWrapStyleWord(true);
 	    Home_small_txt.setFont(new Font("Times New Roman", Font.ITALIC, 42));
-	    
+
 	    // Imposto il colore azzurro con alpha iniziale 0 (trasparente)
 	    Home_small_txt.setForeground(new Color(0, 153, 255, 0));
 
-	    Home_small_txt.setBounds(163, 209, 1186, 174);
-	    Home_small_txt.setHighlighter(null);
+	    Home_small_txt.setBounds(231, 190, 1195, 167);
 
-	    // Imposta testo giustificato
-	    StyledDocument doc = Home_small_txt.getStyledDocument();
-	    SimpleAttributeSet just = new SimpleAttributeSet();
-	    StyleConstants.setAlignment(just, StyleConstants.ALIGN_JUSTIFIED);
-	    doc.setParagraphAttributes(0, doc.getLength(), just, false);
+	    // Imposta il ritorno a capo automatico
+	    Home_small_txt.setLineWrap(true);
+	    Home_small_txt.setWrapStyleWord(true);
+
 	    Home.add(Home_small_txt);
-
 	    // Bottone entra e altro come nel tuo codice
 	    JButton Enter = new JButton("Entra");
+	    Enter.addMouseListener(new MouseAdapter() {@Override
+	    	public void mouseClicked(MouseEvent e) {
+	    		LoginFrame = new Login();
+	    		LoginFrame.setVisible(true);
+	    		Home.setVisible(false);
+	    		dispose(); // Chiude la finestra corrente
+	    	
+	    }
+	    });
+	    Enter.setVisible(false);
 	    Enter.setBackground(new Color(0, 51, 255));
 	    Enter.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	    Enter.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e) {
-	            // Azione bottone
+	            
 	        }
 	    });
-	    Enter.setBounds(637, 440, 250, 60);
+	    Enter.setBounds(638, 395, 250, 60);
 	    Home.add(Enter);
-
+	    
 	    JButton Sudinoi = new JButton("Su di noi");
+	    Sudinoi.setVisible(false);
 	    Sudinoi.setBackground(new Color(0, 51, 255));
 	    Sudinoi.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	    Sudinoi.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    	}
 	    });
-	    Sudinoi.setBounds(637, 510, 250, 60);
+	    Sudinoi.setBounds(638, 483, 250, 60);
 	    Home.add(Sudinoi);
-
+	    boolean buttontime = false;
 	    // Timer fade-in
 	    Timer timer = new Timer(100, null);
 	    timer.addActionListener(new ActionListener() {
 	        int alpha = 0;  // per HOME_TXT
 	        int beta = 0;   // per Home_small_txt
 	        boolean firstDone = false;
-
+	        boolean buttontime=false;
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	            if (!firstDone) {
@@ -164,10 +177,17 @@ public class Home extends JFrame {
 	                Home_small_txt.setForeground(new Color(0, 153, 255, beta));
 	                if (beta == 255) {
 	                    timer.stop();
+	                        Enter.setVisible(true);
+	                        Sudinoi.setVisible(true);
+	                        buttontime = true;
+	                    
 	                }
 	            }
 	        }
 	    });
 	    timer.start();
+	    Enter.setVisible(buttontime);
+	    Sudinoi.setVisible(buttontime);
+	        }
 	}
-}
+
