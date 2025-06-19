@@ -29,7 +29,10 @@ import javax.swing.JToolBar;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
-
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
+import interfacce.Exceptions.Global_exceptions;
 public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -114,10 +117,12 @@ public class Login extends JFrame {
 		Login.add(login_welcome_text);
 		
 		username_txt = new JTextField();
+		username_txt.setToolTipText("si ricorda che l'email deve seguire il seguente formato, <nome>.<cognome>@[gmail o libero].[it o com]");
 		username_txt.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		username_txt.setBounds(564, 530, 471, 48);
 		Login.add(username_txt);
 		username_txt.setColumns(10);
+		
 		
 		password_login = new JPasswordField();
 		password_login.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -149,20 +154,100 @@ public class Login extends JFrame {
 		Indietro.setBounds(564, 728, 140, 45);
 		Login.add(Indietro);
 		
-		JButton btnNewButton_1 = new JButton("REGISTRATI");
-		btnNewButton_1.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		btnNewButton_1.setBounds(895, 728, 140, 45);
-		Login.add(btnNewButton_1);
+		JButton Registrati_button = new JButton("REGISTRATI");
+		Registrati_button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				  String username = username_txt.getText();
+				try {
+					if (!username.isEmpty()) {
+						throw new Global_exceptions("il campo username deve essere vuoto");
+					}
+					String password = new String(password_login.getPassword());
+					if (!password.isEmpty()) {
+						throw new Global_exceptions("il campo password deve essere vuoto");
+					}
+					User_registration_page user_registration_page = new User_registration_page();
+					user_registration_page.setVisible(true);
+					Login.setVisible(false);
+					dispose(); // Chiude la finestra corrente
+				} catch (Global_exceptions e1) {
+					JOptionPane.showMessageDialog(
+						null,
+						e1.getMessage(),
+						"Errore",
+						JOptionPane.ERROR_MESSAGE
+					);
+				}
+			}
+		});
+		Registrati_button.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		Registrati_button.setBounds(895, 728, 140, 45);
+		Login.add(Registrati_button);
 		
-		JButton btnNewButton_2 = new JButton("ACCEDI");
-		btnNewButton_2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		btnNewButton_2.setBounds(734, 728, 140, 45);
-		Login.add(btnNewButton_2);
+		JButton Accedi_button = new JButton("ACCEDI");
+		Accedi_button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			    String username = username_txt.getText();
+			    String password = new String(password_login.getPassword());
+			    username_txt.setBackground(Color.WHITE);
+			    password_login.setBackground(Color.WHITE);
+			    try {
+			        if (username.isEmpty()) {
+			            username_txt.setBackground(Color.RED);
+			        	throw new Global_exceptions("username", Global_exceptions.Tipo.empty_field);
+			        }
+			        if (!username.matches("^[a-zA-Z]+\\.[a-zA-Z]+@(gmail|libero)\\.(com|it)$")) {
+			            username_txt.setBackground(Color.RED);
+			        	throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
+			        }
+
+			        if (!username.equals("anna.bartolini@gmail.it") && !username.equals("anna.bartolini@libero.com")&& !username.equals("anna.bartolini@gmail.com") && !username.equals("anna.bartolini@libero.it")) {
+			            username_txt.setBackground(Color.RED);
+			        	throw new Global_exceptions("username", Global_exceptions.Tipo.not_found_in_DB);
+			        }
+
+			        if (password.isEmpty()) {
+			            password_login.setBackground(Color.RED);
+			        	throw new Global_exceptions("password", Global_exceptions.Tipo.empty_field);
+			        }
+			        if (password.length() < 8) {
+			            password_login.setBackground(Color.RED);
+			        	throw new Global_exceptions("password", Global_exceptions.Tipo.format_mismatch);
+			        }
+
+			        if (!password.equals("12345678")) {
+			            password_login.setBackground(Color.RED);
+			        	throw new Global_exceptions("password", Global_exceptions.Tipo.not_found_in_DB);
+			        }
+			        username_txt.setBackground(Color.WHITE);
+			        password_login.setBackground(Color.WHITE);
+			        User_logged_in user_logged_in = new User_logged_in();
+					user_logged_in.setVisible(true);
+				    Login.setVisible(false);
+				    dispose(); // Chiude la finestra corrente
+			    } catch (Global_exceptions e1) {
+			        JOptionPane.showMessageDialog(
+			            null,
+			            e1.getMessage(),
+			            "Errore",
+			            JOptionPane.ERROR_MESSAGE
+			        );
+			    }
+			}
+		});
+			
+		Accedi_button.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		Accedi_button.setBounds(734, 728, 140, 45);
+		Login.add(Accedi_button);
 		
 		JLabel lblNewLabel = new JLabel("LOGIN");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 80));
-		lblNewLabel.setBounds(564, 269, 471, 94);
+		lblNewLabel.setBounds(564, 257, 471, 94);
 		Login.add(lblNewLabel);
 	}
-}
+	}
+
+
