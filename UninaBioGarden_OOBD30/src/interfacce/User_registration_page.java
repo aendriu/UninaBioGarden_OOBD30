@@ -14,18 +14,12 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-
 import java.awt.Color;
-import javax.swing.JToolBar;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
@@ -33,16 +27,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import interfacce.Exceptions.Global_exceptions;
+import javax.swing.JCheckBox;
+import interfacce.Exceptions.Specific_exceptions.Registration_exceptions;
+import javax.swing.JOptionPane;
 public class User_registration_page extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Image Registration_image;
 	private JTextField username_txt;
-	private JPasswordField password_login;
+	private JPasswordField password_Registrazione;
 	private Login Login;
 	private JTextField Nome_txt;
 	private JTextField Cognome_txt;
 	private JTextField CF_txt;
+	private JCheckBox Colt_optz;
+	private JCheckBox Prop_optz;
 	/**
 	 * Launch the application.
 	 */
@@ -103,17 +102,18 @@ public class User_registration_page extends JFrame {
 	
 	    
 	    username_txt = new JTextField();
-	    username_txt.setToolTipText("si ricorda che l'email deve seguire il seguente formato, <nome>.<cognome>@[gmail o libero].[it o com]");
+	    username_txt.setToolTipText("Deve seguire il seguente formato Abcd.efcg@[gmail/libero].[com/it]");
 	    username_txt.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 	    username_txt.setBounds(564, 530, 471, 48);
 	    User_registration_interface.add(username_txt);
 	    username_txt.setColumns(10);
 	    
 	    
-	    password_login = new JPasswordField();
-	    password_login.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-	    password_login.setBounds(564, 643, 471, 48);
-	    User_registration_interface.add(password_login);
+	    password_Registrazione = new JPasswordField();
+	    password_Registrazione.setToolTipText("minimo 9 charatteri e almeno una maiuscola");
+	    password_Registrazione.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+	    password_Registrazione.setBounds(564, 643, 471, 48);
+	    User_registration_interface.add(password_Registrazione);
 	    
 	    JLabel USERNAME = new JLabel("USERNAME");
 	    USERNAME.setHorizontalAlignment(SwingConstants.CENTER);
@@ -142,7 +142,7 @@ public class User_registration_page extends JFrame {
 	        }
 	    });
 	    Indietro.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-	    Indietro.setBounds(564, 728, 140, 45);
+	    Indietro.setBounds(564, 755, 140, 45);
 	    User_registration_interface.add(Indietro);
 	    
 	    JButton Registrati_button = new JButton("REGISTRATI");
@@ -150,26 +150,109 @@ public class User_registration_page extends JFrame {
 	        @Override
 	        public void mouseClicked(MouseEvent e) {
 	            String username = username_txt.getText();
+	            String nome = Nome_txt.getText();
+	            String cognome = Cognome_txt.getText();
+	            String cf = CF_txt.getText();
+	            String password = new String(password_Registrazione.getPassword());
 	            try {
-	                if (!username.isEmpty()) {
-	                    throw new Global_exceptions("il campo username deve essere vuoto");
-	                }
-	                String password = new String(password_login.getPassword());
-	                if (!password.isEmpty()) {
-	                    throw new Global_exceptions("il campo password deve essere vuoto");
-	                }
-	            } catch (Global_exceptions e1) {
-	                JOptionPane.showMessageDialog(
-	                    null,
-	                    e1.getMessage(),
-	                    "Errore",
-	                    JOptionPane.ERROR_MESSAGE
-	                );
-	            }
+					if (nome.isEmpty()){
+						Nome_txt.setBackground(Color.RED);
+						throw new Global_exceptions("nome",Global_exceptions.Tipo.empty_field);
+					}
+					if (cognome.isEmpty()){
+						Cognome_txt.setBackground(Color.RED);
+						throw new Global_exceptions("cognome",Global_exceptions.Tipo.empty_field);
+					}
+					if (cf.isEmpty()){
+						CF_txt.setBackground(Color.RED);
+						throw new Global_exceptions("codice fiscale",Global_exceptions.Tipo.empty_field);
+					}
+					if (username.isEmpty()){
+						username_txt.setBackground(Color.RED);
+						throw new Global_exceptions("username",Global_exceptions.Tipo.empty_field);
+					}
+					if (password.isEmpty()){
+						password_Registrazione.setBackground(Color.RED);
+						throw new Global_exceptions("password",Global_exceptions.Tipo.empty_field);
+					}
+					if (!nome.matches("[A-Za-z]")) {
+						Nome_txt.setBackground(Color.RED);
+						throw new Global_exceptions("nome", Global_exceptions.Tipo.Type_mismatch);
+					}
+					if (!cognome.matches("[A-Za-z]")) {
+						Cognome_txt.setBackground(Color.RED);
+						throw new Global_exceptions("cognome", Global_exceptions.Tipo.Type_mismatch);
+					}
+					if (!cf.matches("[A-Z0-9]")) {
+						CF_txt.setBackground(Color.RED);
+						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.Type_mismatch);
+					}
+					if (!username.matches("[A-Za-z]")) {
+						username_txt.setBackground(Color.RED);
+						throw new Global_exceptions("username", Global_exceptions.Tipo.Type_mismatch);
+					}
+					
+					if (!nome.matches("^[a-zA-Z]+$")) {
+						Nome_txt.setBackground(Color.RED);
+						throw new Global_exceptions("nome", Global_exceptions.Tipo.format_mismatch);
+					}
+					if (!cognome.matches("^[a-zA-Z]+$")) {
+						Cognome_txt.setBackground(Color.RED);
+						throw new Global_exceptions("cognome", Global_exceptions.Tipo.format_mismatch);
+					}
+					if (!cf.matches("^[A-Z0-9]{16}$")) {
+						CF_txt.setBackground(Color.RED);
+						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.format_mismatch);
+					}
+					
+					if (!username.matches("^[a-zA-Z]+\\.[a-zA-Z]+@(gmail|libero)\\.(com|it)$")) {
+					    username_txt.setBackground(Color.RED);
+						throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
+					}
+					if (password.length() < 8||!password.matches(".*[A-Z].*")) {
+						password_Registrazione.setBackground(Color.RED);
+						throw new Global_exceptions("password", Global_exceptions.Tipo.format_mismatch);
+					}
+					if(cf.matches("Abcdefghijklmnopqrstu")) {
+						CF_txt.setBackground(Color.RED);
+						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.already_exists_in_DB);
+					}
+					 if (username.equals("anna.bartolini@gmail.it") && username.equals("anna.bartolini@libero.com")&& username.equals("anna.bartolini@gmail.com") && username.equals("anna.bartolini@libero.it")) {
+				            username_txt.setBackground(Color.RED);
+				        	throw new Registration_exceptions("username", Registration_exceptions.Tipo.username_already_exists);
+				        }
+					 if (password.equals("12345678")) {
+				            password_Registrazione.setBackground(Color.RED);
+				        	throw new Registration_exceptions("password", Registration_exceptions.Tipo.password_already_exists);
+				        }
+					if (Colt_optz.isSelected() && Prop_optz.isSelected()) {
+						Colt_optz.setBackground(Color.RED);
+						Prop_optz.setBackground(Color.RED);
+						throw new Registration_exceptions("Errore", Registration_exceptions.Tipo.Double_checkbox_selected);
+					}
+					if (!Colt_optz.isSelected() && !Prop_optz.isSelected()) {
+						Colt_optz.setBackground(Color.RED);
+						Prop_optz.setBackground(Color.RED);
+						throw new Registration_exceptions("Errore", Registration_exceptions.Tipo.No_checkbox_selected);
+					}
+					username_txt.setBackground(Color.WHITE);
+					Nome_txt.setBackground(Color.WHITE);
+					Cognome_txt.setBackground(Color.WHITE);
+					CF_txt.setBackground(Color.WHITE);
+					password_Registrazione.setBackground(Color.WHITE);
+					//fare registrazione coltivatore e proprietario
+				} catch (Global_exceptions | Registration_exceptions e1) {
+				JOptionPane.showMessageDialog(
+			            null,
+			            e1.getMessage(),
+			            "Errore",
+			            JOptionPane.ERROR_MESSAGE
+			        );
+				}
 	        }
 	    });
 	    Registrati_button.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-	    Registrati_button.setBounds(895, 728, 140, 45);
+	    Registrati_button.setBounds(895, 755, 140, 45);
 	    User_registration_interface.add(Registrati_button);
 	    
 	    JLabel lblNewLabel = new JLabel("REGISTRATI");
@@ -216,5 +299,31 @@ public class User_registration_page extends JFrame {
 	    CODICE_FISCALE.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	    CODICE_FISCALE.setBounds(564, 355, 471, 56);
 	    User_registration_interface.add(CODICE_FISCALE);
+	    
+	    JCheckBox Colt_optz = new JCheckBox("COLTIVATORE");
+	    Colt_optz.setForeground(new Color(0, 0, 0));
+	    Colt_optz.setToolTipText("Registrati come coltivatore");
+	    Colt_optz.setOpaque(false); // Imposta la checkbox come trasparente
+	    Colt_optz.setHorizontalAlignment(SwingConstants.CENTER);
+	    Colt_optz.setFont(new Font("Times New Roman", Font.BOLD, 15));
+	    Colt_optz.setHorizontalTextPosition(SwingConstants.CENTER); // testo centrato orizzontalmente rispetto alla checkbox
+	    Colt_optz.setVerticalTextPosition(SwingConstants.TOP);      // testo sopra la checkbox
+	    Colt_optz.setBackground(new Color(255, 255, 255, 0)); // sfondo trasparente
+	    Colt_optz.setBounds(647, 697, 150, 50);
+	    User_registration_interface.add(Colt_optz);
+	    
+	    JCheckBox Prop_optz = new JCheckBox("PROPRIETARIO");
+	    Prop_optz.setVerticalTextPosition(SwingConstants.TOP);
+	    Prop_optz.setToolTipText("Registrati come propetario");
+	    Prop_optz.setOpaque(false);
+	    Prop_optz.setHorizontalTextPosition(SwingConstants.CENTER);
+	    Prop_optz.setHorizontalAlignment(SwingConstants.CENTER);
+	    Prop_optz.setForeground(Color.BLACK);
+	    Prop_optz.setFont(new Font("Times New Roman", Font.BOLD, 15));
+	    Prop_optz.setBackground(new Color(255, 255, 255, 0));
+	    Prop_optz.setBounds(785, 699, 150, 50);
+	    User_registration_interface.add(Prop_optz);
+	
+	    
 	}
 }
