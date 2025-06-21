@@ -50,7 +50,7 @@ public class Home extends JFrame {
 		
 		/* ******************** */
 		try {
-			Path propertiesPath = Paths.get(cwd).getParent().resolve("db.properties");
+			Path propertiesPath = Paths.get(cwd).resolve("libs/db.properties");
 			ProvaDao provadao = new ProvaDao(propertiesPath.toString());
 			provadao.connect();
 			System.out.println("Connessione al db riuscita!!");
