@@ -43,11 +43,12 @@ public class Home extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		String cwd = System.getProperty("user.dir") + "/..";
+		String cwd = System.getProperty("user.dir");
+		System.out.println(cwd);
 		
 		/* ******************** */
 		try {
-			ProvaDao provadao = new ProvaDao(cwd + "/db.properties");
+			ProvaDao provadao = new ProvaDao(cwd + "/.." + "/db.properties");
 			provadao.connect();
 			System.out.println("Connessione al db riuscita!!");
 		} catch (Exception e) {

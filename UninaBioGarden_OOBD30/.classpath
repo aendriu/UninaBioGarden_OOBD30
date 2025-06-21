@@ -6,7 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="/home/aendriu/Scrivania/Progetto OOBD30/postgresql-42.7.7.jar">
+	<classpathentry kind="lib" path="libs/postgresql-42.7.7.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
