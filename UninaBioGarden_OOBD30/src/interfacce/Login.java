@@ -198,12 +198,12 @@ public class Login extends JFrame {
 			            username_txt.setBackground(Color.RED);
 			        	throw new Global_exceptions("username", Global_exceptions.Tipo.empty_field);
 			        }
-			        if (!username.matches("^[a-zA-Z]+\\.[a-zA-Z]+@(gmail|libero)\\.(com|it)$")) {
+			        if (!username.matches("^[A-Za-z]+[0-9]*$")) {
 			            username_txt.setBackground(Color.RED);
 			        	throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
 			        }
 
-			        if (!username.equals("anna.bartolini@gmail.it") && !username.equals("anna.bartolini@libero.com")&& !username.equals("anna.bartolini@gmail.com") && !username.equals("anna.bartolini@libero.it")) {
+			        if (!username.equals("annabartolini")) {
 			            username_txt.setBackground(Color.RED);
 			        	throw new Global_exceptions("username", Global_exceptions.Tipo.not_found_in_DB);
 			        }

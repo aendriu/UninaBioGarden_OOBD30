@@ -187,7 +187,7 @@ public class User_registration_page extends JFrame {
 						CF_txt.setBackground(Color.RED);
 						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.Type_mismatch);
 					}
-					if (!username.matches("[A-Za-z]")) {
+					if (!username.matches("^[A-Za-z0-9]*$")) {
 						username_txt.setBackground(Color.RED);
 						throw new Global_exceptions("username", Global_exceptions.Tipo.Type_mismatch);
 					}
@@ -205,7 +205,7 @@ public class User_registration_page extends JFrame {
 						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.format_mismatch);
 					}
 					
-					if (!username.matches("^[a-zA-Z]+\\.[a-zA-Z]+@(gmail|libero)\\.(com|it)$")) {
+					if (!username.matches("^[A-Za-z]+[0-9]*$")) {
 					    username_txt.setBackground(Color.RED);
 						throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
 					}
@@ -217,7 +217,7 @@ public class User_registration_page extends JFrame {
 						CF_txt.setBackground(Color.RED);
 						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.already_exists_in_DB);
 					}
-					 if (username.equals("anna.bartolini@gmail.it") && username.equals("anna.bartolini@libero.com")&& username.equals("anna.bartolini@gmail.com") && username.equals("anna.bartolini@libero.it")) {
+					 if (username.equals("annabartolini")){
 				            username_txt.setBackground(Color.RED);
 				        	throw new Registration_exceptions("username", Registration_exceptions.Tipo.username_already_exists);
 				        }
