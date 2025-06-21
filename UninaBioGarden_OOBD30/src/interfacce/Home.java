@@ -9,6 +9,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import dao.ProvaDao;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -39,6 +43,23 @@ public class Home extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		String cwd = System.getProperty("user.dir") + "/..";
+		
+		/* ******************** */
+		try {
+			ProvaDao provadao = new ProvaDao(cwd + "/db.properties");
+			provadao.connect();
+			System.out.println("Connessione al db riuscita!!");
+		} catch (Exception e) {
+			System.err.println("Errore nella connessione al database:");
+			e.printStackTrace();
+		}
+
+
+		/* ******************** */
+            
+		
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
