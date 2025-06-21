@@ -1,3 +1,0 @@
-db.user=aendriu
-db.password=Doubletrouble22!
-db.url=jdbc:postgresql://localhost:5432/uninabiogarden
