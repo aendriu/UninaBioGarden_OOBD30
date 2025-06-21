@@ -12,6 +12,8 @@ import javax.swing.text.StyledDocument;
 import dao.ProvaDao;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -48,7 +50,8 @@ public class Home extends JFrame {
 		
 		/* ******************** */
 		try {
-			ProvaDao provadao = new ProvaDao(cwd + "/.." + "/db.properties");
+			Path propertiesPath = Paths.get(cwd).getParent().resolve("db.properties");
+			ProvaDao provadao = new ProvaDao(propertiesPath.toString());
 			provadao.connect();
 			System.out.println("Connessione al db riuscita!!");
 		} catch (Exception e) {
