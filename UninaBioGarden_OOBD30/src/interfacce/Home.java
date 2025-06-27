@@ -41,24 +41,25 @@ public class Home extends JFrame {
 	private Image HomeImage;
 	private JTextField txtUninabioGarden;
 	private Login LoginFrame;
+	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		String cwd = System.getProperty("user.dir");
-		System.out.println(cwd);
-		
-		/* ******************** */
-		try {
-			Path propertiesPath = Paths.get(cwd).resolve("libs/dbprop.txt");
-			ProvaDao provadao = new ProvaDao(propertiesPath.toString());
-			provadao.connect();
-			System.out.println("Connessione al db riuscita!!");
-		} catch (Exception e) {
-			System.err.println("Errore nella connessione al database:");
-			e.printStackTrace();
-		}
-
+//		String cwd = System.getProperty("user.dir");
+//		System.out.println(cwd);
+//		
+//		/* ******************** */
+//		try {
+//			Path propertiesPath = Paths.get(cwd).resolve("libs/dbprop.txt");
+//			ProvaDao provadao = new ProvaDao(propertiesPath.toString());
+//			provadao.connect();
+//			System.out.println("Connessione al db riuscita!!");
+//		} catch (Exception e) {
+//			System.err.println("Errore nella connessione al database:");
+//			e.printStackTrace();
+//		}
+//
 
 		/* ******************** */
             
@@ -91,7 +92,7 @@ public class Home extends JFrame {
 	    setBounds(0, 0, screenSize.width , screenSize.height);
 
 	    // Carico immagine di sfondo
-	    URL imageUrl = Home.class.getResource("Images/PROGGETTO_home.jpg");
+	    URL imageUrl = Home.class.getResource("Images/PROGETTO_home.jpg");
 
 	    if (imageUrl != null) {
 	        setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));

@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import interfacce.Exceptions.Global_exceptions;
+import javax.swing.JCheckBox;
 public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +43,9 @@ public class Login extends JFrame {
 	private JPasswordField password_login;
 	private Home Home;
 	private Login LoginFrame;
+	private JCheckBox Temporary_coltivator_access;
+	private Proprietario_logged_in Proprietario;
+	private Page_Coltivatore coltivatore;
 	/**
 	 * Launch the application.
 	 */
@@ -117,7 +121,6 @@ public class Login extends JFrame {
 		Login.add(login_welcome_text);
 		
 		username_txt = new JTextField();
-		username_txt.setToolTipText("si ricorda che l'email deve seguire il seguente formato, <nome>.<cognome>@[gmail o libero].[it o com]");
 		username_txt.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		username_txt.setBounds(564, 530, 471, 48);
 		Login.add(username_txt);
@@ -142,6 +145,10 @@ public class Login extends JFrame {
 		Login.add(PASSWORD);
 		
 		JButton Indietro = new JButton("Indietro");
+		Indietro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 	    Indietro.addMouseListener(new MouseAdapter() {@Override
 	    	public void mouseClicked(MouseEvent e) {
 	    		Home = new Home();
@@ -186,6 +193,10 @@ public class Login extends JFrame {
 		Login.add(Registrati_button);
 		
 		JButton Accedi_button = new JButton("ACCEDI");
+		Accedi_button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		Accedi_button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -223,11 +234,19 @@ public class Login extends JFrame {
 			        }
 			        username_txt.setBackground(Color.WHITE);
 			        password_login.setBackground(Color.WHITE);
-			        User_logged_in user_logged_in = new User_logged_in();
-					user_logged_in.setVisible(true);
+			        if (Temporary_coltivator_access.isSelected()){
+			        	String username_4_colt = username_txt.getText();
+			        	coltivatore = new Page_Coltivatore(username_4_colt);
+			        	coltivatore.setVisible(true);
+			        	Login.setVisible(false);
+			        	dispose(); // Chiude la finestra corrente
+			        }else { 
+			        Proprietario = new Proprietario_logged_in();
+					Proprietario.setVisible(true);
 				    Login.setVisible(false);
-				    dispose(); // Chiude la finestra corrente
-			    } catch (Global_exceptions e1) {
+				   dispose(); // Chiude la finestra corrente
+			        }
+			        } catch (Global_exceptions e1) {
 			        JOptionPane.showMessageDialog(
 			            null,
 			            e1.getMessage(),
@@ -237,7 +256,7 @@ public class Login extends JFrame {
 			    }
 			}
 		});
-			
+		
 		Accedi_button.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		Accedi_button.setBounds(734, 728, 140, 45);
 		Login.add(Accedi_button);
@@ -247,7 +266,17 @@ public class Login extends JFrame {
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 80));
 		lblNewLabel.setBounds(564, 257, 471, 94);
 		Login.add(lblNewLabel);
+		
+		Temporary_coltivator_access = new JCheckBox("New check box");
+		Temporary_coltivator_access.addMouseListener(new MouseAdapter() {
+			
+		});
+		Temporary_coltivator_access.setBounds(1069, 588, 93, 21);
+		Login.add(Temporary_coltivator_access);
 	}
+	public String getUsername_txt() {
+		return username_txt.getText();
 	}
+}
 
 
