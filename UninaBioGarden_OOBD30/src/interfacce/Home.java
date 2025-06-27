@@ -45,37 +45,7 @@ public class Home extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-//		String cwd = System.getProperty("user.dir");
-//		System.out.println(cwd);
-//		
-//		/* ******************** */
-//		try {
-//			Path propertiesPath = Paths.get(cwd).resolve("libs/dbprop.txt");
-//			ProvaDao provadao = new ProvaDao(propertiesPath.toString());
-//			provadao.connect();
-//			System.out.println("Connessione al db riuscita!!");
-//		} catch (Exception e) {
-//			System.err.println("Errore nella connessione al database:");
-//			e.printStackTrace();
-//		}
-//
-
-		/* ******************** */
-            
-		
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Home frame = new Home();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
