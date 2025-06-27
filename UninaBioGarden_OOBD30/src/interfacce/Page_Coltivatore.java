@@ -63,7 +63,7 @@ public class Page_Coltivatore extends JFrame {
             }
         };
 
-        pageColtivatorePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        
         pageColtivatorePanel.setLayout(null);
 
         // Imposto il pannello come content pane della finestra
@@ -91,14 +91,22 @@ public class Page_Coltivatore extends JFrame {
         Vedi_attività.setBounds(694, 371, 199, 82);
         pageColtivatorePanel.add(Vedi_attività);
         
-        JButton Vedi_attività_1 = new JButton("Lotti in cui lavoro");
-        Vedi_attività_1.addActionListener(new ActionListener() {
+        JButton Lotti_lavora = new JButton("Lotti in cui lavoro");
+        Lotti_lavora.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		Coltivatore_lotti_in_cui_lavora frame = new Coltivatore_lotti_in_cui_lavora(username_colt);
+				frame.setVisible(true);
+				dispose(); // Chiude la finestra corrente
+			}
+        });
+        Lotti_lavora.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
-        Vedi_attività_1.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Vedi_attività_1.setBounds(694, 522, 199, 82);
-        pageColtivatorePanel.add(Vedi_attività_1);
+        Lotti_lavora.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        Lotti_lavora.setBounds(694, 522, 199, 82);
+        pageColtivatorePanel.add(Lotti_lavora);
         
         JButton Vedi_attività_2 = new JButton("Torna alla home");
         Vedi_attività_2.addMouseListener(new MouseAdapter() {
