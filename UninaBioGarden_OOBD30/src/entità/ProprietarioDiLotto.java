@@ -5,6 +5,8 @@ public class ProprietarioDiLotto extends Utente {
 	
 	private ArrayList<Lotto> lottiProprietario;
 	
+	
+	/* CONSTRUCTORS */
 	public ProprietarioDiLotto(String username, String nome, String cognome, String password, String CF) {
 		super(username, nome, cognome, password, CF);
 	}

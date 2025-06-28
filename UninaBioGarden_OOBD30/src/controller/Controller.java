@@ -31,6 +31,16 @@ public class Controller {
 		return colt;
 	}
 	
+	public Lotto[] getLottiOfColtivatore(String CF) throws SQLException {
+		Lotto[] foundLotti = coltDAO.GetLottiColtivatore(CF);
+		return foundLotti;
+	}
+	
+	public Attivita[] getAttivitaColtivatore(String CF) throws SQLException {
+		Attivita[] foundAttivita = coltDAO.getAttivitaColtivatore(CF);
+		return foundAttivita;
+	}
+	
 }
 		
 	

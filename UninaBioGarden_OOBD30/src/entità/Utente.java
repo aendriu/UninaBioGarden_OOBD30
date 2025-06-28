@@ -15,31 +15,50 @@ public class Utente {
 		this.password = password;
 		this.CF = CF;
 	}
-	
+
 	/* GETTERS AND SETTERS */
-	
+		
 	public String getUsername() {
-        return username;
-    }
-	
+		return username;
+	}
+
+
 	public void setUsername(String username) {
-        this.username = username;
-    }
-	
+		this.username = username;
+	}
+
+
 	public String getNome() {
-        return nome;
-    }
+		return nome;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
-    public String getCognome() {
-        return cognome;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
+
+	public String getCognome() {
+		return cognome;
+	}
+
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+
+
+	public String getCF() {
+		return CF;
+	}
+
+
+	public void setCF(String cF) {
+		CF = cF;
+	}
+	
+	
+	
+	
 }
  

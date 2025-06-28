@@ -9,7 +9,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import dao.ProvaDao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.nio.file.Path;
