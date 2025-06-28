@@ -15,31 +15,43 @@ public class Controller {
 	String userDir = System.getProperty("user.dir");
 	Path dbprop;
 	ColtivatoreDAO coltDAO;
+	TESTING tests;
 	
+	/* ***** CONSTRUCTOR ***** */
 	public Controller() {
 		try {
 			dbprop = Paths.get(userDir, "libs", "dbprop.txt");
 			coltDAO = new ColtivatoreDAO(dbprop.toString(), this);
 			coltDAO.connect();
-		
+			
+			// TO COMMENT
+			tests = new TESTING(dbprop.toString(), this);
+			tests.InitTestColtDAO();
+			//
+			
 		} catch (Exception e){
 			e.printStackTrace();
 		}
 		Home home = new Home(this);
         home.setVisible(true);
 	}
-	public static void main(String[] args) {
+	
+	/* ***** MAIN ***** */
+	public static void main(String[] args) throws SQLException {
         // Creo l’istanza del controller che avvia tutto nel thread Swing
         SwingUtilities.invokeLater(() -> {
             new Controller();
         });
+       
     }
 	/* *************** ColtivatoreDAO test *************** */
 
-	public Coltivatore getColtivatore(String CF) throws SQLException {
+	public Coltivatore getColtivatoreByCF(String CF) throws SQLException {
 		Coltivatore colt = coltDAO.FindSpecificColtivatore(CF);
 		return colt;
 	}
+	
+	
 	public List<Object[]> Riempi_tab_lotti_in_cui_lavora(String username_colt) {
         List<Object[]> lista = new ArrayList<>();
         Random rnd = new Random();

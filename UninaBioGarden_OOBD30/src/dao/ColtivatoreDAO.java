@@ -20,43 +20,13 @@ import java.time.Duration;
 
 
 
-public class ColtivatoreDAO {
-	private String user;
-    private String password;
-    private String url;
-    private Connection connection;
-    // needed
-    private Controller c;
+public class ColtivatoreDAO extends UtenteDAO{
+ 
+    
+	public ColtivatoreDAO(String filePath, Controller c) throws IOException, SQLException {
+        super(filePath, c);
+    }
    
-        
-    public ColtivatoreDAO(String filePath, Controller c) throws IOException {
-        Properties props = new Properties();
-        FileInputStream fis = new FileInputStream(filePath);
-        props.load(fis);
-        fis.close();
-
-        user = props.getProperty("db.user");
-        password = props.getProperty("db.password");
-        url = props.getProperty("db.url");
-        
-        this.c = c;
-    }
-    
-    
-    /* CONNECT TO DB */
-    public void connect() throws SQLException {
-        if (connection == null || connection.isClosed()) {
-            connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to PostgreSQL server successfully!");
-        }
-    }
-    
-    public void disconnect() throws SQLException {
-        if (connection != null && !connection.isClosed()) {
-            connection.close();
-            System.out.println("Disconnected from PostgreSQL server.");
-        }
-    }
     
     /* RETRIEVAL FUNCTIONS */
     public Coltivatore FindSpecificColtivatore(String CF) throws SQLException {
@@ -111,7 +81,7 @@ public class ColtivatoreDAO {
     
     /* ****************************** */
     
-    public Attivita[] getAttivitaColtivatore(String CF) throws SQLException {
+    public Attivita[] GetAttivitaColtivatore(String CF) throws SQLException {
         String sql =
             "SELECT * " +
             "FROM attività " +
@@ -151,7 +121,7 @@ public class ColtivatoreDAO {
     /* ****************************** */
 
     /* INSERT FUNCTIONS */
-    public void insertColtivatoreInLotto(Coltivatore colt, Lotto l) throws SQLException {
+    public void InsertColtivatoreInLotto(Coltivatore colt, Lotto l) throws SQLException {
     	String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?,?)";
     	// IF NOT CheckDuplicates() THEN
     	try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -161,6 +131,13 @@ public class ColtivatoreDAO {
             
         }
     }
+    
+    
+    /* ****************************** */
+    
+    
+
+    
     
     /* OVERRIDES */
 

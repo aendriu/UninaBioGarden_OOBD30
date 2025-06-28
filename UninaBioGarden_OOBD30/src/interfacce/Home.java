@@ -10,7 +10,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import controller.Controller;
-import dao.ProvaDao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.nio.file.Path;
