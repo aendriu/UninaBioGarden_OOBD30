@@ -16,7 +16,7 @@ public class Controller {
 	public Controller() {
 		try {
 			dbprop = Paths.get(userDir, "libs", "dbprop.txt");
-			coltDAO = new ColtivatoreDAO(dbprop.toString());
+			coltDAO = new ColtivatoreDAO(dbprop.toString(), this);
 			coltDAO.connect();
 		
 		} catch (Exception e){

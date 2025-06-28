@@ -26,10 +26,10 @@ public class ColtivatoreDAO {
     private String url;
     private Connection connection;
     // needed
-    Controller c = new Controller();
+    private Controller c;
    
         
-    public ColtivatoreDAO(String filePath) throws IOException {
+    public ColtivatoreDAO(String filePath, Controller c) throws IOException {
         Properties props = new Properties();
         FileInputStream fis = new FileInputStream(filePath);
         props.load(fis);
@@ -38,6 +38,8 @@ public class ColtivatoreDAO {
         user = props.getProperty("db.user");
         password = props.getProperty("db.password");
         url = props.getProperty("db.url");
+        
+        this.c = c;
     }
     
     
