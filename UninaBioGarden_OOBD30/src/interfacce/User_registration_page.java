@@ -16,6 +16,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+
+import controller.Controller;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -42,27 +45,18 @@ public class User_registration_page extends JFrame {
 	private JTextField CF_txt;
 	private JCheckBox Colt_optz;
 	private JCheckBox Prop_optz;
+	private Controller TheController;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					User_registration_page frame = new User_registration_page();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public User_registration_page() {
-	    setResizable(false);
+	public User_registration_page(Controller TheController) {
+	    this.TheController = TheController;
+		setResizable(false);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setTitle("Registration Page");
 
@@ -135,7 +129,7 @@ public class User_registration_page extends JFrame {
 	    Indietro.addMouseListener(new MouseAdapter() {
 	        @Override
 	        public void mouseClicked(MouseEvent e) {
-	            Login= new Login();
+	            Login= new Login(TheController);
 	            Login.setVisible(true);
 	            User_registration_interface.setVisible(false);
 	            dispose(); // Chiude la finestra corrente

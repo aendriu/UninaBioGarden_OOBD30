@@ -9,6 +9,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import controller.Controller;
 import dao.ProvaDao;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,7 +42,7 @@ public class Home extends JFrame {
 	private Image HomeImage;
 	private JTextField txtUninabioGarden;
 	private Login LoginFrame;
-	
+	private Controller TheController;
 	/**
 	 * Launch the application.
 	 */
@@ -50,8 +51,9 @@ public class Home extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Home() {
-	    setResizable(false);
+	public Home(Controller controller) {
+	    this.TheController = controller;
+		setResizable(false);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setTitle("Home");
 
@@ -121,7 +123,7 @@ public class Home extends JFrame {
 	    JButton Enter = new JButton("Entra");
 	    Enter.addMouseListener(new MouseAdapter() {@Override
 	    	public void mouseClicked(MouseEvent e) {
-	    		LoginFrame = new Login();
+	    		LoginFrame = new Login(controller);
 	    		LoginFrame.setVisible(true);
 	    		Home.setVisible(false);
 	    		dispose(); // Chiude la finestra corrente

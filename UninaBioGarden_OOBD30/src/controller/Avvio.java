@@ -1,5 +1,4 @@
 package controller;
-
 import java.awt.EventQueue;
 
 import entità.*;
@@ -11,20 +10,18 @@ public class Avvio {
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {
-				// Starting with HOME
-				Home frame = new Home();
-				frame.setVisible(true);
-				
-				// Testing ColtivatoreDAO
-				Controller c = new Controller();
-				Coltivatore colt1 = c.getColtivatore("DLSNMN04E14F839Q");
+			// Starting with HOME
+			Home frame = new Home( new Controller());
+			frame.setVisible(true);
+			
+			// Testing ColtivatoreDAO
+			Controller c = new Controller();				Coltivatore colt1 = c.getColtivatore("DLSNMN04E14F839Q");
 				System.out.println(colt1);
 				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-        });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		}
+       });
 
 	}
 	
