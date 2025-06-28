@@ -13,6 +13,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.Controller;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -28,12 +31,13 @@ public class Page_Coltivatore extends JFrame {
     private Image coltivatoreImage;
     private String username_colt;
     private Home home;
-    
+    private Controller TheController;
     
     
     // Costruttore che prende solo la stringa username
-    public Page_Coltivatore(String username_colt) {
-        this.username_colt = username_colt;
+    public Page_Coltivatore(String username_colt, Controller TheController) {
+        this.TheController = TheController;
+    	this.username_colt = username_colt;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -73,7 +77,7 @@ public class Page_Coltivatore extends JFrame {
         User_name_printer.setHorizontalAlignment(SwingConstants.CENTER);
         User_name_printer.setFont(new Font("Times New Roman", Font.PLAIN, 40));
         User_name_printer.setBounds(51, 10, 1461, 56);
-        pageColtivatorePanel.add(User_name_printer);
+        pageColtivatorePanel.add(User_name_printer,TheController);
         
         // Qui mostri la stringa username passata
         JLabel User_name_printer_actual = new JLabel(username_colt);
@@ -83,6 +87,14 @@ public class Page_Coltivatore extends JFrame {
         pageColtivatorePanel.add(User_name_printer_actual);
         
         JButton Vedi_attività = new JButton("Le mie Attività");
+        Vedi_attività.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        	Coltivatore_attività_responsabili frame = new Coltivatore_attività_responsabili(username_colt, TheController);
+        	frame.setVisible(true);
+     		dispose(); // Chiude la finestra corrente
+        	}
+        });
         Vedi_attività.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         Vedi_attività.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -95,7 +107,8 @@ public class Page_Coltivatore extends JFrame {
         Lotti_lavora.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		Coltivatore_lotti_in_cui_lavora frame = new Coltivatore_lotti_in_cui_lavora(username_colt);
+        		
+				Coltivatore_lotti_in_cui_lavora frame = new Coltivatore_lotti_in_cui_lavora(username_colt, TheController);
 				frame.setVisible(true);
 				dispose(); // Chiude la finestra corrente
 			}
@@ -108,22 +121,22 @@ public class Page_Coltivatore extends JFrame {
         Lotti_lavora.setBounds(694, 522, 199, 82);
         pageColtivatorePanel.add(Lotti_lavora);
         
-        JButton Vedi_attività_2 = new JButton("Torna alla home");
-        Vedi_attività_2.addMouseListener(new MouseAdapter() {
+        JButton Torna_alla_home = new JButton("Torna alla home");
+        Torna_alla_home.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		home = new Home();
+        		home = new Home(TheController);
 				home.setVisible(true);
 				dispose(); // Chiude la finestra corrente
 			}
         });
-        Vedi_attività_2.addActionListener(new ActionListener() {
+        Torna_alla_home.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         	}
         	
         });
-        Vedi_attività_2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Vedi_attività_2.setBounds(694, 673, 199, 82);
-        pageColtivatorePanel.add(Vedi_attività_2);
+        Torna_alla_home.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        Torna_alla_home.setBounds(694, 673, 199, 82);
+        pageColtivatorePanel.add(Torna_alla_home);
     }
 }

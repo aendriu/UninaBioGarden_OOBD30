@@ -18,6 +18,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import controller.Controller;
+
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -46,26 +50,17 @@ public class Login extends JFrame {
 	private JCheckBox Temporary_coltivator_access;
 	private Proprietario_logged_in Proprietario;
 	private Page_Coltivatore coltivatore;
+	private Controller TheController;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public Login() {
+	public Login(Controller TheController) {
+		this.TheController = TheController;
 		setResizable(false);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setTitle("Login");
@@ -151,7 +146,7 @@ public class Login extends JFrame {
 		});
 	    Indietro.addMouseListener(new MouseAdapter() {@Override
 	    	public void mouseClicked(MouseEvent e) {
-	    		Home = new Home();
+	    		Home = new Home(TheController);
 	    		Home.setVisible(true);
 	    		Login.setVisible(false);
 	    		dispose(); // Chiude la finestra corrente
@@ -174,7 +169,7 @@ public class Login extends JFrame {
 					if (!password.isEmpty()) {
 						throw new Global_exceptions("il campo password deve essere vuoto");
 					}
-					User_registration_page user_registration_page = new User_registration_page();
+					User_registration_page user_registration_page = new User_registration_page(TheController);
 					user_registration_page.setVisible(true);
 					Login.setVisible(false);
 					dispose(); // Chiude la finestra corrente
@@ -236,12 +231,12 @@ public class Login extends JFrame {
 			        password_login.setBackground(Color.WHITE);
 			        if (Temporary_coltivator_access.isSelected()){
 			        	String username_4_colt = username_txt.getText();
-			        	coltivatore = new Page_Coltivatore(username_4_colt);
+			        	coltivatore = new Page_Coltivatore(username_4_colt,TheController);
 			        	coltivatore.setVisible(true);
 			        	Login.setVisible(false);
 			        	dispose(); // Chiude la finestra corrente
 			        }else { 
-			        Proprietario = new Proprietario_logged_in();
+			        Proprietario = new Proprietario_logged_in(TheController);
 					Proprietario.setVisible(true);
 				    Login.setVisible(false);
 				   dispose(); // Chiude la finestra corrente

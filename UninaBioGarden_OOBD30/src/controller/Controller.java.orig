@@ -40,6 +40,19 @@ public class Controller {
 		Coltivatore colt = coltDAO.FindSpecificColtivatore(CF);
 		return colt;
 	}
+<<<<<<< HEAD
+	
+	public Lotto[] getLottiOfColtivatore(String CF) throws SQLException {
+		Lotto[] foundLotti = coltDAO.GetLottiColtivatore(CF);
+		return foundLotti;
+	}
+	
+	public Attivita[] getAttivitaColtivatore(String CF) throws SQLException {
+		Attivita[] foundAttivita = coltDAO.getAttivitaColtivatore(CF);
+		return foundAttivita;
+	}
+	
+=======
 	public List<Object[]> Riempi_tab_lotti_in_cui_lavora(String username_colt) {
         List<Object[]> lista = new ArrayList<>();
         Random rnd = new Random();
@@ -98,7 +111,9 @@ public class Controller {
 
         return lista;
     }
+>>>>>>> 84922ce7b71ce4376c56fcea4736f495b2b5339c
 }
+
 		
 	
 
