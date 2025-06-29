@@ -74,12 +74,12 @@ public class TESTING {
 		        "Mario", "Rossastro", "RSSMRA80A01H501Z", "mrossi", "passworda123"
 		    );
 		System.out.println(
-				coltDAO.RemoveUserFrom("coltivatore", colt2)
+				coltDAO.RemoveUser(colt2)
 				? colt2.getUsername() + " Has been removed"
 				: colt2.getUsername() + " Has NOT been removed" 
 		);
 		
-	    System.out.println(coltDAO.InsertUserInto("coltivatore", colt2)
+	    System.out.println(coltDAO.InsertUser(colt2)
 	            ? "Coltivatore inserito con successo: " + colt2.getUsername()
 	            : "Errore nell'inserimento del coltivatore " + colt2.getUsername()
 	        );

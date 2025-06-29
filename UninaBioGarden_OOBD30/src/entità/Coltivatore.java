@@ -18,6 +18,13 @@ public class Coltivatore extends Utente {
 		this.lottiColtivatore = lottiColtivatore;
 	}
 	
+	/**/
+	@Override
+    public String getTableName() {
+        return "coltivatore";
+    }
+
+	
 	/* FUNCTIONS */
 	
 	public void aggiungiLotto(Lotto lotto) {

@@ -18,4 +18,12 @@ public class ProprietarioDiLotto extends Utente {
 	public ArrayList<Lotto> getLotti() {
         return lottiProprietario;
     }
+	
+	/**/
+	@Override
+    public String getTableName() {
+        return "proprietariodilotto";
+    }
 }
+	
+

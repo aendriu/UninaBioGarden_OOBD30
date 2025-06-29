@@ -1,6 +1,7 @@
 package entità;
+import java.util.Random;
 
-public class Utente {
+public abstract class Utente {
 	protected String username;
 	protected String nome;
 	protected String cognome;
@@ -16,6 +17,9 @@ public class Utente {
 		this.password = password;
 	}
 
+	public abstract String getTableName();
+	
+	
 	/* GETTERS AND SETTERS */
 		
 	public String getUsername() {
