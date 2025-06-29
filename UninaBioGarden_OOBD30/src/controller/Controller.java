@@ -77,7 +77,7 @@ public class Controller {
 
         String[] nomiAttività = {
             "Irrigazione", "Potatura", "Raccolta", "Semina",
-            "Concimazione", "Controllo Parassiti", "Monitoraggio Clima"
+            "Concimazione", "Controllo Parassiti", "Monitoraggio Clima", "Applica Pesticida"
         };
 
         String[] nomiLotti = {

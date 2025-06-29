@@ -46,6 +46,30 @@ public class TESTING {
 			    ? "Username esiste nel DB" 
 			    : "Username NON esiste nel DB"
 			);
+		
+		// *****
+		
+		System.out.println("TESTING InsertColtInLotto && RemoveColt...");
+		System.out.println("\nBEFORE");
+		System.out.println(
+				coltDAO.RemoveColtivatoreFromLotto(colt1.getCF(), 32)
+				? colt1.getUsername() + " Has been removed from lotto 32"
+				: colt1.getUsername() + " Has NOT been removed from lotto 32"
+			);
+		colt1_lotti = coltDAO.GetLottiColtivatore(colt1.getCF());
+		for(Lotto l : colt1_lotti) {
+			System.out.println(l);
+		}
+		coltDAO.InsertColtivatoreInLotto("DLSNMN04E14F839Q", 32);
+		System.out.println("\nAFTER");
+		colt1_lotti = coltDAO.GetLottiColtivatore(colt1.getCF());
+		for(Lotto l : colt1_lotti) {
+			System.out.println(l);
+		}
+		
+		// *****
+		
+
 
 
 		
