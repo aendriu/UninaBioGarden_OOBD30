@@ -55,7 +55,7 @@ public abstract class UtenteDAO extends DAO {
 	}
 
 	
-	// INSERT FUNCIONS
+	// REMOVE FUNCIONS
 	public boolean RemoveUser(Utente u) {
 	    String tabName = u.getTableName();
 	    String cfColumn = tabName.equals("coltivatore") ? "cf_coltivatore" : "cf_proprietario";

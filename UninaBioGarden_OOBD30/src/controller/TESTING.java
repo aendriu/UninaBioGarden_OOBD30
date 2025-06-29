@@ -4,19 +4,44 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import dao.ColtivatoreDAO;
+import dao.ProprietarioDAO;
 import entità.Coltivatore;
 import entità.*;
 
 public class TESTING {
 	ColtivatoreDAO coltDAO;
+	ProprietarioDAO propDAO;
 	
 	public TESTING(String propertiesFilePath, Controller c) throws SQLException, IOException {
         coltDAO = new ColtivatoreDAO(propertiesFilePath, c);
+        propDAO = new ProprietarioDAO(propertiesFilePath, c);
         coltDAO.connect();
+        propDAO.connect();
     }
 	
 	
 	// TESTING
+	
+	public void InitTests() throws SQLException {
+		InitTestPropDAO();
+		InitTestColtDAO();
+		return;
+	}
+	
+	public void InitTestPropDAO() throws SQLException {
+		System.out.println("TESTING getPropFromCF : ");
+		ProprietarioDiLotto prop1 = propDAO.FindSpecificProprietario("DLSNMN04E14F839Q");
+		System.out.println(prop1);
+		prop1 = propDAO.FindSpecificProprietario("BRNLSS75C11F839Q");
+		System.out.println(prop1);
+		
+		// ***** 
+		
+		
+		
+		
+	}
+	
 	public void InitTestColtDAO() throws SQLException {
 		System.out.println("TESTING getColtFromCF : ");
 		Coltivatore colt1 = coltDAO.FindSpecificColtivatore("DLSNMN04E14F839Q");

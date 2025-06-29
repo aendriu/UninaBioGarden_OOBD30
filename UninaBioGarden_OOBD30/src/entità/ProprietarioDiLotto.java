@@ -19,11 +19,19 @@ public class ProprietarioDiLotto extends Utente {
         return lottiProprietario;
     }
 	
-	/**/
+	/* OVERRIDES */
 	@Override
     public String getTableName() {
         return "proprietariodilotto";
     }
+
+	@Override
+	public String toString() {
+		return "ProprietarioDiLotto [lottiProprietario=" + lottiProprietario + ", username=" + username + ", nome="
+				+ nome + ", cognome=" + cognome + ", password=" + password + ", CF=" + CF + "]";
+	}
+	
+	
 }
 	
 

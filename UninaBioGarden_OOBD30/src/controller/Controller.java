@@ -14,7 +14,10 @@ import interfacce.Home;
 public class Controller {
 	String userDir = System.getProperty("user.dir");
 	Path dbprop;
+	
+	// DAOs
 	ColtivatoreDAO coltDAO;
+	ProprietarioDAO propDAO;
 	TESTING tests;
 	
 	/* ***** CONSTRUCTOR ***** */
@@ -22,11 +25,13 @@ public class Controller {
 		try {
 			dbprop = Paths.get(userDir, "libs", "dbprop.txt");
 			coltDAO = new ColtivatoreDAO(dbprop.toString(), this);
+			propDAO = new ProprietarioDAO(dbprop.toString(), this);
 			coltDAO.connect();
+			propDAO.connect();
 			
 			// TO COMMENT
 			tests = new TESTING(dbprop.toString(), this);
-			tests.InitTestColtDAO();
+			tests.InitTests();
 			//
 			
 		} catch (Exception e){
