@@ -236,7 +236,8 @@ public class Login extends JFrame {
 			        	Login.setVisible(false);
 			        	dispose(); // Chiude la finestra corrente
 			        }else { 
-			        Proprietario = new Proprietario_logged_in(TheController);
+			        String username_4_prop = username_txt.getText();
+			        	Proprietario = new Proprietario_logged_in(username_4_prop,TheController);
 					Proprietario.setVisible(true);
 				    Login.setVisible(false);
 				   dispose(); // Chiude la finestra corrente

@@ -36,6 +36,7 @@ public class Page_Coltivatore extends JFrame {
     
     // Costruttore che prende solo la stringa username
     public Page_Coltivatore(String username_colt, Controller TheController) {
+    	setResizable(false);
         this.TheController = TheController;
     	this.username_colt = username_colt;
 

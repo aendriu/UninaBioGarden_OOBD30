@@ -24,10 +24,11 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JTextField;
 
 public class Coltivatore_attività_responsabili extends JFrame {
@@ -38,9 +39,9 @@ public class Coltivatore_attività_responsabili extends JFrame {
     private Controller TheController;
     private JTable table;
     private Page_Coltivatore pageColtivatore;
-    // Costruttore che prende solo la stringa username
+
     public Coltivatore_attività_responsabili(String username_colt, Controller TheController) {
-    	setResizable(false);
+        setResizable(false);
         this.username_colt = username_colt;
         this.TheController = TheController;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,81 +71,76 @@ public class Coltivatore_attività_responsabili extends JFrame {
                 }
             }
         };
-
         Attività_panel.setLayout(null);
-
-        
-       
-        
-        int spazioBottoni=100;
         setContentPane(Attività_panel);
+
+        int spazioBottoni = 100;
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(0, 0, screenSize.width, screenSize.height - spazioBottoni);
         Attività_panel.add(scrollPane);
 
-        // CREO LA TABELLA PRIMA DI USARLA
+        // crea tabella
         table = new JTable();
         table.addMouseListener(new MouseAdapter() {
-        	public void mouseClicked(MouseEvent e) {
-        		int selectedRow = table.getSelectedRow();
-                     // converto dalla view alla model
-                     int modelRow = table.convertRowIndexToModel(selectedRow);
-                    
-                     // PRENDI I VALORI DELLE COLONNE che vuoi (esempio col 0 e col 2)
-                     String Lotto_selected = (String) table.getModel().getValueAt(modelRow, 0);
-                     String Attività_selected = (String) table.getModel().getValueAt(modelRow, 1);
-                     String Stato_selected = (String) table.getModel().getValueAt(modelRow, 3);
-                     try {
-                     if (Stato_selected.equals("completata")) {
-                    	    throw new Coltivatore_attività_table_exceptions(
-                    	        Coltivatore_attività_table_exceptions.Tipo.activity_arleady_completed
-                    	        );
-                     }
-                     }catch (Coltivatore_attività_table_exceptions e1) {
-						 JOptionPane.showMessageDialog(null, e1.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-						 return;
-					 }
-                     String InputTXT=JOptionPane.showInputDialog("Quante ore è stato dedicato all attività"+ Attività_selected + " del lotto " + Lotto_selected + "? oggi? (se non si inserirà nulla verrà contata come nulla e quindi non vi sarà alcun aggiornamento)");
-        		int time_spent = 0;
-        		time_spent=Integer.parseInt(InputTXT);
-        		try {
-        		if(time_spent<0) {
-        			throw new Coltivatore_attività_table_exceptions(
-							Coltivatore_attività_table_exceptions.Tipo.illegal_number_input
-						);
-        		}
-        		} catch (Coltivatore_attività_table_exceptions e1) {
-        			JOptionPane.showMessageDialog(null, e1.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-        		}
-        	}
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = table.getSelectedRow();
+                int modelRow = table.convertRowIndexToModel(selectedRow);
+                String Lotto_selected = (String) table.getModel().getValueAt(modelRow, 0);
+                String Attività_selected = (String) table.getModel().getValueAt(modelRow, 1);
+                String Stato_selected = (String) table.getModel().getValueAt(modelRow, 3);
+
+                try {
+                    if (Stato_selected.equals("completata")) {
+                        throw new Coltivatore_attività_table_exceptions(
+                                Coltivatore_attività_table_exceptions.Tipo.activity_arleady_completed
+                        );
+                    }
+                } catch (Coltivatore_attività_table_exceptions e1) {
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                String inputTXT = JOptionPane.showInputDialog(
+                    "Quante ore sono state dedicate all'attività " + Attività_selected + " del lotto " + Lotto_selected + "? (oggi)"
+                );
+                int time_spent = 0;
+                try {
+                    if (inputTXT != null && !inputTXT.trim().isEmpty()) {
+                        time_spent = Integer.parseInt(inputTXT);
+                        if (time_spent < 0) {
+                            throw new Coltivatore_attività_table_exceptions(
+                                    Coltivatore_attività_table_exceptions.Tipo.illegal_number_input
+                            );
+                        }
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Inserisci un numero valido.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } catch (Coltivatore_attività_table_exceptions e1) {
+                    JOptionPane.showMessageDialog(null, e1.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // TODO: passare il valore time_spent al controller per aggiornare la percentuale
+            }
         });
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setToolTipText("clicca una riga per aggiornare la percentuale completamento");
 
         // prendo i dati
         List<Object[]> righe = TheController.Riempi_tab_attività_responsabili(username_colt);
-
-        // ordina per Nome Lotto
         righe.sort((a, b) -> ((String) a[0]).compareToIgnoreCase((String) b[0]));
 
-        // intestazioni
         String[] colonne = {
-            "Nome Lotto",
-            "Nome Attività",
-            "Coltura",
-            "Stato",
-            "Percentuale Completamento"
+            "Nome Lotto", "Nome Attività", "Coltura", "Stato", "Percentuale Completamento"
         };
 
-        // conversione con formattazione
         Object[][] dati = new Object[righe.size()][colonne.length];
         for (int i = 0; i < righe.size(); i++) {
             Object[] row = righe.get(i);
             Object[] formattedRow = new Object[colonne.length];
             for (int j = 0; j < colonne.length; j++) {
                 if (j == 4) {
-                    formattedRow[j] = row[j] + "%";
+                    formattedRow[j] = row[j];  // percentuale int
                 } else {
                     formattedRow[j] = row[j];
                 }
@@ -152,13 +148,11 @@ public class Coltivatore_attività_responsabili extends JFrame {
             dati[i] = formattedRow;
         }
 
-        // modello con dati e intestazioni
         DefaultTableModel model = new DefaultTableModel(
-            dati,
-            colonne
+            dati, colonne
         ) {
             Class[] columnTypes = new Class[]{
-                String.class, String.class, String.class, String.class, String.class
+                String.class, String.class, String.class, String.class, Integer.class
             };
             @Override
             public Class<?> getColumnClass(int columnIndex) {
@@ -169,33 +163,44 @@ public class Coltivatore_attività_responsabili extends JFrame {
                 return false;
             }
         };
-
-        // **Importante: setto il modello con i dati e non un modello vuoto!**
         table.setModel(model);
 
-        // setto font e altezza righe
+        // renderer progress bar
+        table.getColumnModel().getColumn(4).setCellRenderer(new javax.swing.table.TableCellRenderer() {
+            private final javax.swing.JProgressBar bar = new javax.swing.JProgressBar(0, 100);
+            {
+                bar.setStringPainted(true);
+                bar.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+            }
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
+            ) {
+                int progress = 0;
+                if (value instanceof Integer) {
+                    progress = (Integer) value;
+                }
+                bar.setValue(progress);
+                bar.setString(progress + "%");
+                return bar;
+            }
+        });
+
         table.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         table.setRowHeight(30);
 
-        // aggiungo la tabella allo JScrollPane
         scrollPane.setViewportView(table);
-
 
         JButton Torna_indietro = new JButton("Torna Indietro");
         Torna_indietro.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
+            public void actionPerformed(ActionEvent e) {
+                pageColtivatore = new Page_Coltivatore(username_colt, TheController);
+                pageColtivatore.setVisible(true);
+                dispose();
+            }
         });
-       Torna_indietro.addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent evt) {
-				pageColtivatore = new Page_Coltivatore(username_colt, TheController);
-				pageColtivatore.setVisible(true);
-				dispose(); // Chiude la finestra corrente
-			}
-		});
-        
         Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         Torna_indietro.setBounds(645, screenSize.height - 80, 210, 43);
         Attività_panel.add(Torna_indietro);
-}
+    }
 }
