@@ -37,11 +37,11 @@ public class ColtivatoreDAO extends UtenteDAO{
 		try(ResultSet rs = stmt.executeQuery()) {
 			if(rs.next()) {
 				return new Coltivatore(
-						rs.getString("username"),
 						rs.getString("nome"),
 						rs.getString("cognome"),
-						rs.getString("password"),
-						rs.getString("CF_coltivatore")
+						rs.getString("CF_coltivatore"),
+						rs.getString("username"),
+						rs.getString("password")
 				);
 			}
 		}
@@ -124,6 +124,9 @@ public class ColtivatoreDAO extends UtenteDAO{
     /* INSERT FUNCTIONS */
     
     
+    
+    /* ************* */
+    
     public boolean InsertColtivatoreInLotto(Coltivatore colt, Lotto l) throws SQLException {
         String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -140,7 +143,8 @@ public class ColtivatoreDAO extends UtenteDAO{
         }
     }
 
-    
+    /* ************* */
+
     public boolean InsertColtivatoreInLotto(String CF, int idL) throws SQLException {
         String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {

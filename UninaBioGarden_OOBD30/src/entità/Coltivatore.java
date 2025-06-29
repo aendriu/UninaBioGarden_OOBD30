@@ -9,12 +9,12 @@ public class Coltivatore extends Utente {
 	
 	
 	/* CONSTRUCTORS */
-	public Coltivatore(String username, String nome, String cognome, String password, String CF) {
-		super(username, nome, cognome, password, CF);
+	public Coltivatore(String nome, String cognome, String CF, String username, String password) {
+		super(nome, cognome, CF, username, password);
 	}
 	
-	public Coltivatore(String username, String nome, String cognome, String password, String CF, ArrayList<Lotto> lottiColtivatore) {
-		super(username, nome, cognome, password, CF);
+	public Coltivatore(String nome, String cognome, String CF, String username, String password, ArrayList<Lotto> lottiColtivatore) {
+		super(nome, cognome, CF, username, password);
 		this.lottiColtivatore = lottiColtivatore;
 	}
 	
