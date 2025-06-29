@@ -29,6 +29,7 @@ public class ColtivatoreDAO extends UtenteDAO{
    
     
     /* RETRIEVAL FUNCTIONS */
+	
     public Coltivatore FindSpecificColtivatore(String CF) throws SQLException {
     	String CF_Select = "SELECT * FROM coltivatore WHERE CF_coltivatore = ?";
     	PreparedStatement stmt = connection.prepareStatement(CF_Select);
@@ -37,11 +38,11 @@ public class ColtivatoreDAO extends UtenteDAO{
 		try(ResultSet rs = stmt.executeQuery()) {
 			if(rs.next()) {
 				return new Coltivatore(
-						rs.getString("username"),
 						rs.getString("nome"),
 						rs.getString("cognome"),
-						rs.getString("password"),
-						rs.getString("CF_coltivatore")
+						rs.getString("CF_coltivatore"),
+						rs.getString("username"),
+						rs.getString("password")
 				);
 			}
 		}
@@ -49,6 +50,7 @@ public class ColtivatoreDAO extends UtenteDAO{
 
     	return null;
     }
+
     
     /* ****************************** */
     
@@ -68,7 +70,8 @@ public class ColtivatoreDAO extends UtenteDAO{
                     int numColt = rs.getInt("NumColture");
                     String nomeLotto = rs.getString("NomeLotto");
                     int idProj = rs.getInt("idProgetto");
-                    ProprietarioDiLotto prop = new ProprietarioDiLotto("", "", "", "", CF);
+                    String CFprop = rs.getString("CF_Proprietario");
+                    ProprietarioDiLotto prop = new ProprietarioDiLotto("", "", "", "", CFprop);
                     
                     Lotto lotto = new Lotto(idL, numColt, nomeLotto, prop, idProj);
                     
@@ -121,16 +124,71 @@ public class ColtivatoreDAO extends UtenteDAO{
     /* ****************************** */
 
     /* INSERT FUNCTIONS */
-    public void InsertColtivatoreInLotto(Coltivatore colt, Lotto l) throws SQLException {
-    	String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?,?)";
-    	// IF NOT CheckDuplicates() THEN
-    	try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, colt.getCF());
-            ps.setLong(2, l.getIdLotto());
+        
+    public boolean InsertColtivatoreInLotto(Coltivatore colt, Lotto l) throws SQLException {
+        String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, l.getIdLotto());       
+            ps.setString(2, colt.getCF());
             ps.executeUpdate();
-            
+            return true; 
+        } catch (SQLException e) {
+           
+            if (e.getSQLState().equals("23505")) { // violation of unique PK
+                return false;
+            }
+            throw e;
         }
     }
+
+    /* ************* */
+
+    public boolean InsertColtivatoreInLotto(String CF, int idL) throws SQLException {
+        String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, idL);       
+            ps.setString(2, CF);
+            ps.executeUpdate();
+            return true; 
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("23505")) { // violation of unique PK
+                return false;
+            }
+            throw e;
+        }
+    }
+    
+    /* ************* */
+    
+
+
+
+    /* REMOVE FUNCTION */
+    
+    public boolean RemoveColtivatoreFromLotto(Coltivatore colt, Lotto l) throws SQLException {
+        String sql = "DELETE FROM lavora_in WHERE idLotto = ? AND CF_coltivatore = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, l.getIdLotto());
+            ps.setString(2, colt.getCF());
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+    
+    /* ************* */
+
+    public boolean RemoveColtivatoreFromLotto(String CF, int idL) throws SQLException {
+        String sql = "DELETE FROM lavora_in WHERE idLotto = ? AND CF_coltivatore = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, idL);
+            ps.setString(2, CF);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        }
+    }
+
+
+
     
     
     /* ****************************** */
