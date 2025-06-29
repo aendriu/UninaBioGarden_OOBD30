@@ -29,6 +29,10 @@ public class ColtivatoreDAO extends UtenteDAO{
    
     
     /* RETRIEVAL FUNCTIONS */
+    
+	
+	/* ****************************** */
+
     public Coltivatore FindSpecificColtivatore(String CF) throws SQLException {
     	String CF_Select = "SELECT * FROM coltivatore WHERE CF_coltivatore = ?";
     	PreparedStatement stmt = connection.prepareStatement(CF_Select);
@@ -49,6 +53,7 @@ public class ColtivatoreDAO extends UtenteDAO{
 
     	return null;
     }
+
     
     /* ****************************** */
     
@@ -122,11 +127,7 @@ public class ColtivatoreDAO extends UtenteDAO{
     /* ****************************** */
 
     /* INSERT FUNCTIONS */
-    
-    
-    
-    /* ************* */
-    
+        
     public boolean InsertColtivatoreInLotto(Coltivatore colt, Lotto l) throws SQLException {
         String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -159,6 +160,10 @@ public class ColtivatoreDAO extends UtenteDAO{
             throw e;
         }
     }
+    
+    /* ************* */
+    
+
 
 
     /* REMOVE FUNCTION */
@@ -172,8 +177,9 @@ public class ColtivatoreDAO extends UtenteDAO{
             return rowsAffected > 0;
         }
     }
-
     
+    /* ************* */
+
     public boolean RemoveColtivatoreFromLotto(String CF, int idL) throws SQLException {
         String sql = "DELETE FROM lavora_in WHERE idLotto = ? AND CF_coltivatore = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
