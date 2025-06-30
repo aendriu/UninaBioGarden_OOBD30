@@ -36,6 +36,7 @@ public class Proprietario_logged_in extends JFrame {
     private Prop_lotti_visual_scheme Lotti_vs;
     private Free_lotti lotti_liberi;
     private Proprietario_activities_visual Attività_vs;
+    private Prop_organizza_attività orgAttività;
     /**
      * Create the frame.
      */
@@ -131,7 +132,9 @@ public class Proprietario_logged_in extends JFrame {
 		});
         JMenuItem voce2_attività = new JMenuItem("organizza attività");
         voce2_attività.addActionListener(e -> {
-        	//TODO
+        	orgAttività = new Prop_organizza_attività(username, TheController);
+        	orgAttività.setVisible(true);
+        	dispose();
         });
         
         popupMenu_4_attività.add(voce1_attività);
