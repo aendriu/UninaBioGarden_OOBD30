@@ -8,8 +8,8 @@ public class Attivita {
     private String nomeAttivita;
     private LocalDate inizio;
     private LocalDate fine;
-    private String tempoLavoratoString;  // raw stringa dal DB
-    private Duration tempoLavorato;      // durata calcolata
+    private String tempoLavoratoString;  
+    private Duration tempoLavorato;     
     private String cfColtivatore;
     private String stato;
 

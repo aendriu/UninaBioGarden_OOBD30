@@ -1,6 +1,7 @@
 package entità;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Coltura {
 	private int idColtura;
@@ -8,9 +9,8 @@ public class Coltura {
 	private Duration tempoMaturazione;
 	private LocalDate giornoSemina;
 	
-	
 	/* CONSTRUCTORS */
-	public Coltura(int idColtura, String nomeColtura) {
+	public Coltura(int idColtura, String nomeColtura, Duration tempoMaturazione, LocalDate giornoSemina) {
 		super();
 		this.idColtura = idColtura;
 		this.nomeColtura = nomeColtura;

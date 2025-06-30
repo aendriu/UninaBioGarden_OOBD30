@@ -126,19 +126,7 @@ public class ColtivatoreDAO extends UtenteDAO{
     /* INSERT FUNCTIONS */
         
     public boolean InsertColtivatoreInLotto(Coltivatore colt, Lotto l) throws SQLException {
-        String sql = "INSERT INTO lavora_in (idLotto, CF_coltivatore) VALUES (?, ?)";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, l.getIdLotto());       
-            ps.setString(2, colt.getCF());
-            ps.executeUpdate();
-            return true; 
-        } catch (SQLException e) {
-           
-            if (e.getSQLState().equals("23505")) { // violation of unique PK
-                return false;
-            }
-            throw e;
-        }
+        return InsertColtivatoreInLotto(colt.getCF(), l.getIdLotto());
     }
 
     /* ************* */
@@ -166,13 +154,7 @@ public class ColtivatoreDAO extends UtenteDAO{
     /* REMOVE FUNCTION */
     
     public boolean RemoveColtivatoreFromLotto(Coltivatore colt, Lotto l) throws SQLException {
-        String sql = "DELETE FROM lavora_in WHERE idLotto = ? AND CF_coltivatore = ?";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, l.getIdLotto());
-            ps.setString(2, colt.getCF());
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        }
+        return RemoveColtivatoreFromLotto(colt.getCF(), l.getIdLotto());
     }
     
     /* ************* */
