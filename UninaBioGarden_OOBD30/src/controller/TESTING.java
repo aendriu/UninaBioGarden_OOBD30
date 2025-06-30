@@ -24,7 +24,7 @@ public class TESTING {
 	
 	public void InitTests() throws SQLException {
 		InitTestPropDAO();
-		InitTestColtDAO();
+		//InitTestColtDAO();
 		return;
 	}
 	
@@ -36,6 +36,33 @@ public class TESTING {
 		System.out.println(prop1);
 		
 		// ***** 
+		
+		System.out.println("TESTING getLottiProp");
+		Lotto[] prop1_lotti = propDAO.GetLottiProprietario(prop1.getCF());
+		for(Lotto l : prop1_lotti) {
+			System.out.println(l);
+		}
+		prop1_lotti = propDAO.GetLottiProprietario("VLNCHR93C10F205U");
+		
+		// ***** 
+		
+		System.out.println("TESTING AddLottoToProp && RemoveLottoFromProp...");
+		System.out.println("\nBEFORE");
+		for(Lotto l : prop1_lotti) {
+			System.out.println(l);
+		}
+		System.out.println("\nAFTER");
+		propDAO.AddLottoToProprietario("VLNCHR93C10F205U", 73);
+		for(Lotto l : prop1_lotti) {
+			System.out.println(l);
+		}
+		System.out.println(
+				propDAO.RemoveLottoFromProprietario("VLNCHR93C10F205U", 73)
+				? "Lotto 73 has been removed from VLNCHR93C10F205U"
+				: "Lotto 73 has NOT been removed from VLNCHR93C10F205U"
+			);
+		
+		
 		
 		
 		
