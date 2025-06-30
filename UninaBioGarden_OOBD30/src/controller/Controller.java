@@ -18,6 +18,7 @@ public class Controller {
 	// DAOs
 	ColtivatoreDAO coltDAO;
 	ProprietarioDAO propDAO;
+	LottoDAO lottoDAO;
 	TESTING tests;
 	
 	/* ***** CONSTRUCTOR ***** */
