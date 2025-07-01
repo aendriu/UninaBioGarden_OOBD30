@@ -379,10 +379,14 @@ public class Prop_organizza_attività extends JFrame {
     				Plin = new Proprietario_logged_in(username, TheController);
     		    	Plin.setVisible(true);
     		    	dispose();
-    			} else {
+    			} else if  (risposta == JOptionPane.NO_OPTION) {
     				return; // Annulla l'azione
     			}
-    		}
+    		}else {
+				Plin = new Proprietario_logged_in(username, TheController);
+		    	Plin.setVisible(true);
+		    	dispose();
+			}
     	
     	}
     });
