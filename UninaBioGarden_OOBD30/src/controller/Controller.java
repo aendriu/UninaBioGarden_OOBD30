@@ -310,9 +310,97 @@ public class Controller {
 
     		    return lista;
     		}
+    	 
 
+    	 public String[] getData1(String username_Prop) {
+    		    String[] possibiliNomi = {
+    		        "Campo San Marco", "Vigna Vecchia", "Orto di Giulia", "Terreno Verde",
+    		        "Campo Grande", "Podere Aurora", "Prato Fiorito", "Orto del Sole",
+    		        "Valle Serena", "Podere delle Rose", "Orto Primavera", "Campo Alto",
+    		        "Prato dei Fiori", "Giardino Segreto", "Campo dei Miracoli",
+    		        "Vigna del Borgo", "Campo Serena", "Poderetto", "Orto Felice", "Vigneto Nuovo"
+    		    };
+    		    Random rand = new Random();
+    		    int n = rand.nextInt(20) + 1; // da 1 a 20 nomi
+    		    String[] dati = new String[n];
+    		    for (int i = 0; i < n; i++) {
+    		        dati[i] = possibiliNomi[rand.nextInt(possibiliNomi.length)];
+    		    }
+    		    return dati;
+    		}
+
+
+    	 public String[] getData2(String username_Prop) {
+    	     // Attività: attività agricole random (esempi)
+    	     String[] activities = {
+    	         "Irrigazione", "Semina", "Concimazione", "Raccolta", "Potatura",
+    	         "Diserbo", "Trapianto", "Sarchiatura", "Controllo parassiti",
+    	         "Aratura", "Fertilizzazione", "Monitoraggio", "Impianto", "Pacciamatura",
+    	         "Rincalzatura", "Sfoltimento", "Pulizia campo", "Concimazione fogliare",
+    	         "Irrigazione localizzata", "Scerbatura"
+    	     };
+    	     Random rand = new Random();
+    	     int n = rand.nextInt(20) + 1;
+    	     String[] dati = new String[n];
+    	     for (int i = 0; i < n; i++) {
+    	         dati[i] = activities[i];
+    	     }
+    	     return dati;
+    	 }
+
+    	 public String[] getData3(String username_Prop) {
+    	     // Coltura: nomi di colture tipiche
+    	     String[] cultures = {
+    	         "Pomodoro", "Mais", "Grano", "Orzo", "Frumento",
+    	         "Patata", "Lattuga", "Zucchina", "Carota", "Peperone",
+    	         "Melanzana", "Fagiolo", "Pisello", "Cipolla", "Cavolo",
+    	         "Fragola", "Aglio", "Cetriolo", "Spinacio", "Ravanello"
+    	     };
+    	     Random rand = new Random();
+    	     int n = rand.nextInt(20) + 1;
+    	     String[] dati = new String[n];
+    	     for (int i = 0; i < n; i++) {
+    	         dati[i] = cultures[i];
+    	     }
+    	     return dati;
+    	 }
+
+    	 public String[] getData4(String username_Prop) {
+    	     // Nome_colt: nomi di persona comuni
+    	     String[] names = {
+    	         "Marco", "Luca", "Giulia", "Francesca", "Matteo",
+    	         "Sara", "Andrea", "Alessandro", "Chiara", "Davide",
+    	         "Federica", "Stefano", "Elena", "Simone", "Valentina",
+    	         "Riccardo", "Laura", "Paolo", "Marta", "Giorgio"
+    	     };
+    	     Random rand = new Random();
+    	     int n = rand.nextInt(20) + 1;
+    	     String[] dati = new String[n];
+    	     for (int i = 0; i < n; i++) {
+    	         dati[i] = names[i];
+    	     }
+    	     return dati;
+    	 }
+
+    	 public String[] getData5(String username_Prop) {
+    	     // Cognome: cognomi italiani comuni
+    	     String[] surnames = {
+    	         "Rossi", "Russo", "Ferrari", "Esposito", "Bianchi",
+    	         "Romano", "Colombo", "Ricci", "Marino", "Greco",
+    	         "Bruno", "Gallo", "Conti", "De Luca", "Mancini",
+    	         "Costa", "Giordano", "Rizzo", "Lombardi", "Moretti"
+    	     };
+    	     Random rand = new Random();
+    	     int n = rand.nextInt(20) + 1;
+    	     String[] dati = new String[n];
+    	     for (int i = 0; i < n; i++) {
+    	         dati[i] = surnames[i];
+    	     }
+    	     return dati;
+    	 }
 
 }
+
 
 
 		

@@ -6,6 +6,7 @@ public class Proprietario_addons_selection_exceptions extends Exception {
         Culture_arleady_in_the_lotto,
         lotti_maximum_number_reached,
         No_one_selected,
+        Date_of_completion_precede_starting_date,
     }
 
     private Tipo tipo;
@@ -29,6 +30,8 @@ public class Proprietario_addons_selection_exceptions extends Exception {
             	return "Impossibile aggiungere '" + nomeLotto + "'. " + "Numero massimo di lotti raggiunto.";
             case No_one_selected:
 				return "Nessun coltivatore è stato selezionato, impossibile procedere con l'inserimento.";
+            case Date_of_completion_precede_starting_date:
+				return "La data di completamento non può precedere la data di inizio per l'attività legata alla coltura selezionata.";
             default:
                 return "Errore generico con la coltura '" + nomeLotto + "'.";
         }
