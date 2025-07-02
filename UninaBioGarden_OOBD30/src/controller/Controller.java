@@ -407,7 +407,100 @@ public class Controller {
     	     }
     	     return dati;
     	 }
+    	 
+    	 public Object[] getNomiProgettiELotti(String username) {
+    		    String[] nomiProgettiPossibili = {
+    		        "Progetto Orto Urbano", "Vigna del Sole", "Frutteto Sostenibile",
+    		        "Serra Innovativa", "Campo di Grano Antico", "Orto delle Erbe Aromatiche",
+    		        "Giardino dei Fiori Rari", "Progetto Biodiversità", "Orto Verticale",
+    		        "Frutteto Familiare"
+    		    };
 
+    		    String[] nomiLottiPossibili = {
+    		        "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
+    		        "Vigneto Sud", "Frutteto Ovest", "Pista Agraria", "Bosco Urbano",
+    		        "Prato Fiorito", "Collina Blu"
+    		    };
+
+    		    Random rnd = new Random();
+    		    int n = rnd.nextInt(20) + 1; // da 1 a 20 elementi
+
+    		    String[] nomiProgetti = new String[n];
+    		    String[] nomiLotti = new String[n];
+
+    		    for (int i = 0; i < n; i++) {
+    		        nomiProgetti[i] = nomiProgettiPossibili[rnd.nextInt(nomiProgettiPossibili.length)];
+    		        nomiLotti[i] = nomiLottiPossibili[rnd.nextInt(nomiLottiPossibili.length)];
+    		    }
+
+    		    return new Object[] { nomiProgetti, nomiLotti };
+    		}
+
+    	 public List<Object[]> Riempi_tab_progetti_vista_proprietario(String username_colt) {
+ 		    List<Object[]> lista = new ArrayList<>();
+ 		    Random rnd = new Random();
+
+ 		    String[] nomiAttività = {
+ 		        "Irrigazione", "Potatura", "Raccolta", "Semina",
+ 		        "Concimazione", "Controllo Parassiti", "Monitoraggio Clima"
+ 		    };
+
+ 		    String[] colture = {
+ 		        "Pomodoro", "Lattuga", "Carota", "Zucchina",
+ 		        "Peperone", "Melanzana", "Cetriolo", "Spinaci"
+ 		    };
+
+ 		    String[] statiPossibili = {  // non usato più, ma puoi tenere
+ 		        "In corso", "Completata", "Pianificata"
+ 		    };
+
+ 		    String[] nomiColtivatori = {
+ 		        "Mario", "Luca", "Giulia", "Anna",
+ 		        "Marco", "Sara", "Francesco", "Elena",
+ 		        "Alessandro", "Chiara", "Giovanni", "Martina",
+ 		        "Stefano", "Laura", "Davide", "Federica",
+ 		        "Simone", "Valentina", "Giorgio", "Claudia",
+ 		        "Roberto", "Silvia", "Antonio", "Francesca"
+ 		    };
+
+ 		    String[] cognomiColtivatori = {
+ 		        "Rossi", "Bianchi", "Verdi", "Neri",
+ 		        "Gialli", "Blu", "Arancio", "Viola",
+ 		        "Grigi", "Marroni", "Rossi", "Neri",
+ 		        "Bianchi", "Verdi", "Gialli", "Blu",
+ 		        "Arancio", "Viola"
+ 		    };
+
+ 		    for (int i = 0; i < 30; i++) {
+ 		        String nomeAttivita = nomiAttività[rnd.nextInt(nomiAttività.length)];
+ 		        String coltura = colture[rnd.nextInt(colture.length)];
+ 		        String nomeColtivatore = nomiColtivatori[rnd.nextInt(nomiColtivatori.length)];
+ 		        String cognomeColtivatore = cognomiColtivatori[rnd.nextInt(cognomiColtivatori.length)];
+
+ 		        String stato = "";
+ 		        int percentuale = rnd.nextInt(101); // 0..100
+ 		        if (percentuale == 0) {
+ 		            stato = "Pianificata";
+ 		        } else if (percentuale < 100) {
+ 		            stato = "In corso";
+ 		        } else {
+ 		            stato = "Completata";
+ 		        }
+
+ 		        // Modifico qui l’ordine
+ 		        Object[] riga = {          
+ 		            nomeColtivatore,     
+ 		            cognomeColtivatore,  
+ 		            nomeAttivita,        
+ 		            coltura,             
+ 		            stato,                     
+ 		        };
+
+ 		        lista.add(riga);
+ 		    }
+
+ 		    return lista;
+ 		}
 }
 
 
