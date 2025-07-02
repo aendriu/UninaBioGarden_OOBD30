@@ -36,7 +36,7 @@ public abstract class UtenteDAO extends DAO {
 	
 	// INSERT FUNCIONS
 	public boolean InsertUser(Utente u) {
-	    String tabName = u.getTableName();
+	    String tabName = u.GetTableName();
 	    String sql = "INSERT INTO " + tabName + " VALUES (?, ?, ?, ?, ?)";
 
 	    try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -57,7 +57,7 @@ public abstract class UtenteDAO extends DAO {
 	
 	// REMOVE FUNCIONS
 	public boolean RemoveUser(Utente u) {
-	    String tabName = u.getTableName();
+	    String tabName = u.GetTableName();
 	    String cfColumn = tabName.equals("coltivatore") ? "cf_coltivatore" : "cf_proprietario";
 	    String sql = "DELETE FROM " + tabName + " WHERE " + cfColumn + " = ?";
 

@@ -2,7 +2,7 @@ package entità;
 import java.util.ArrayList;
 
 
-public class Coltivatore extends Utente {
+public class Coltivatore extends Utente{
 	
 	private ArrayList<Lotto> lottiColtivatore;
 	private ArrayList<Attivita> attivitaColtivatore;
@@ -11,19 +11,18 @@ public class Coltivatore extends Utente {
 	/* CONSTRUCTORS */
 	public Coltivatore(String nome, String cognome, String CF, String username, String password) {
 		super(nome, cognome, CF, username, password);
+		tableName = "coltivatore";
 	}
 	
-	public Coltivatore(String nome, String cognome, String CF, String username, String password, ArrayList<Lotto> lottiColtivatore) {
+	public Coltivatore(String nome, String cognome, String CF, String username, String password, ArrayList<Lotto> lottiColtivatore
+			,ArrayList<Attivita> attivitaColtivatore) {
 		super(nome, cognome, CF, username, password);
 		this.lottiColtivatore = lottiColtivatore;
+		this.attivitaColtivatore = attivitaColtivatore;
+		tableName = "coltivatore";
 	}
 	
 	/**/
-	@Override
-    public String getTableName() {
-        return "coltivatore";
-    }
-
 	
 	/* FUNCTIONS */
 	

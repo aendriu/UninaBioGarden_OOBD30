@@ -1,7 +1,7 @@
 package entità;
 import java.util.Random;
 
-public abstract class Utente {
+public abstract class Utente extends Entita{
 	protected String username;
 	protected String nome;
 	protected String cognome;
@@ -17,7 +17,6 @@ public abstract class Utente {
 		this.password = password;
 	}
 
-	public abstract String getTableName();
 	
 	
 	/* GETTERS AND SETTERS */

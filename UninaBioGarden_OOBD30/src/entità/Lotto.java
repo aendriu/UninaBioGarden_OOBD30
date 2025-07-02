@@ -2,7 +2,7 @@ package entità;
 
 import java.util.ArrayList;
 
-public class Lotto {
+public class Lotto extends Entita {
 	private int idLotto;
 	private int numColture;
 	private String nomeLotto;
@@ -11,6 +11,7 @@ public class Lotto {
 	private int myProgetto;
 	private ArrayList<Coltura> myColture;
 	private ArrayList<Coltivatore> myColtivatori;
+	private ArrayList<Raccolto> myRaccolti;
 	
 	/* CONSTRUCTORS */
 	
@@ -18,6 +19,7 @@ public class Lotto {
 		this.idLotto = idLotto;
 		this.numColture = numColture;
 		this.nomeLotto = nomeLotto;	
+		tableName = "lotto";
 	}
 	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario) {
@@ -26,6 +28,7 @@ public class Lotto {
 		this.numColture = numColture;
 		this.nomeLotto = nomeLotto;
 		this.proprietario = proprietario;
+		tableName = "lotto";
 	}
 	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, int myProgetto) {
@@ -35,6 +38,7 @@ public class Lotto {
 		this.nomeLotto = nomeLotto;
 		this.proprietario = proprietario;
 		this.myProgetto = myProgetto;
+		tableName = "lotto";
 	}
 	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, int myProgetto,
@@ -46,10 +50,11 @@ public class Lotto {
 		this.proprietario = proprietario;
 		this.myProgetto = myProgetto;
 		this.myColture = myColture;
+		tableName = "lotto";
 	}
 	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, int myProgetto,
-			ArrayList<Coltura> myColture, ArrayList<Coltivatore> myColtivatori) {
+			ArrayList<Coltura> myColture, ArrayList<Coltivatore> myColtivatori, ArrayList<Raccolto> myRaccolti) {
 		super();
 		this.idLotto = idLotto;
 		this.numColture = numColture;
@@ -58,6 +63,8 @@ public class Lotto {
 		this.myProgetto = myProgetto;
 		this.myColture = myColture;
 		this.myColtivatori = myColtivatori;
+		this.myRaccolti = myRaccolti;
+		tableName = "lotto";
 	}
 	
 	
@@ -117,6 +124,14 @@ public class Lotto {
 
 	public void setMyColtivatori(ArrayList<Coltivatore> myColtivatori) {
 		this.myColtivatori = myColtivatori;
+	}
+	
+	public ArrayList<Raccolto> getMyRaccolti() {
+		return myRaccolti;
+	}
+
+	public void setMyRaccolti(ArrayList<Raccolto> myRaccolti) {
+		this.myRaccolti = myRaccolti;
 	}
 
 	

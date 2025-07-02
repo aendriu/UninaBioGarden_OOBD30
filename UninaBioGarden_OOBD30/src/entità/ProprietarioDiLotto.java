@@ -9,6 +9,7 @@ public class ProprietarioDiLotto extends Utente {
 	/* CONSTRUCTORS */
 	public ProprietarioDiLotto(String username, String nome, String cognome, String password, String CF) {
 		super(username, nome, cognome, password, CF);
+		tableName = "proprietariodilotto";
 	}
 	
 	public void aggiungiLotto(Lotto lotto) {
@@ -19,12 +20,6 @@ public class ProprietarioDiLotto extends Utente {
         return lottiProprietario;
     }
 	
-	/* OVERRIDES */
-	@Override
-    public String getTableName() {
-        return "proprietariodilotto";
-    }
-
 	@Override
 	public String toString() {
 		return "ProprietarioDiLotto [lottiProprietario=" + lottiProprietario + ", username=" + username + ", nome="

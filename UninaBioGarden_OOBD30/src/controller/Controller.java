@@ -16,19 +16,28 @@ public class Controller {
 	Path dbprop;
 	
 	// DAOs
-	ColtivatoreDAO coltDAO;
-	ProprietarioDAO propDAO;
-	LottoDAO lottoDAO;
+	public ColtivatoreDAO coltDAO;
+	public ProprietarioDAO propDAO;
+	public AttivitaDAO attivitaDAO;
+	public LottoDAO lottoDAO;
+	public RaccoltoDAO raccoltoDAO;
 	TESTING tests;
 	
 	/* ***** CONSTRUCTOR ***** */
 	public Controller() {
 		try {
 			dbprop = Paths.get(userDir, "libs", "dbprop.txt");
+			
 			coltDAO = new ColtivatoreDAO(dbprop.toString(), this);
 			propDAO = new ProprietarioDAO(dbprop.toString(), this);
+			attivitaDAO = new AttivitaDAO(dbprop.toString(), this);
+			lottoDAO = new LottoDAO(dbprop.toString(), this);
+			raccoltoDAO = new RaccoltoDAO(dbprop.toString(), this);
+			
             coltDAO.connect();
             propDAO.connect();
+            attivitaDAO.connect();
+            lottoDAO.connect();
 			
 			
 			// TO COMMENT

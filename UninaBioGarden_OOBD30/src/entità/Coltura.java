@@ -3,17 +3,35 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Coltura {
+public class Coltura extends Entita {
 	private int idColtura;
 	private String nomeColtura;
 	private Duration tempoMaturazione;
 	private LocalDate giornoSemina;
+	private int idLotto;
 	
 	/* CONSTRUCTORS */
-	public Coltura(int idColtura, String nomeColtura, Duration tempoMaturazione, LocalDate giornoSemina) {
+	
+	public Coltura(int idColtura, String nomeColtura, int idLotto) {
 		super();
 		this.idColtura = idColtura;
 		this.nomeColtura = nomeColtura;
+		this.idLotto = idLotto;
+		this.tempoMaturazione = Duration.ZERO;
+		this.giornoSemina = LocalDate.now(); 
+		tableName = "coltura";
+	}
+	
+	/* ************************* */
+	
+	public Coltura(int idColtura, String nomeColtura, Duration tempoMaturazione, LocalDate giornoSemina, int idLotto) {
+		super();
+		this.idColtura = idColtura;
+		this.nomeColtura = nomeColtura;
+		this.tempoMaturazione = tempoMaturazione;
+		this.giornoSemina = giornoSemina;
+		this.idLotto = idLotto;
+		tableName = "coltura";
 	}
 	
 	
@@ -42,6 +60,12 @@ public class Coltura {
 	}
 	public void setGiornoSemina(LocalDate giornoSemina) {
 		this.giornoSemina = giornoSemina;
+	}
+	public int getIdLotto() {
+		return idLotto;
+	}
+	public void setIdLotto(int idLotto) {
+		this.idLotto = idLotto;
 	}
 	
 	

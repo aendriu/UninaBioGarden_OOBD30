@@ -2,30 +2,101 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
+import dao.AttivitaDAO;
 import dao.ColtivatoreDAO;
+import dao.ColturaDAO;
+import dao.LottoDAO;
 import dao.ProprietarioDAO;
+import dao.RaccoltoDAO;
 import entità.Coltivatore;
 import entità.*;
 
 public class TESTING {
 	ColtivatoreDAO coltDAO;
 	ProprietarioDAO propDAO;
+	LottoDAO lottoDAO;
+	AttivitaDAO attDAO;
+	RaccoltoDAO racDAO;
+	ColturaDAO coltuDAO;
 	
 	public TESTING(String propertiesFilePath, Controller c) throws SQLException, IOException {
         coltDAO = new ColtivatoreDAO(propertiesFilePath, c);
         propDAO = new ProprietarioDAO(propertiesFilePath, c);
+        lottoDAO = new LottoDAO(propertiesFilePath, c);
+        attDAO = new AttivitaDAO(propertiesFilePath, c);
+        racDAO = new RaccoltoDAO(propertiesFilePath, c);
+        coltuDAO = new ColturaDAO(propertiesFilePath, c);
+        
         coltDAO.connect();
         propDAO.connect();
+        lottoDAO.connect();
+        attDAO.connect();
+        racDAO.connect();
+        coltuDAO.connect();
     }
 	
 	
 	// TESTING
 	
 	public void InitTests() throws SQLException {
-		InitTestPropDAO();
+		//InitTestPropDAO();
 		//InitTestColtDAO();
+		
+		//InitTestLottoDAO();
+		//InitTestAttDAO();
+		//InitTestRacDAO();
 		return;
+	}
+	
+	public void InitTestLottoDAO() throws SQLException {
+		
+	}
+	
+	public void InitTestAttDAO() throws SQLException {
+		System.out.println("TESTING FindSpecificAttività");
+		Attivita att1 = attDAO.FindSpecificAttivita(292);
+		System.out.println(att1);
+		
+		// ***** 
+		
+		System.out.println("TESTING GetAttivitaColtivatore");
+		Attivita[] att1_colt = attDAO.GetAttivitaColtivatore("DLSNMN04E14F839Q");
+		for(Attivita a : att1_colt) {
+			System.out.println(a);
+		}
+		
+		// ***** 
+
+		System.out.println("TESTING GetAttivita completate");
+		Attivita[] att1_colt_completate = attDAO.GetAttivitaCompletate();
+		for(Attivita a : att1_colt_completate) {
+			System.out.println(a);
+		}
+		
+		// *****
+		
+		System.out.println("TESTING InsertAttività...");
+		Attivita att2 = new Attivita("Applica Pesticida", LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 15), "DLSNMN04E14F839Q");
+		
+		System.out.println(attDAO.InsertAttivita(att2)
+	            ? "Attività inserita con successo: " + att2.getNomeAttivita()
+	            : "Errore nell'inserimento dell'attività " + att2.getNomeAttivita()
+	        );
+	    
+	    System.out.println(
+				//attDAO.RemoveAttivita(att2)
+				? att2.getNomeAttivita() + " Has been removed"
+				: att2.getNomeAttivita() + " Has NOT been removed" 
+			);
+
+		
+		
+	}
+	
+	public void InitTestRacDAO() throws SQLException {
+		
 	}
 	
 	public void InitTestPropDAO() throws SQLException {
@@ -62,6 +133,8 @@ public class TESTING {
 				: "Lotto 73 has NOT been removed from VLNCHR93C10F205U"
 			);
 		
+	    // ***** 
+
 		
 		
 		

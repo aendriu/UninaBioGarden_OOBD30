@@ -1,0 +1,196 @@
+package dao;
+
+import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import controller.Controller;
+import entità.Raccolto;
+
+public class RaccoltoDAO extends DAO {
+	public RaccoltoDAO(String filePath, Controller c) throws IOException, SQLException {
+		super(filePath, c);
+	}
+	
+	// RETRIEVAL FUNCTIONS
+	
+	public Raccolto FindSpecificRaccolto(int idRaccolto) throws SQLException {
+		String sql = "SELECT * FROM raccolto WHERE idRaccolto = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idRaccolto);
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					    Raccolto raccolto = new Raccolto(
+						rs.getInt("idRaccolto"),
+						rs.getString("nomeColtura"),
+						rs.getInt("QuantitaRaccolta"),
+						rs.getInt("idLotto")
+					);
+					return raccolto;
+				}
+			}
+		}
+		return null; 
+	}
+	
+	/* *************** */
+	
+	public Raccolto FindSpecificRaccolto(Raccolto r) throws SQLException {
+		if (r == null || r.getIdRaccolto() <= 0) {
+			throw new IllegalArgumentException("Raccolto non valido: " + r);
+		}
+		return FindSpecificRaccolto(r.getIdRaccolto());
+	}
+	
+	/* *************** */
+
+	
+	public Raccolto[] GetRaccoltiOfLottoByNomeColtura(String nomeColtura, int idLotto) throws SQLException {
+		if(!isValidNomeRaccolto(nomeColtura)) {
+			throw new IllegalArgumentException("Coltura non valida: " + nomeColtura);
+		}
+		String sql = "SELECT * FROM raccolto WHERE nomeColtura = ? AND idLotto = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, nomeColtura);
+			stmt.setInt(2, idLotto);
+			try (ResultSet rs = stmt.executeQuery()) {
+				ArrayList<Raccolto> raccoltiList = new ArrayList<>();
+				while (rs.next()) {
+					raccoltiList.add(new Raccolto(
+						rs.getInt("idRaccolto"),
+						rs.getString("nomeColtura"),
+						rs.getInt("QuantitaRaccolta"),
+						rs.getInt("idLotto")
+					));
+				}
+				return raccoltiList.toArray(new Raccolto[0]);
+			}
+		}
+		
+	}
+	
+	/* *************** */
+
+	
+	public Raccolto[] GetRaccoltiLotto(int idLotto) throws SQLException {
+		String sql = "SELECT * FROM raccolto WHERE idLotto = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idLotto);
+			try (ResultSet rs = stmt.executeQuery()) {
+				ArrayList<Raccolto> raccoltiList = new ArrayList<>();
+				while (rs.next()) {
+					raccoltiList.add(new Raccolto(
+						rs.getInt("idRaccolto"),
+						rs.getString("nomeColtura"),
+						rs.getInt("QuantitaRaccolta"),
+						rs.getInt("idLotto")
+					));
+				}
+				return raccoltiList.toArray(new Raccolto[0]);
+			}
+		}
+		
+	}
+	
+	/* *************** */
+	
+	/* INSERT FUNCTIONS */
+	public boolean InsertRaccolto(Raccolto r) throws SQLException {
+		if(!isValidRaccolto(r)) {
+			throw new IllegalArgumentException("Coltura non valida: " + r.getNomeRaccolto());
+		}
+		String sql = "INSERT INTO raccolto (nomeColtura, QuantitaRaccolta, idLotto) VALUES (?, ?, ?)";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, r.getNomeRaccolto());
+			stmt.setInt(2, r.getQuantitaRaccolta());
+			stmt.setInt(3, r.getIdLotto());
+			int rowsAffected = stmt.executeUpdate();
+			return rowsAffected > 0;
+		}
+	}
+	
+	/* *************** */
+	
+	public boolean InsertRaccolto(String nomeColt, int amount, int idLotto) throws SQLException {
+		if(!isValidNomeRaccolto(nomeColt) || !isValidAmountRaccolto(amount)) {
+			throw new IllegalArgumentException("Coltura non valida: " + nomeColt);
+		}
+		String sql = "INSERT INTO raccolto (nomeColtura, QuantitaRaccolta, idLotto) VALUES (?, ?, ?)";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, nomeColt);
+			stmt.setInt(2, amount);
+			stmt.setInt(3, idLotto);
+			int rowsAffected = stmt.executeUpdate();
+			return rowsAffected > 0;
+		}
+	}
+	
+	/* REMOVAL FUNCTIONS */
+	public boolean RemoveRaccolto(Raccolto r) throws SQLException {
+		if (r == null || r.getIdRaccolto() <= 0) {
+			throw new IllegalArgumentException("Raccolto non valido: " + r);
+		}
+		String sql = "DELETE FROM raccolto WHERE idRaccolto = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, r.getIdRaccolto());
+			int rowsAffected = stmt.executeUpdate();
+			return rowsAffected > 0;
+		}
+	}
+	
+	/* *************** */
+	
+	public boolean RemoveRaccolto(int idRaccolto) throws SQLException {
+		if (idRaccolto <= 0) {
+			throw new IllegalArgumentException("ID Raccolto non valido: " + idRaccolto);
+		}
+		String sql = "DELETE FROM raccolto WHERE idRaccolto = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idRaccolto);
+			int rowsAffected = stmt.executeUpdate();
+			return rowsAffected > 0;
+		}
+	}
+
+
+	
+	/* BOOLEAN FUNCTIONS */
+	public boolean isValidNomeRaccolto(String nomeColtura) {
+		if(nomeColtura != null && !nomeColtura.trim().isEmpty()) {
+			if(nomeColtura.toLowerCase().equals("pomodoro") || 
+			   nomeColtura.toLowerCase().equals("mais") || 
+			   nomeColtura.toLowerCase().equals("zucchine") || 
+			   nomeColtura.toLowerCase().equals("basilico") || 
+			   nomeColtura.toLowerCase().equals("fragole")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/* *************** */
+
+	public boolean isValidAmountRaccolto(int quantitaRaccolta) {
+		if(quantitaRaccolta >= 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	/* *************** */
+	
+	public boolean isValidRaccolto(Raccolto r) throws SQLException {
+		if(!isValidNomeRaccolto(r.getNomeRaccolto())) {
+			System.out.println("Coltura non valida: " + r.getNomeRaccolto());
+			return false;
+		} else if (!isValidAmountRaccolto(r.getQuantitaRaccolta())) {
+			System.out.println("Quantità raccolta non valida: " + r.getQuantitaRaccolta());
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+}

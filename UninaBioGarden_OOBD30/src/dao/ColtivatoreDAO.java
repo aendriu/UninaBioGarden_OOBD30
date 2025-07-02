@@ -43,6 +43,8 @@ public class ColtivatoreDAO extends UtenteDAO{
 						rs.getString("CF_coltivatore"),
 						rs.getString("username"),
 						rs.getString("password")
+						//c.attivitaDAO.GetAttivitaColtivatore(CF)
+						//c.lottoDAO.GetLottiColtivatore(CF)
 				);
 			}
 		}
@@ -95,23 +97,20 @@ public class ColtivatoreDAO extends UtenteDAO{
             stmt.setString(1, CF);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    
                     LocalDate inizio = rs.getObject("Inizio", LocalDate.class);
                     LocalDate fine   = rs.getObject("Fine",   LocalDate.class);
-                    String intervalStr = rs.getString("TempoLavorato");
-                    String tempoLavorato = rs.getString("TempoLavorato");
-                    String nome       = rs.getString("NomeAttività");
-                    String cf         = rs.getString("CF_coltivatore");
-                    String stato      = rs.getString("Stato");
-                    int    idAtt      = rs.getInt("idAttività");
-                    
+                    String durataStr = rs.getString("TempoLavorato");
+                    Duration tempoLavorato = Duration.parse(durataStr);
+                    String nome  = rs.getString("NomeAttività");
+                    String cf    = rs.getString("CF_coltivatore");
+                    String stato = rs.getString("Stato");
+
                     Attivita a = new Attivita(
-                        idAtt,
                         nome,
                         inizio,
                         fine,
-                        tempoLavorato,
                         cf,
+                        tempoLavorato,
                         stato
                     );
                     lista.add(a);
@@ -120,6 +119,7 @@ public class ColtivatoreDAO extends UtenteDAO{
         }
         return lista.toArray(new Attivita[0]);
     }
+
     
     /* ****************************** */
 
