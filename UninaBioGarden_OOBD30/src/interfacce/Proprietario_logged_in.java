@@ -37,6 +37,7 @@ public class Proprietario_logged_in extends JFrame {
     private Free_lotti lotti_liberi;
     private Proprietario_activities_visual Attività_vs;
     private Prop_organizza_attività orgAttività;
+    private Progetti_visual_scheme Progetti_vs;
     /**
      * Create the frame.
      */
@@ -153,7 +154,9 @@ public class Proprietario_logged_in extends JFrame {
         JPopupMenu popupMenu_4_progetti = new JPopupMenu();
         JMenuItem voce1_progetti = new JMenuItem("I miei progetti");
         voce1_progetti.addActionListener(e -> {
-        	
+        	Progetti_vs = new Progetti_visual_scheme(username, TheController);
+        	Progetti_vs.setVisible(true);
+        	dispose();
         });
         JMenuItem voce2_progetti = new JMenuItem("crea nuovo progetto");
         voce2_progetti.addActionListener(e -> {
