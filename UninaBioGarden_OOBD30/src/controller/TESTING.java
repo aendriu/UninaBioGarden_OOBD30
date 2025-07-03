@@ -91,7 +91,18 @@ public class TESTING {
 				? att2.getNomeAttivita() + " Has been removed"
 				: att2.getNomeAttivita() + " Has NOT been removed" 
 			);
+		
+	    // *****
 
+	    System.out.println("TESTING UpdateTempoTrascorsoAttività...");
+	    System.out.println("BEFORE");
+	    System.out.println(att1);
+	    System.out.println("AFTER");
+	    //att1.AddTempoLavorato(java.sql.Time.valueOf("01:00:00"));
+	    attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), java.sql.Time.valueOf("01:00:00"));
+	    System.out.println(att1);
+	    
+	    
 		
 		
 	}

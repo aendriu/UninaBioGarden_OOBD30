@@ -54,7 +54,7 @@ public class Attivita extends Entita {
 
     /* ************************************************** */
     
-    public void updateTempoLavorato(Time tl) {
+    public void AddTempoLavorato(Time tl) {
         if (tl != null) {
          
             LocalTime current = this.tempoLavorato.toLocalTime();
