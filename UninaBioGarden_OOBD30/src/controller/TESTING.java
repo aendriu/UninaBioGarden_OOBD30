@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import dao.AttivitaDAO;
 import dao.ColtivatoreDAO;
@@ -11,7 +12,6 @@ import dao.ColturaDAO;
 import dao.LottoDAO;
 import dao.ProprietarioDAO;
 import dao.RaccoltoDAO;
-import entità.Coltivatore;
 import entità.*;
 
 public class TESTING {
@@ -46,8 +46,8 @@ public class TESTING {
 		//InitTestColtDAO();
 		
 		//InitTestLottoDAO();
-		InitTestAttDAO();
-		//InitTestRacDAO();
+		//InitTestAttDAO();
+		InitTestRacDAO();
 		return;
 	}
 	
@@ -63,7 +63,7 @@ public class TESTING {
 		// ***** 
 		
 		System.out.println("TESTING GetAttivitaColtivatore");
-		Attivita[] att1_colt = attDAO.GetAttivitaColtivatore("DLSNMN04E14F839Q");
+		ArrayList<Attivita> att1_colt = attDAO.GetAttivitaColtivatore("DLSNMN04E14F839Q");
 		for(Attivita a : att1_colt) {
 			System.out.println(a);
 		}
@@ -108,6 +108,58 @@ public class TESTING {
 	}
 	
 	public void InitTestRacDAO() throws SQLException {
+		System.out.println("TESTING FindSpecificRaccolto");
+		Raccolto rac1 = racDAO.FindSpecificRaccolto(1);
+		System.out.println(rac1);
+		
+		// *****
+		
+		System.out.println("TESTING GetRaccoltiOfLotto");
+		ArrayList<Raccolto> rac1_lotto = racDAO.GetRaccoltiLotto(rac1);
+		for(Raccolto r : rac1_lotto) {
+			System.out.println(r);
+		}
+		
+		// *****
+		
+		System.out.println("TESTING GetRaccoltiOfLottoByNomeColtura");	
+		ArrayList<Raccolto> rac1_lotto_coltura = racDAO.GetRaccoltiOfLottoByNomeColtura("Pomodoro", 1);
+		for(Raccolto r : rac1_lotto_coltura) {
+			System.out.println(r);
+		}
+		ArrayList<Raccolto> rac2_lotto_coltura = racDAO.GetRaccoltiOfLottoByNomeColtura("Mais", 1);
+		for(Raccolto r : rac1_lotto_coltura) {
+			System.out.println(r);
+		}
+		
+		// *****
+		
+		System.out.println("TESTING InsertRaccolto...");
+		Raccolto rac2 = new Raccolto("Pomodoro", 100, 11);
+		
+		// *****
+		
+		System.out.println(
+				racDAO.InsertRaccolto(rac2)
+				? "Raccolto inserito con successo: " + rac2.getNomeRaccolto()
+				: "Errore nell'inserimento del raccolto " + rac2.getNomeRaccolto()
+			);
+		
+		// *****
+		
+		System.out.println("Testing RemoveRaccolto...");
+		System.out.println(
+				racDAO.RemoveRaccolto(rac2)
+				? rac2.getNomeRaccolto() + " Has been removed"
+				: rac2.getNomeRaccolto() + " Has NOT been removed" 
+			);
+		
+		// *****
+	
+		
+		
+
+
 		
 	}
 	
@@ -121,7 +173,7 @@ public class TESTING {
 		// ***** 
 		
 		System.out.println("TESTING getLottiProp");
-		Lotto[] prop1_lotti = propDAO.GetLottiProprietario(prop1.getCF());
+		ArrayList<Lotto> prop1_lotti = propDAO.GetLottiProprietario(prop1.getCF());
 		for(Lotto l : prop1_lotti) {
 			System.out.println(l);
 		}
@@ -170,7 +222,7 @@ public class TESTING {
 		// ***** 
 		
 		System.out.println("TESTING getAttivitaColt");
-		Attivita[] colt1_att = coltDAO.GetAttivitaColtivatore(colt1.getCF());
+		ArrayList<Attivita> colt1_att = coltDAO.GetAttivitaColtivatore(colt1.getCF());
 		for(Attivita a : colt1_att) {
 			System.out.println(a);
 		}

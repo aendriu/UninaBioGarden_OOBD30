@@ -16,11 +16,13 @@ public class Controller {
 	Path dbprop;
 	
 	// DAOs
-	public ColtivatoreDAO coltDAO;
+	public ColtivatoreDAO coltivatoreDAO;
 	public ProprietarioDAO propDAO;
 	public AttivitaDAO attivitaDAO;
 	public LottoDAO lottoDAO;
 	public RaccoltoDAO raccoltoDAO;
+	public ColturaDAO coltureDAO;
+
 	TESTING tests;
 	
 	/* ***** CONSTRUCTOR ***** */
@@ -28,13 +30,13 @@ public class Controller {
 		try {
 			dbprop = Paths.get(userDir, "libs", "dbprop.txt");
 			
-			coltDAO = new ColtivatoreDAO(dbprop.toString(), this);
+			coltivatoreDAO = new ColtivatoreDAO(dbprop.toString(), this);
 			propDAO = new ProprietarioDAO(dbprop.toString(), this);
 			attivitaDAO = new AttivitaDAO(dbprop.toString(), this);
 			lottoDAO = new LottoDAO(dbprop.toString(), this);
 			raccoltoDAO = new RaccoltoDAO(dbprop.toString(), this);
 			
-            coltDAO.connect();
+			coltivatoreDAO.connect();
             propDAO.connect();
             attivitaDAO.connect();
             lottoDAO.connect();
@@ -66,7 +68,7 @@ public class Controller {
 	/* *************** ColtivatoreDAO test *************** */
 
 	public Coltivatore getColtivatoreByCF(String CF) throws SQLException {
-		Coltivatore colt = coltDAO.FindSpecificColtivatore(CF);
+		Coltivatore colt = coltivatoreDAO.FindSpecificColtivatore(CF);
 		return colt;
 	}
 	

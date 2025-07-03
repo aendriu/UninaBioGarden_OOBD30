@@ -6,6 +6,18 @@ public class Raccolto extends Entita{
 	private int quantitaRaccolta;
 	private int idLotto;
 	
+	
+	
+	
+	/* CONSTRUCTORS */
+	
+	public Raccolto(String nomeRaccolto, int quantitaRaccolta, int idLotto) {
+		super();
+		this.nomeRaccolto = nomeRaccolto;
+		this.quantitaRaccolta = quantitaRaccolta;
+		this.idLotto = idLotto;
+	}
+	
 	public Raccolto(int idRaccolto, String nomeRaccolto, int quantitaRaccolta, int idLotto) {
 		super();
 		this.idRaccolto = idRaccolto;
@@ -44,6 +56,12 @@ public class Raccolto extends Entita{
 
 	public void setIdLotto(int idLotto) {
 		this.idLotto = idLotto;
+	}
+
+	@Override
+	public String toString() {
+		return "Raccolto [idRaccolto=" + idRaccolto + ", nomeRaccolto=" + nomeRaccolto + ", quantitaRaccolta="
+				+ quantitaRaccolta + ", idLotto=" + idLotto + "]";
 	}
 	
 	

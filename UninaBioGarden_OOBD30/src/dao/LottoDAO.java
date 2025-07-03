@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import controller.Controller;
+import entità.Coltivatore;
+import entità.Coltura;
 import entità.Lotto;
+import entità.ProprietarioDiLotto;
+import entità.Raccolto;
 
 public class LottoDAO extends DAO {
 
@@ -16,7 +21,6 @@ public class LottoDAO extends DAO {
 
 	// RETRIEVAL FUNCTIONS
 	
-	/*
 	public Lotto FindSpecificLotto(int idLotto) throws SQLException {
 		String sql = "SELECT * FROM lotto WHERE idLotto = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -27,15 +31,28 @@ public class LottoDAO extends DAO {
 						rs.getInt("idLotto"),
 						rs.getInt("NumColture"),
 						rs.getString("NomeLotto"),
-						rs.getString("CF_Proprietario"),
-						rs.getInt("idProgetto")
+						c.propDAO.FindSpecificProprietario(rs.getString("CF_Proprietario")),
+						rs.getInt("idProgetto"),
+						c.coltureDAO.GetColtureOfLotto(rs.getInt("idLotto")),
+						c.coltivatoreDAO.GetColtivatoriLotto(rs.getInt("idLotto")),
+						c.raccoltoDAO.GetRaccoltiLotto(rs.getInt("idLotto"))
 					);
 				}
 			}
 		}
 		return null;
 	}
-	*/
+	
+	/* *************** */
+	
+	public Lotto FindSpecificLotto(Lotto l) throws SQLException {
+		if (l == null || l.getIdLotto() <= 0) {
+			throw new IllegalArgumentException("Lotto non valido: " + l);
+		}
+		return FindSpecificLotto(l.getIdLotto());
+	}
+
+	
 
 	/* BOOLEAN FUNCIONS */
 	

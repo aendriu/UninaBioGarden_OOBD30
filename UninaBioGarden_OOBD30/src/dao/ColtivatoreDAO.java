@@ -86,7 +86,7 @@ public class ColtivatoreDAO extends UtenteDAO{
     
     /* ****************************** */
     
-    public Attivita[] GetAttivitaColtivatore(String CF) throws SQLException {
+    public ArrayList<Attivita> GetAttivitaColtivatore(String CF) throws SQLException {
         String sql =
             "SELECT * " +
             "FROM attività " +
@@ -116,8 +116,29 @@ public class ColtivatoreDAO extends UtenteDAO{
                 }
             }
         }
-        return lista.toArray(new Attivita[0]);
+        return new ArrayList<>(lista);
     }
+    
+    /* ****************************** */
+
+    public ArrayList<Coltivatore> GetColtivatoriLotto(int idLotto) throws SQLException {
+		String sql = "SELECT CF_coltivatore FROM lavora_in WHERE idLotto = ?";
+		List<Coltivatore> coltivatoriList = new ArrayList<>();
+		
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idLotto);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					String CF = rs.getString("CF_coltivatore");
+					Coltivatore coltivatore = FindSpecificColtivatore(CF);
+					if (coltivatore != null) {
+						coltivatoriList.add(coltivatore);
+					}
+				}
+			}
+		}
+		return new ArrayList<>(coltivatoriList);
+	}
 
     
     /* ****************************** */

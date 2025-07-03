@@ -48,7 +48,7 @@ public class AttivitaDAO extends DAO {
     
     /* ******************************* */
     
-    public Attivita[] GetAttivitaColtivatore(String cf_coltivatore) throws SQLException {
+    public ArrayList<Attivita> GetAttivitaColtivatore(String cf_coltivatore) throws SQLException {
         String sql = "SELECT * FROM attività WHERE cf_Coltivatore = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cf_coltivatore);
@@ -65,7 +65,7 @@ public class AttivitaDAO extends DAO {
                             rs.getString("stato")
                         ));
                 }
-                return attivitaList.toArray(new Attivita[0]);
+                return new ArrayList<>(attivitaList);
             }
         }
     }
@@ -73,7 +73,7 @@ public class AttivitaDAO extends DAO {
     /* ******************************* */
 
     
-    public Attivita[] GetAttivitaColtivatore(Coltivatore coltivatore) throws SQLException {
+    public ArrayList<Attivita> GetAttivitaColtivatore(Coltivatore coltivatore) throws SQLException {
         return GetAttivitaColtivatore(coltivatore.getCF());
     }
     

@@ -1,11 +1,13 @@
 package dao;
 
 import java.io.IOException;
+	
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import controller.Controller;
 import entità.Coltura;
@@ -55,12 +57,12 @@ public class ColturaDAO extends DAO {
 	
 	/* ************************* */
 	
-	public Coltura[] GetColtureOfLotto(int idLotto) throws SQLException {
+	public ArrayList<Coltura> GetColtureOfLotto(int idLotto) throws SQLException {
 		String sql = "SELECT * FROM coltura WHERE idLotto = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, idLotto);
 			try (ResultSet rs = stmt.executeQuery()) {
-				java.util.List<Coltura> coltureList = new java.util.ArrayList<>();
+				ArrayList<Coltura> coltureList = new ArrayList<>();
 				while (rs.next()) {
 					java.sql.Time time = rs.getTime("tempomaturazione");
 					Duration durata = Duration.ofSeconds(time.toLocalTime().toSecondOfDay());
@@ -76,14 +78,14 @@ public class ColturaDAO extends DAO {
 						rs.getInt("idLotto")
 					));
 				}
-				return coltureList.toArray(new Coltura[0]);
+				return new ArrayList<>(coltureList);
 			}
 		}
 	}
 	
 	/* ************************* */
 
-	public Coltura[] GetColtureOfLotto(Lotto l) throws SQLException {
+	public ArrayList<Coltura> GetColtureOfLotto(Lotto l) throws SQLException {
 		if (l == null || l.getIdLotto() <= 0) {
 			throw new IllegalArgumentException("Lotto non valido: " + l);
 		}
@@ -93,7 +95,7 @@ public class ColturaDAO extends DAO {
 	
 	/* ************************* */
 	
-	public Coltura[] GetColturaOfLottoByNomeColtura(String nomeColt, int idLotto) throws SQLException {
+	public ArrayList<Coltura> GetColturaOfLottoByNomeColtura(String nomeColt, int idLotto) throws SQLException {
 		String sql = "SELECT * FROM coltura WHERE nomeColtura = ? AND idLotto = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setString(1, nomeColt);
@@ -115,7 +117,7 @@ public class ColturaDAO extends DAO {
 						rs.getInt("idLotto")
 					));
 				}
-				return coltureList.toArray(new Coltura[0]);
+				return new ArrayList<>(coltureList);
 			}
 		}
 		
@@ -124,7 +126,7 @@ public class ColturaDAO extends DAO {
 	
 	/* ************************* */
 
-	public Coltura[] GetColturaOfLottoByNomeColtura(String nomeColt, Lotto l) throws SQLException {
+	public ArrayList<Coltura> GetColturaOfLottoByNomeColtura(String nomeColt, Lotto l) throws SQLException {
 		if (l == null || l.getIdLotto() <= 0) {
 			throw new IllegalArgumentException("Lotto non valido: " + l);
 		}
