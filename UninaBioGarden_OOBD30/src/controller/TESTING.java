@@ -86,11 +86,11 @@ public class TESTING {
 	            : "Errore nell'inserimento dell'attività " + att2.getNomeAttivita()
 	        );
 	    
-	    //System.out.println(
+	    System.out.println(
 				attDAO.RemoveAttivita(att2)
-				//? att2.getNomeAttivita() + " Has been removed"
-				//: att2.getNomeAttivita() + " Has NOT been removed" 
-			//);
+				? att2.getNomeAttivita() + " Has been removed"
+				: att2.getNomeAttivita() + " Has NOT been removed" 
+			);
 
 		
 		
