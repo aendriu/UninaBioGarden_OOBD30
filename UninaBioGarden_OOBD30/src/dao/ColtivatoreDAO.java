@@ -97,10 +97,9 @@ public class ColtivatoreDAO extends UtenteDAO{
             stmt.setString(1, CF);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    LocalDate inizio = rs.getObject("Inizio", LocalDate.class);
-                    LocalDate fine   = rs.getObject("Fine",   LocalDate.class);
-                    String durataStr = rs.getString("TempoLavorato");
-                    Duration tempoLavorato = Duration.parse(durataStr);
+                    Date inizio = rs.getDate("Inizio");
+                    Date fine   = rs.getDate("Fine");
+                    Time tempoLavorato = rs.getTime("TempoLavorato");
                     String nome  = rs.getString("NomeAttività");
                     String cf    = rs.getString("CF_coltivatore");
                     String stato = rs.getString("Stato");

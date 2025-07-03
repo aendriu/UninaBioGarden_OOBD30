@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -45,7 +46,7 @@ public class TESTING {
 		//InitTestColtDAO();
 		
 		//InitTestLottoDAO();
-		//InitTestAttDAO();
+		InitTestAttDAO();
 		//InitTestRacDAO();
 		return;
 	}
@@ -78,15 +79,15 @@ public class TESTING {
 		// *****
 		
 		System.out.println("TESTING InsertAttività...");
-		Attivita att2 = new Attivita("Applica Pesticida", LocalDate.of(2023, 10, 1), LocalDate.of(2023, 10, 15), "DLSNMN04E14F839Q");
-		
+		Attivita att2 = new Attivita("Applica Pesticida", Date.valueOf(LocalDate.of(2023, 10, 1)), Date.valueOf(LocalDate.of(2023, 10, 15)), "DLSNMN04E14F839Q");
+		System.out.println(att2.getTempoLavorato());
 		System.out.println(attDAO.InsertAttivita(att2)
-	            ? "Attività inserita con successo: " + att2.getNomeAttivita()
+	            ? "Attività inserita con successo: " + att2.getNomeAttivita()	
 	            : "Errore nell'inserimento dell'attività " + att2.getNomeAttivita()
 	        );
 	    
 	    //System.out.println(
-				//attDAO.RemoveAttivita(att2)
+				attDAO.RemoveAttivita(att2)
 				//? att2.getNomeAttivita() + " Has been removed"
 				//: att2.getNomeAttivita() + " Has NOT been removed" 
 			//);
