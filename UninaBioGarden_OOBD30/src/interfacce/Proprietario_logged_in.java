@@ -38,6 +38,7 @@ public class Proprietario_logged_in extends JFrame {
     private Proprietario_activities_visual Attività_vs;
     private Prop_organizza_attività orgAttività;
     private Progetti_visual_scheme Progetti_vs;
+    private Progetti_creation_scheme Progetti_creation;
     /**
      * Create the frame.
      */
@@ -160,7 +161,9 @@ public class Proprietario_logged_in extends JFrame {
         });
         JMenuItem voce2_progetti = new JMenuItem("crea nuovo progetto");
         voce2_progetti.addActionListener(e -> {
-			//TODO
+		 Progetti_creation = new Progetti_creation_scheme(TheController, username);
+			Progetti_creation.setVisible(true);
+			dispose();
 		});
         
         popupMenu_4_progetti.add(voce1_progetti);

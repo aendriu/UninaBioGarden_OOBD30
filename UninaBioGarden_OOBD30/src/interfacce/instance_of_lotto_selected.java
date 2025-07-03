@@ -99,7 +99,20 @@ public class instance_of_lotto_selected extends JFrame {
                 return columnTypes[columnIndex];
             }
         };
-        table_colture.setModel(model);
+        table_colture.setModel(new DefaultTableModel(
+        	new Object[][] {
+        	},
+        	new String[] {
+        		"Nome coltura"
+        	}
+        ) {
+        	Class[] columnTypes = new Class[] {
+        		String.class
+        	};
+        	public Class getColumnClass(int columnIndex) {
+        		return columnTypes[columnIndex];
+        	}
+        });
         table_colture.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         table_colture.setRowHeight(30);
 
@@ -232,15 +245,15 @@ public class instance_of_lotto_selected extends JFrame {
                 	aggiungi_coltivatore.setBounds(499, 580, 483, 70);
                 	pageProprietario.add(aggiungi_coltivatore);
                 	
-                	JButton Torna_indietro_2 = new JButton("Torna indietro");
-                	Torna_indietro_2.addActionListener(new ActionListener() {
+                	JButton Torna_indietro = new JButton("Torna indietro");
+                	Torna_indietro.addActionListener(new ActionListener() {
                 		public void actionPerformed(ActionEvent e) {
                 		Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController);
                 		plvs.setVisible(true);
                 		dispose();
                 		}
                 	});
-                	Torna_indietro_2.addMouseListener(new MouseAdapter() {
+                	Torna_indietro.addMouseListener(new MouseAdapter() {
                 		@Override
                 		public void mouseClicked(MouseEvent e) {
                 		Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController);
@@ -248,8 +261,8 @@ public class instance_of_lotto_selected extends JFrame {
                 		dispose();
                 		}
                 	});
-                	Torna_indietro_2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-                	Torna_indietro_2.setBounds(499, 698, 483, 70);
-                	pageProprietario.add(Torna_indietro_2);
+                	Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+                	Torna_indietro.setBounds(499, 698, 483, 70);
+                	pageProprietario.add(Torna_indietro);
 }
 }
