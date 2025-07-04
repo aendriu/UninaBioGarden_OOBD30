@@ -39,6 +39,7 @@ public class Proprietario_logged_in extends JFrame {
     private Prop_organizza_attività orgAttività;
     private Progetti_visual_scheme Progetti_vs;
     private Progetti_creation_scheme Progetti_creation;
+    int selector_coming_from;
     /**
      * Create the frame.
      */
@@ -97,7 +98,8 @@ public class Proprietario_logged_in extends JFrame {
 
         JMenuItem voce1 = new JMenuItem("I miei lotti");
         voce1.addActionListener(e -> {
-        Lotti_vs = new Prop_lotti_visual_scheme(username, TheController);
+        	selector_coming_from = 0; // 0 per i lotti
+        	Lotti_vs = new Prop_lotti_visual_scheme(username, TheController, selector_coming_from);
         Lotti_vs.setVisible(true);
         dispose();
         });
@@ -161,9 +163,10 @@ public class Proprietario_logged_in extends JFrame {
         });
         JMenuItem voce2_progetti = new JMenuItem("crea nuovo progetto");
         voce2_progetti.addActionListener(e -> {
-		 Progetti_creation = new Progetti_creation_scheme(TheController, username);
-			Progetti_creation.setVisible(true);
-			dispose();
+		 selector_coming_from = 1; // 1 per i progetti
+        Lotti_vs = new Prop_lotti_visual_scheme(username, TheController, selector_coming_from);
+		 Lotti_vs.setVisible(true);
+		 dispose();
 		});
         
         popupMenu_4_progetti.add(voce1_progetti);

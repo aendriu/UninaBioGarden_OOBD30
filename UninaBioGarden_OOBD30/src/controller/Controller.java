@@ -495,7 +495,8 @@ public class Controller {
  		            cognomeColtivatore,  
  		            nomeAttivita,        
  		            coltura,             
- 		            stato,                     
+ 		            stato,
+ 		            percentuale,
  		        };
 
  		        lista.add(riga);

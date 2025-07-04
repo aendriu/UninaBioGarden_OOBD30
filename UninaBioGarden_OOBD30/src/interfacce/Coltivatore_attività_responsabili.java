@@ -119,7 +119,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
                 } catch (Coltivatore_attività_table_exceptions e1) {
                     JOptionPane.showMessageDialog(null, e1.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                 }
-
+                //occhio a null per input txt
                 // TODO: passare il valore time_spent al controller per aggiornare la percentuale
             }
         });

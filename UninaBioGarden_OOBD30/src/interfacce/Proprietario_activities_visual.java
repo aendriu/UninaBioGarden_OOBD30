@@ -36,7 +36,8 @@ public class Proprietario_activities_visual extends JFrame {
     private static final long serialVersionUID = 1L;
     private Image proprietarioImage;             
     private String username_prop;                 
-    private Controller TheController;              
+    private Controller TheController;     
+   
 
     private JTable activitiesTable;  // aggiunto dichiarazione mancata
     private Proprietario_logged_in pageProprietario;  

@@ -40,6 +40,7 @@ public class instance_of_lotto_selected extends JFrame {
     private JTable table_coltivatori;
     private JTable table;
     private Free_coltivatori freeColtivatori;
+    int decisor_defaulted=0;
     public instance_of_lotto_selected(String lottoName, Controller TheController, String username_proprietario) {
         this.lottoName = lottoName;
         this.TheController = TheController;
@@ -213,7 +214,7 @@ public class instance_of_lotto_selected extends JFrame {
         JButton Torna_indietro = new JButton("Torna indietro");
         Torna_indietro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController);
+                Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController, decisor_defaulted);
                 plvs.setVisible(true);
                 dispose();
             }
@@ -221,7 +222,7 @@ public class instance_of_lotto_selected extends JFrame {
         Torna_indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController);
+                Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController, decisor_defaulted);
                 plvs.setVisible(true);
                 dispose();
             }

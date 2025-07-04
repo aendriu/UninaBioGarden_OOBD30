@@ -23,12 +23,13 @@ public class Progetti_creation_scheme extends JFrame {
     private JTextField textFieldDurata;
     private JTextField textFieldQuantita;
     private JLabel lblQuantita;
+    private String lottoname;
     private Set<List<String>> attivitàSelezionate = new HashSet<>();
 
-    public Progetti_creation_scheme(Controller TheController, String username_proprietario) {
+    public Progetti_creation_scheme(String Lotto_selected, Controller TheController, String username_proprietario) {
         this.TheController = TheController;
         this.username_proprietario = username_proprietario;
-
+        this.lottoName = Lotto_selected;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width, screenSize.height);
@@ -114,13 +115,13 @@ public class Progetti_creation_scheme extends JFrame {
         // campo quantità raccolta (nascosto di default)
         textFieldQuantita = new JTextField();
         textFieldQuantita.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        textFieldQuantita.setBounds(499, 571, 483, 37);
+        textFieldQuantita.setBounds(499, 539, 483, 37);
         textFieldQuantita.setVisible(false);
         page.add(textFieldQuantita);
 
         lblQuantita = new JLabel("Inserisci quantità da raccogliere", SwingConstants.CENTER);
         lblQuantita.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        lblQuantita.setBounds(499, 541, 466, 30);
+        lblQuantita.setBounds(499, 514, 466, 30);
         lblQuantita.setVisible(false);
         page.add(lblQuantita);
 
@@ -142,7 +143,7 @@ public class Progetti_creation_scheme extends JFrame {
         // bottone aggiungi
         JButton aggiungi = new JButton("aggiungi attività al progetto");
         aggiungi.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        aggiungi.setBounds(499, 640, 483, 70);
+        aggiungi.setBounds(499, 581, 483, 60);
         aggiungi.addActionListener(e -> {
         	    List<String> entry = new ArrayList<>();
         	        try {
@@ -150,7 +151,8 @@ public class Progetti_creation_scheme extends JFrame {
         	            int rColtura = table_colture.getSelectedRow();
         	            int rAttività = table_activities.getSelectedRow();
         	            String durata = textFieldDurata.getText();
-
+        	            textFieldDurata.setBackground(Color.WHITE);
+        	            textFieldQuantita.setBackground(Color.WHITE);
         	            if (rColtivatore == -1) {
         	                throw new Global_exceptions("Coltivatore", Global_exceptions.Tipo.empty_field);
         	            }
@@ -161,16 +163,19 @@ public class Progetti_creation_scheme extends JFrame {
         	                throw new Global_exceptions("Attività", Global_exceptions.Tipo.empty_field);
         	            }
         	            if (durata == null || durata.isEmpty()) {
-        	                throw new Global_exceptions("Durata", Global_exceptions.Tipo.empty_field);
+        	               textFieldDurata.setBackground(Color.RED);
+        	            	throw new Global_exceptions("Durata", Global_exceptions.Tipo.empty_field);
         	            }
         	            // Parsing durata con controllo errori formato
         	            int valoreDurata;
         	            try {
         	                valoreDurata = Integer.parseInt(durata);
         	            } catch (NumberFormatException nfe) {
-        	                throw new Global_exceptions("Durata", Global_exceptions.Tipo.format_mismatch);
+        	            	textFieldDurata.setBackground(Color.RED);
+        	            	throw new Global_exceptions("Durata", Global_exceptions.Tipo.format_mismatch);
         	            }
         	            if (valoreDurata <= 0) {
+        	            	textFieldDurata.setBackground(Color.RED);
         	                throw new Global_exceptions("Durata", Global_exceptions.Tipo.Type_mismatch);
         	            }
 
@@ -187,16 +192,19 @@ public class Progetti_creation_scheme extends JFrame {
         	            if (attività.equalsIgnoreCase("Raccolta")) {
         	                String quantita = textFieldQuantita.getText();
         	                if (quantita == null || quantita.trim().isEmpty()) {
-        	                    throw new Global_exceptions("Quantità", Global_exceptions.Tipo.empty_field);
+        	                	textFieldQuantita.setBackground(Color.RED);
+        	                	throw new Global_exceptions("Quantità", Global_exceptions.Tipo.empty_field);
         	                }
         	                int valoreQuantita;
         	                try {
         	                    valoreQuantita = Integer.parseInt(quantita.trim());
         	                } catch (NumberFormatException nfe) {
-        	                    throw new Global_exceptions("Quantità", Global_exceptions.Tipo.format_mismatch);
+        	                	textFieldQuantita.setBackground(Color.RED);
+        	                	throw new Global_exceptions("Quantità", Global_exceptions.Tipo.format_mismatch);
         	                }
         	                if (valoreQuantita <= 0) {
-        	                    throw new Global_exceptions("Quantità", Global_exceptions.Tipo.Type_mismatch);
+        	                	textFieldQuantita.setBackground(Color.RED);
+        	                	throw new Global_exceptions("Quantità", Global_exceptions.Tipo.Type_mismatch);
         	                }
         	                entry.add(quantita);
         	            }
@@ -207,7 +215,8 @@ public class Progetti_creation_scheme extends JFrame {
 
         	            attivitàSelezionate.add(entry);
         	            System.out.println("Aggiunta: " + entry);
-
+        	            textFieldDurata.setBackground(Color.WHITE);
+        	            textFieldQuantita.setBackground(Color.WHITE);
         	            JOptionPane.showMessageDialog(null, "Attività aggiunta con successo.", "Successo", JOptionPane.INFORMATION_MESSAGE);
 
         	            // Pulizia selezioni e campi
@@ -235,19 +244,79 @@ public class Progetti_creation_scheme extends JFrame {
         	    
         	    page.add(aggiungi);
 
-        // bottone torna indietro
-        JButton indietro = new JButton("Torna indietro");
-        indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        indietro.setBounds(499, 747, 483, 70);
-        indietro.addActionListener(e -> {
-            Proprietario_logged_in back = new Proprietario_logged_in(username_proprietario, TheController);
-            back.setVisible(true);
-            dispose();
-        });
-        page.add(indietro);
+        	    JButton indietro = new JButton("Torna indietro");
+        	    indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        	    indietro.setBounds(499, 721, 483, 60);
+        	    indietro.addActionListener(e -> {
+        	        if (!attivitàSelezionate.isEmpty()) {
+        	            int scelta = JOptionPane.showConfirmDialog(
+        	                null,
+        	                "Ci sono attività già aggiunte al progetto.\nSe torni indietro il progetto verrà cancellato.\nVuoi continuare?",
+        	                "Attenzione",
+        	                JOptionPane.YES_NO_OPTION,
+        	                JOptionPane.WARNING_MESSAGE
+        	            );
+        	            if (scelta == JOptionPane.YES_OPTION) {
+        	                Proprietario_logged_in back = new Proprietario_logged_in(username_proprietario, TheController);
+        	                back.setVisible(true);
+        	                dispose();
+        	            }
+        	            // se NO, non fai nulla e rimani nella pagina
+        	        } else {
+        	           return;
+        	        }
+        	    });
+        	    page.add(indietro);
 
         setContentPane(page);
-    }
+        
+        JButton Finalize = new JButton("Concludi e finalizza");
+        Finalize.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        	
+        		if (attivitàSelezionate.isEmpty()) {
+					try {
+						throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.no_new_arguments_of_project_added);
+					} catch (Prop_Project_exceptions ex) {
+						JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+        		String input = null;
 
-  
+        	
+        		while (true) {
+        		    try {
+        			input = JOptionPane.showInputDialog(null, "Inserisci il nome del progetto:", "Nome Progetto", JOptionPane.INFORMATION_MESSAGE);
+        		    
+        		    if (input == null) {
+        		        JOptionPane.showMessageDialog(null, "Devi inserire un nome per procedere.", "Attenzione", JOptionPane.WARNING_MESSAGE);
+        		        continue;
+        		    }
+        		    
+        		    input = input.trim();
+        		    if (input.isEmpty()) {
+        	            throw new Global_exceptions("Nome progetto", Global_exceptions.Tipo.empty_field);
+        	        }
+
+        	        // input valido, esci dal ciclo
+        	        break;
+        	    } catch (Global_exceptions ex) {
+        	        JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+        	       
+        	    }
+        	}
+        		Project_finalize_and_final_adjustments finalizeFrame = new Project_finalize_and_final_adjustments(username_proprietario, TheController, lottoName,input, attivitàSelezionate);
+				finalizeFrame.setVisible(true);
+				Progetti_creation_scheme.this.setVisible(false);
+				
+        	}
+        });
+        Finalize.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        Finalize.setBounds(499, 651, 483, 60);
+   
+        page.add(Finalize);
+    }
+   
 }

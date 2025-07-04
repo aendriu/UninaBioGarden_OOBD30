@@ -35,9 +35,10 @@ public class Prop_lotti_visual_scheme extends JFrame {
     private JList<String> list;
     private MyListModel model;
     private instance_of_lotto_selected iols;
+    private int selectedIndex;
+    private Progetti_creation_scheme Progetti_creation_page;
     private class MyListModel extends AbstractListModel<String> {
-        private String[] values = new String[0];
-
+    private String[] values = new String[0];
         @Override
         public int getSize() {
             return values.length;
@@ -54,9 +55,10 @@ public class Prop_lotti_visual_scheme extends JFrame {
         }
     }
 
-    public Prop_lotti_visual_scheme(String username, Controller TheController) {
+    public Prop_lotti_visual_scheme(String username, Controller TheController, int SelectedIndex) {
         this.username = username;
         this.TheController = TheController;
+        this.selectedIndex = SelectedIndex;
 
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,9 +88,15 @@ public class Prop_lotti_visual_scheme extends JFrame {
         list.addListSelectionListener(e -> {
 			// Azione da eseguire quando si seleziona un lotto
 			String selectedLotto = list.getSelectedValue();
+			if (selectedIndex==0) {
 			iols = new instance_of_lotto_selected(selectedLotto, TheController, username);
 			iols.setVisible(true);
-			dispose(); // chiude la finestra corrente
+			dispose();
+			}else if (SelectedIndex==1) {
+				Progetti_creation_page = new Progetti_creation_scheme(selectedLotto, TheController, username);
+				Progetti_creation_page.setVisible(true);
+				dispose();
+			}
 		});
         // scroll pane per renderla scrollabile
         JScrollPane scrollPane = new JScrollPane(list);

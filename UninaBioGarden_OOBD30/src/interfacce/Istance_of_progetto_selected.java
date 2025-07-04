@@ -1,5 +1,6 @@
 package interfacce;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 import controller.Controller;
 import interfacce.Exceptions.Global_exceptions;
@@ -22,10 +24,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 
 public class Istance_of_progetto_selected extends JFrame {
 
@@ -93,12 +98,13 @@ public class Istance_of_progetto_selected extends JFrame {
         List<Object[]> righe = TheController.Riempi_tab_progetti_vista_proprietario(username_prop);
         righe.sort((a, b) -> ((String) a[0]).compareToIgnoreCase((String) b[0]));
 
-        // Nuove colonne, senza "Nome Lotto" (indice 0) e "Percentuale Completamento" (indice 6)
+        // Colonne da visualizzare
         String[] colonne = {
             "Nome Coltivatore", "Cognome Coltivatore",
-            "Nome Attività", "Coltura", "Stato"
+            "Nome Attività", "Coltura", "Stato", "Percentuale Completamento"
         };
 
+        // Popolo la matrice dati
         Object[][] dati = new Object[righe.size()][colonne.length];
         for (int i = 0; i < righe.size(); i++) {
             Object[] row = righe.get(i);
@@ -109,6 +115,8 @@ public class Istance_of_progetto_selected extends JFrame {
             formattedRow[2] = row[2]; // Nome Attività
             formattedRow[3] = row[3]; // Coltura
             formattedRow[4] = row[4]; // Stato
+            // Percentuale in intero (0-100)
+            formattedRow[5] = Integer.parseInt(row[5].toString());
 
             dati[i] = formattedRow;
         }
@@ -116,9 +124,9 @@ public class Istance_of_progetto_selected extends JFrame {
         DefaultTableModel model = new DefaultTableModel(
             dati, colonne
         ) {
-            Class[] columnTypes = new Class[]{
+            Class[] columnTypes = new Class[] {
                 String.class, String.class, String.class,
-                String.class, String.class
+                String.class, String.class, Integer.class // <- sesta colonna Integer
             };
 
             @Override
@@ -134,41 +142,75 @@ public class Istance_of_progetto_selected extends JFrame {
 
         Project_overall.setModel(model);
 
-        // Imposto selezione singola riga
+        // Imposto renderer progressbar sulla sesta colonna
+        TableCellRenderer progressRenderer = new TableCellRenderer() {
+            private final JProgressBar progressBar = new JProgressBar(0, 100);
+
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                int percent = 0;
+                if (value instanceof Integer) {
+                    percent = (Integer) value;
+                }
+                progressBar.setValue(percent);
+                progressBar.setStringPainted(true);
+                if (isSelected) {
+                    progressBar.setBackground(table.getSelectionBackground());
+                } else {
+                    progressBar.setBackground(UIManager.getColor("ProgressBar.background"));
+                }
+                return progressBar;
+            }
+        };
+        Project_overall.getColumnModel().getColumn(5).setCellRenderer(progressRenderer);
+
+        // Configurazione tabella
         Project_overall.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         Project_overall.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         Project_overall.setRowHeight(30);
 
+        // Gestione click riga per modificare lo stato
         Project_overall.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = Project_overall.getSelectedRow();
-                if (selectedRow < 0) {
-                    JOptionPane.showMessageDialog(null, "Seleziona una riga prima di cliccare.", "Info", JOptionPane.INFORMATION_MESSAGE);
-                    return;
-                }
-                
-                Object valore_do_not_show = Project_overall.getValueAt(selectedRow, 4);
-                Object valore_to_show = Project_overall.getValueAt(selectedRow, 2);
+                Object stato_attuale = Project_overall.getValueAt(selectedRow, 4);
+                Object nome_attivita = Project_overall.getValueAt(selectedRow, 2);
 
-                String input = JOptionPane.showInputDialog(null, "Riportare il nuovo stato dell'attivita: " + valore_to_show + ".");
+                String input = JOptionPane.showInputDialog(null,
+                        "Riportare il nuovo stato dell'attività: " + nome_attivita + ".");
 
                 try {
-                    if (input == null || input.trim().isEmpty()) {
+                    if(input==null) {
+                    	return; // Se l'utente chiude il dialogo, esce senza fare nulla
+                    }
+                	if (input.trim().isEmpty()) {
                         throw new Global_exceptions("di input", Global_exceptions.Tipo.empty_field);
                     } else if (!input.matches("^[a-zA-Z ]+$")) {
                         throw new Global_exceptions("di input", Global_exceptions.Tipo.format_mismatch);
-                    } else if (input.equalsIgnoreCase(valore_do_not_show != null ? valore_do_not_show.toString() : "")) {
+                    } else if (input.equalsIgnoreCase(stato_attuale != null ? stato_attuale.toString() : "")) {
                         throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.repeated_activity_state);
-                    } else if (!input.equalsIgnoreCase("In Corso") && !input.equalsIgnoreCase("Completata") && !input.equalsIgnoreCase("Non Completata")) {
+                    } else if (!input.equalsIgnoreCase("In Corso") &&
+                               !input.equalsIgnoreCase("Completata") &&
+                               !input.equalsIgnoreCase("Non Completata")) {
                         throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.invalid_activity_state);
                     }
 
-                    valore_do_not_show = input;
-                    JOptionPane.showMessageDialog(null, "Stato dell'attività aggiornato con successo.", "Successo", JOptionPane.INFORMATION_MESSAGE);
                     input = capitalizeFirstLetter(input);
                     Project_overall.getModel().setValueAt(input, selectedRow, 4);
-                    Project_overall.getModel().setValueAt(input, selectedRow, 4);
+
+                    JOptionPane.showMessageDialog(null,
+                            "Stato dell'attività aggiornato con successo.",
+                            "Successo",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    if (input.equalsIgnoreCase("completata")) {
+                    	Project_overall.getModel().setValueAt(100, selectedRow, 5);
+                    }else if (input.equalsIgnoreCase("in corso")) {
+						Project_overall.getModel().setValueAt(50, selectedRow, 5);
+					} else if (input.equalsIgnoreCase("pianificata")) {
+						Project_overall.getModel().setValueAt(0, selectedRow, 5);
+					}
                 } catch (Global_exceptions | Prop_Project_exceptions e) {
                     if (e instanceof Prop_Project_exceptions) {
                         Prop_Project_exceptions ppe = (Prop_Project_exceptions) e;
@@ -181,9 +223,8 @@ public class Istance_of_progetto_selected extends JFrame {
                         JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-			}
-		});
-
+            }
+        });
 
         scrollPane.setViewportView(Project_overall);
 
