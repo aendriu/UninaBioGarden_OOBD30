@@ -22,6 +22,7 @@ public class Controller {
 	public LottoDAO lottoDAO;
 	public RaccoltoDAO raccoltoDAO;
 	public ColturaDAO coltureDAO;
+	public ProgettoDAO progettoDAO;
 
 	TESTING tests;
 	
@@ -35,6 +36,9 @@ public class Controller {
 			attivitaDAO = new AttivitaDAO(dbprop.toString(), this);
 			lottoDAO = new LottoDAO(dbprop.toString(), this);
 			raccoltoDAO = new RaccoltoDAO(dbprop.toString(), this);
+			coltureDAO = new ColturaDAO(dbprop.toString(), this);
+			progettoDAO = new ProgettoDAO(dbprop.toString(), this);
+			
 			
 			coltivatoreDAO.connect();
             propDAO.connect();
