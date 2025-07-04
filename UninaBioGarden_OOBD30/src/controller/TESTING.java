@@ -10,6 +10,7 @@ import dao.AttivitaDAO;
 import dao.ColtivatoreDAO;
 import dao.ColturaDAO;
 import dao.LottoDAO;
+import dao.ProgettoDAO;
 import dao.ProprietarioDAO;
 import dao.RaccoltoDAO;
 import entità.*;
@@ -21,6 +22,10 @@ public class TESTING {
 	AttivitaDAO attDAO;
 	RaccoltoDAO racDAO;
 	ColturaDAO coltuDAO;
+	ProgettoDAO progettoDAO;
+	
+
+	
 	
 	public TESTING(String propertiesFilePath, Controller c) throws SQLException, IOException {
         coltDAO = new ColtivatoreDAO(propertiesFilePath, c);
@@ -29,6 +34,7 @@ public class TESTING {
         attDAO = new AttivitaDAO(propertiesFilePath, c);
         racDAO = new RaccoltoDAO(propertiesFilePath, c);
         coltuDAO = new ColturaDAO(propertiesFilePath, c);
+        progettoDAO = new ProgettoDAO(propertiesFilePath, c);
         
         coltDAO.connect();
         propDAO.connect();
@@ -36,6 +42,7 @@ public class TESTING {
         attDAO.connect();
         racDAO.connect();
         coltuDAO.connect();
+        progettoDAO.connect();
     }
 	
 	
@@ -46,16 +53,37 @@ public class TESTING {
 		//InitTestColtDAO();
 		
 		//InitTestLottoDAO();
-		//InitTestAttDAO();
-		InitTestRacDAO();
+		InitTestAttDAO();
+		//InitTestRacDAO();
+		//InitTestColturaDAO();
+		//InitTestProgettoDAO();
 		return;
+	}
+	
+	public void InitTestProgettoDAO() throws SQLException {
+		
+		// *****
+
+		System.out.println("TESTING FindSpecificProgetto");
+		Progetto p1 = progettoDAO.FindSpecificProgetto(4);
+		System.out.println(p1);
+		
+		// *****
+		
+		
+		
+		// *****
+		
+		
 	}
 	
 	public void InitTestLottoDAO() throws SQLException {
 		
 	}
+
 	
 	public void InitTestAttDAO() throws SQLException {
+		
 		System.out.println("TESTING FindSpecificAttività");
 		Attivita att1 = attDAO.FindSpecificAttivita(292);
 		System.out.println(att1);
@@ -97,15 +125,16 @@ public class TESTING {
 	    System.out.println("TESTING UpdateTempoTrascorsoAttività...");
 	    System.out.println("BEFORE");
 	    System.out.println(att1);
-	    System.out.println("AFTER");
 	    //att1.AddTempoLavorato(java.sql.Time.valueOf("01:00:00"));
 	    attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), java.sql.Time.valueOf("01:00:00"));
+	    //att1.setTempoLavorato(java.sql.Time.valueOf("01:00:00"));
+	    System.out.println("AFTER");
 	    System.out.println(att1);
 	    
-	    
-		
-		
+	    	
 	}
+	
+	/* ******************** */
 	
 	public void InitTestRacDAO() throws SQLException {
 		System.out.println("TESTING FindSpecificRaccolto");
@@ -128,7 +157,7 @@ public class TESTING {
 			System.out.println(r);
 		}
 		ArrayList<Raccolto> rac2_lotto_coltura = racDAO.GetRaccoltiOfLottoByNomeColtura("Mais", 1);
-		for(Raccolto r : rac1_lotto_coltura) {
+		for(Raccolto r : rac2_lotto_coltura) {
 			System.out.println(r);
 		}
 		
@@ -155,13 +184,10 @@ public class TESTING {
 			);
 		
 		// *****
-	
-		
-		
-
-
 		
 	}
+	
+	/* ******************** */
 	
 	public void InitTestPropDAO() throws SQLException {
 		System.out.println("TESTING getPropFromCF : ");
@@ -198,13 +224,10 @@ public class TESTING {
 			);
 		
 	    // ***** 
-
-		
-		
-		
-		
 		
 	}
+	
+	/* ******************** */
 	
 	public void InitTestColtDAO() throws SQLException {
 		System.out.println("TESTING getColtFromCF : ");

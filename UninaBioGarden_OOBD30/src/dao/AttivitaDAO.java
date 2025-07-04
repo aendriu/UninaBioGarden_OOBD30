@@ -71,7 +71,6 @@ public class AttivitaDAO extends DAO {
     }
     
     /* ******************************* */
-
     
     public ArrayList<Attivita> GetAttivitaColtivatore(Coltivatore coltivatore) throws SQLException {
         return GetAttivitaColtivatore(coltivatore.getCF());
@@ -270,12 +269,13 @@ public class AttivitaDAO extends DAO {
     public boolean UpdateTempoLavoratoAttivita(int idAttivita, Time nuovoTempo) throws SQLException {
         String sql = "UPDATE attività "
                    + "SET tempoLavorato = (tempoLavorato + ?::interval) "
+        		
                    + "WHERE idAttività = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nuovoTempo.toLocalTime().toString());
             stmt.setInt(2, idAttivita);
-            return stmt.executeUpdate() > 0;
+            return stmt.executeUpdate() > 0;		
         }
     }
     

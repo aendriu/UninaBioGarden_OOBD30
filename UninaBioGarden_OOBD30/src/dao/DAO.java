@@ -44,5 +44,5 @@ public abstract class DAO {
         }
     }
 
-    // Qui potrai aggiungere metodi astratti o comuni (boolean, insert, update, etc.)
+    
 }

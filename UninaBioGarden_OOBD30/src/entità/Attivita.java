@@ -86,6 +86,8 @@ public class Attivita extends Entita {
     public void setFine(Date fine) { this.fine = fine; }
 
 	public Time getTempoLavorato() { return tempoLavorato; }
+	public void setTempoLavorato(Time tempoLavorato) { this.tempoLavorato = tempoLavorato; }
+	
     public String getCfColtivatore() { return cfColtivatore; }
     public void setCfColtivatore(String cfColtivatore) { this.cfColtivatore = cfColtivatore; }
 
