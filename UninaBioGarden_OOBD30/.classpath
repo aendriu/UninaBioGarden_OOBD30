@@ -13,12 +13,12 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="com.jgoodies.common_1.8.1.v20240327-0800.jar"/>
 	<classpathentry kind="lib" path="com.jgoodies.forms_1.9.0.v20240327-0800.jar"/>
-	<classpathentry kind="lib" path="libs/jcommon-1.0.24.jar">
+	<classpathentry kind="lib" path="libs/jfreechart-1.5.4.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/jfreechart-1.5.4.jar">
+	<classpathentry kind="lib" path="libs/jcommon-1.0.24.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

@@ -181,7 +181,11 @@ public class Proprietario_logged_in extends JFrame {
         Report_prop_button.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         Report_prop_button.setBounds(685, 589, 191, 70);
         pageProp.add(Report_prop_button);
-        //TODO
+        Report_prop_button.addActionListener(e -> {
+			Report_frame reportFrame = new Report_frame(username, TheController);
+			reportFrame.setVisible(true);
+			dispose();
+		});
         
         JButton Torna_indietro = new JButton("Logout");
         Torna_indietro.addActionListener(e -> {

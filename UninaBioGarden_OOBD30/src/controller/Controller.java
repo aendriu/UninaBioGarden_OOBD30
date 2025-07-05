@@ -508,6 +508,46 @@ public class Controller {
 
  		    return lista;
  		}
+    	  public List<String> getNomiLotti(String username) {
+    		    List<String> lotti = new ArrayList<>();
+
+    		    String[] nomiLottiPossibili = {
+    		        "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
+    		        "Vigneto Sud", "Frutteto Ovest", "Pista Agraria", "Bosco Urbano",
+    		        "Prato Fiorito", "Collina Blu"
+    		    };
+
+    		    for (String nome : nomiLottiPossibili) {
+    		        lotti.add(nome);
+    		    }
+
+    		    return lotti;
+    		}
+    	  public List<Map<String, Object>> getDatiRaccoltaPerLotto(String username, String nomeLotto) {
+    		    List<Map<String, Object>> raccolte = new ArrayList<>();
+    		    Random rnd = new Random();
+
+    		    String[] colturePossibili = {
+    		        "Pomodoro", "Lattuga", "Carota", "Zucchina",
+    		        "Peperone", "Melanzana", "Cetriolo", "Spinaci"
+    		        , "Riso", "Mais", "Grano", "Orzo", "Fagiolo", "Pisello", "Soia", "Avena"
+    		        , "Cipolla", "Aglio", "Porro", "Barbabietola", "Ravanello", "Sedano", "Cavolo", "Broccoli"
+    		    };
+
+    		    for (String coltura : colturePossibili) {
+    		        Map<String, Object> info = new HashMap<>();
+    		        info.put("coltura", coltura);
+    		        info.put("media",  10 + rnd.nextDouble() * 80); // 10..50 kg medi
+    		        info.put("min",    5  + rnd.nextDouble() * 40); // 5..15 kg min
+    		        info.put("max",    30 + rnd.nextDouble() * 90); // 30..50 kg max
+
+    		        raccolte.add(info);
+    		    }
+
+    		    return raccolte;
+    		}
+
+    	  
 }
 
 
