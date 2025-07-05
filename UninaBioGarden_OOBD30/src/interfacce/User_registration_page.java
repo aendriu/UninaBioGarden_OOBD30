@@ -96,7 +96,6 @@ public class User_registration_page extends JFrame {
 	
 	    
 	    username_txt = new JTextField();
-	    username_txt.setToolTipText("Deve seguire il seguente formato Abcd.efcg@[gmail/libero].[com/it]");
 	    username_txt.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 	    username_txt.setBounds(564, 530, 471, 48);
 	    User_registration_interface.add(username_txt);

@@ -256,16 +256,16 @@ public class Progetti_creation_scheme extends JFrame {
         	                JOptionPane.YES_NO_OPTION,
         	                JOptionPane.WARNING_MESSAGE
         	            );
-        	            if (scelta == JOptionPane.YES_OPTION) {
-        	                Proprietario_logged_in back = new Proprietario_logged_in(username_proprietario, TheController);
-        	                back.setVisible(true);
-        	                dispose();
+        	            if (scelta != JOptionPane.YES_OPTION) {
+        	                return; // se l'utente NON conferma, rimane nella schermata
         	            }
-        	            // se NO, non fai nulla e rimani nella pagina
-        	        } else {
-        	           return;
         	        }
+        	        // sempre torna indietro
+        	        Proprietario_logged_in back = new Proprietario_logged_in(username_proprietario, TheController);
+        	        back.setVisible(true);
+        	        dispose();
         	    });
+
         	    page.add(indietro);
 
         setContentPane(page);
