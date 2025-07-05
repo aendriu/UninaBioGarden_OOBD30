@@ -204,9 +204,9 @@ public class Login extends JFrame {
 			            username_txt.setBackground(Color.RED);
 			        	throw new Global_exceptions("username", Global_exceptions.Tipo.empty_field);
 			        }
-			        if (!username.matches("^[A-Za-z]+[0-9]*$")) {
+			        if (!username.matches("^([A-Za-z]{2,}[A-Za-z]*[0-9]*|[A-Za-z]{2,}\\.[A-Za-z]{2,}[0-9]*)$")) {
 			            username_txt.setBackground(Color.RED);
-			        	throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
+			        	throw new Global_exceptions("Username", Global_exceptions.Tipo.format_mismatch);
 			        }
 
 			        if (!username.equals("annabartolini")) {

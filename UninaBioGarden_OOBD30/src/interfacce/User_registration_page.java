@@ -198,7 +198,7 @@ public class User_registration_page extends JFrame {
 						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.format_mismatch);
 					}
 					
-					if (!username.matches("^[A-Za-z]+[0-9]*$")) {
+					if (!username.matches("^([A-Za-z]{2,}[A-Za-z]*[0-9]*|[A-Za-z]{2,}\\\\.[A-Za-z]{2,}[0-9]*)$")) {
 					    username_txt.setBackground(Color.RED);
 						throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
 					}

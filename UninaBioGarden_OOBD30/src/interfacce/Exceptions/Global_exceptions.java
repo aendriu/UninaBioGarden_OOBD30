@@ -35,9 +35,9 @@ public class Global_exceptions extends Exception {
             case Type_mismatch:
                 return "Nella casella " + super.getMessage() + " è stato inserito un tipo di dato non valido";
             case not_found_in_DB:
-                return super.getMessage() + " non è stato trovato nel database";
+                return super.getMessage() + " non risulta registrato nella piattaforma";
             case already_exists_in_DB:
-                return super.getMessage() + " esiste già nel database";
+                return super.getMessage() + " è già registrato nella piattaforma, impossibile procedere";
             case empty_field:
                 return "Il campo " + super.getMessage() + " è vuoto";
             default:
