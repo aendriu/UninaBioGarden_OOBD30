@@ -38,7 +38,6 @@ public class Coltivatore_attività_responsabili extends JFrame {
     private String username_colt;
     private Controller TheController;
     private JTable table;
-    private Page_Coltivatore pageColtivatore;
 
     public Coltivatore_attività_responsabili(String username_colt, Controller TheController) {
         setResizable(false);
@@ -51,7 +50,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Coltivatore_attività_responsabili.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             coltivatoreImage = new ImageIcon(imageUrl).getImage();
@@ -194,9 +193,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
         JButton Torna_indietro = new JButton("Torna Indietro");
         Torna_indietro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                pageColtivatore = new Page_Coltivatore(username_colt, TheController);
-                pageColtivatore.setVisible(true);
-                dispose();
+               TheController.OpenPageColtivatore_closeCaller(username_colt, Coltivatore_attività_responsabili.this);
             }
         });
         Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));

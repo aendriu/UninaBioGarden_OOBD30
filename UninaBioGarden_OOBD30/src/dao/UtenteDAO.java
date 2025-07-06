@@ -8,13 +8,30 @@ import java.sql.SQLException;
 import controller.Controller;
 import entità.Utente;
 
-public abstract class UtenteDAO extends DAO {
+public  class UtenteDAO extends DAO {
 
 	public UtenteDAO(String filePath, Controller c) throws IOException, SQLException {
 		super(filePath, c);
 	}
 	
+	public String Convert_UsernameToCF(String username) throws SQLException {
+	    String sql = "SELECT cf_coltivatore AS cf FROM coltivatore WHERE username = ? " +
+	                 "UNION " +
+	                 "SELECT cf_proprietario AS cf FROM proprietariodilotto WHERE username = ?";
+	    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+	        ps.setString(1, username);
+	        ps.setString(2, username);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("cf");
+	        } else {
+	            return null;
+	        }
+	    }
+	}
+	
 	// BOOLEAN FUNCTIONS
+	
 	public boolean DoesUsernameExist(String username) throws SQLException {
 	    String sql = "SELECT username FROM coltivatore " +
 	                 "UNION " +

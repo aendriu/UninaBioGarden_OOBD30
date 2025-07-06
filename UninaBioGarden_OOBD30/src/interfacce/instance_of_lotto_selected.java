@@ -39,10 +39,9 @@ public class instance_of_lotto_selected extends JFrame {
     private JTable table_colture;
     private JTable table_coltivatori;
     private JTable table;
-    private Free_coltivatori freeColtivatori;
     int decisor_defaulted=0;
-    public instance_of_lotto_selected(String lottoName, Controller TheController, String username_proprietario) {
-        this.lottoName = lottoName;
+    public instance_of_lotto_selected(String username_proprietario, Controller TheController, String lottoname) {
+        this.lottoName = lottoname;
         this.TheController = TheController;
         this.username_proprietario = username_proprietario;
 
@@ -51,7 +50,7 @@ public class instance_of_lotto_selected extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = instance_of_lotto_selected.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -187,9 +186,7 @@ public class instance_of_lotto_selected extends JFrame {
         aggiungi_coltura.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Free_colture freeColture = new Free_colture(username_proprietario, TheController, lottoName);
-                freeColture.setVisible(true);
-                dispose();
+               TheController.OpenFreeColture_closeCaller(username_proprietario, lottoName, instance_of_lotto_selected.this);
             }
         });
         aggiungi_coltura.setToolTipText("aggiungi al tuo lotto una nuova coltura");
@@ -201,9 +198,7 @@ public class instance_of_lotto_selected extends JFrame {
         aggiungi_coltivatore.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                freeColtivatori = new Free_coltivatori(username_proprietario, TheController, lottoName);
-                freeColtivatori.setVisible(true);
-                dispose();
+              TheController.OpenFreeColtivatori_closeCaller(username_proprietario, lottoName, instance_of_lotto_selected.this);
             }
         });
         aggiungi_coltivatore.setToolTipText("visualizza i coltivatori liberi al momento e aggiungine uno");
@@ -214,17 +209,13 @@ public class instance_of_lotto_selected extends JFrame {
         JButton Torna_indietro = new JButton("Torna indietro");
         Torna_indietro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController, decisor_defaulted);
-                plvs.setVisible(true);
-                dispose();
+                TheController.OpenPropLottiVisualScheme_closeCaller(username_proprietario, decisor_defaulted, instance_of_lotto_selected.this);
             }
         });
         Torna_indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Prop_lotti_visual_scheme plvs = new Prop_lotti_visual_scheme(username_proprietario, TheController, decisor_defaulted);
-                plvs.setVisible(true);
-                dispose();
+                TheController.OpenPropLottiVisualScheme_closeCaller(username_proprietario, decisor_defaulted, instance_of_lotto_selected.this);
             }
         });
         Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));

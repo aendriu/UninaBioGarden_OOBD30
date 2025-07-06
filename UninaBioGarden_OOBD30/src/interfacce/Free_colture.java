@@ -22,7 +22,6 @@ public class Free_colture extends JFrame {
     private Controller TheController;
     private String username;
     private String Lottoname;
-    private instance_of_lotto_selected iols;
     public Free_colture(String username, Controller TheController, String Lottoname) {
         this.TheController = TheController;
         this.username = username;
@@ -89,9 +88,7 @@ public class Free_colture extends JFrame {
         torna_indietro.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        	iols= new instance_of_lotto_selected(username, TheController, Lottoname);
-        	iols.setVisible(true);
-        	dispose();
+        	TheController.OpenIstanceOfLottoSelected_closeCaller(username, Free_colture.this, Lottoname);
         	}
         });
         JButton add_coltura = new JButton("aggiungi coltura ");

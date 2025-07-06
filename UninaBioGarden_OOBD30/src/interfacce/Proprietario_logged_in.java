@@ -32,13 +32,6 @@ public class Proprietario_logged_in extends JFrame {
     private Controller TheController;
     private String username;
     private Image PropImage;
-    private Login loginFrame;
-    private Prop_lotti_visual_scheme Lotti_vs;
-    private Free_lotti lotti_liberi;
-    private Proprietario_activities_visual Attività_vs;
-    private Prop_organizza_attività orgAttività;
-    private Progetti_visual_scheme Progetti_vs;
-    private Progetti_creation_scheme Progetti_creation;
     int selector_coming_from;
     /**
      * Create the frame.
@@ -52,7 +45,7 @@ public class Proprietario_logged_in extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Proprietario_logged_in.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -99,17 +92,13 @@ public class Proprietario_logged_in extends JFrame {
         JMenuItem voce1 = new JMenuItem("I miei lotti");
         voce1.addActionListener(e -> {
         	selector_coming_from = 0; // 0 per i lotti
-        	Lotti_vs = new Prop_lotti_visual_scheme(username, TheController, selector_coming_from);
-        Lotti_vs.setVisible(true);
-        dispose();
+        	TheController.OpenPropLottiVisualScheme_closeCaller(username, selector_coming_from, Proprietario_logged_in.this);
         });
 
         JMenuItem voce2 = new JMenuItem("ottieni nuovo lotto");
         voce2.addActionListener(e -> {
-           lotti_liberi = new Free_lotti(username, TheController);
-           lotti_liberi.setVisible(true);
-           dispose();
-        	// qui puoi richiamare il controller
+           TheController.OpenFreeLotti_closeCaller(username, Proprietario_logged_in.this);
+        	
         });
 
         popupMenu_4_lotti.add(voce1);
@@ -129,16 +118,12 @@ public class Proprietario_logged_in extends JFrame {
         JPopupMenu popupMenu_4_attività = new JPopupMenu();
         JMenuItem voce1_attività = new JMenuItem("Le mie attività");
         voce1_attività.addActionListener(e -> {
-			Attività_vs = new Proprietario_activities_visual(username, TheController);
-			Attività_vs.setVisible(true);
-			dispose();
+			TheController.OpenPropAttivitàVisualScheme_closeCaller(username, Proprietario_logged_in.this);
 			// qui puoi richiamare il controller
 		});
         JMenuItem voce2_attività = new JMenuItem("organizza attività");
         voce2_attività.addActionListener(e -> {
-        	orgAttività = new Prop_organizza_attività(username, TheController);
-        	orgAttività.setVisible(true);
-        	dispose();
+        	TheController.OpenPropAttivitàOrganizza_closeCaller(username, Proprietario_logged_in.this);
         });
         
         popupMenu_4_attività.add(voce1_attività);
@@ -157,16 +142,12 @@ public class Proprietario_logged_in extends JFrame {
         JPopupMenu popupMenu_4_progetti = new JPopupMenu();
         JMenuItem voce1_progetti = new JMenuItem("I miei progetti");
         voce1_progetti.addActionListener(e -> {
-        	Progetti_vs = new Progetti_visual_scheme(username, TheController);
-        	Progetti_vs.setVisible(true);
-        	dispose();
+        	TheController.OpenPropProgettiVisualScheme_closeCaller(username, Proprietario_logged_in.this);
         });
         JMenuItem voce2_progetti = new JMenuItem("crea nuovo progetto");
         voce2_progetti.addActionListener(e -> {
 		 selector_coming_from = 1; // 1 per i progetti
-        Lotti_vs = new Prop_lotti_visual_scheme(username, TheController, selector_coming_from);
-		 Lotti_vs.setVisible(true);
-		 dispose();
+		 TheController.OpenPropLottiVisualScheme_closeCaller(username, selector_coming_from, Proprietario_logged_in.this);
 		});
         
         popupMenu_4_progetti.add(voce1_progetti);
@@ -182,17 +163,13 @@ public class Proprietario_logged_in extends JFrame {
         Report_prop_button.setBounds(685, 589, 191, 70);
         pageProp.add(Report_prop_button);
         Report_prop_button.addActionListener(e -> {
-			Report_frame reportFrame = new Report_frame(username, TheController);
-			reportFrame.setVisible(true);
-			dispose();
+			TheController.OpenReportFrame_closeCaller(username, Proprietario_logged_in.this);
 		});
         
         JButton Torna_indietro = new JButton("Logout");
         Torna_indietro.addActionListener(e -> {
             JOptionPane.showMessageDialog(null, "Arrivederci " + username + "!");
-            loginFrame = new Login(TheController);
-            loginFrame.setVisible(true);
-            dispose();
+            TheController.OpenLogin_closeCaller(Proprietario_logged_in.this);
         });
         Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         Torna_indietro.setBounds(540, 727, 483, 70);

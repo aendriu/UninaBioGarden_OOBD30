@@ -10,6 +10,7 @@ import controller.Controller;
 import java.util.List;
 import interfacce.Exceptions.Specific_exceptions.Prop_Project_exceptions;
 import interfacce.Exceptions.Global_exceptions;
+
 public class Progetti_creation_scheme extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +27,7 @@ public class Progetti_creation_scheme extends JFrame {
     private String lottoname;
     private Set<List<String>> attivitàSelezionate = new HashSet<>();
 
-    public Progetti_creation_scheme(String Lotto_selected, Controller TheController, String username_proprietario) {
+    public Progetti_creation_scheme(String username_proprietario, Controller TheController, String Lotto_selected) {
         this.TheController = TheController;
         this.username_proprietario = username_proprietario;
         this.lottoName = Lotto_selected;
@@ -34,8 +35,7 @@ public class Progetti_creation_scheme extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width, screenSize.height);
 
-        // immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Progetti_creation_scheme.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -54,7 +54,6 @@ public class Progetti_creation_scheme extends JFrame {
         };
         page.setLayout(null);
 
-        // titolo
         JLabel lblTitolo = new JLabel("Crea un nuovo progetto", SwingConstants.CENTER);
         lblTitolo.setFont(new Font("Times New Roman", Font.BOLD, 40));
         lblTitolo.setBounds(267, 10, 938, 81);
@@ -62,7 +61,12 @@ public class Progetti_creation_scheme extends JFrame {
 
         // tabella colture
         table_colture = new JTable();
-        DefaultTableModel modelColture = new DefaultTableModel(new Object[][]{}, new String[]{"Nome"});
+        DefaultTableModel modelColture = new DefaultTableModel(new Object[][]{}, new String[]{"Nome"}) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table_colture.setModel(modelColture);
         table_colture.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table_colture.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -75,7 +79,12 @@ public class Progetti_creation_scheme extends JFrame {
 
         // tabella coltivatori
         table_coltivatori = new JTable();
-        DefaultTableModel modelColtivatori = new DefaultTableModel(new Object[][]{}, new String[]{"Nome", "Cognome"});
+        DefaultTableModel modelColtivatori = new DefaultTableModel(new Object[][]{}, new String[]{"Nome", "Cognome"}) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table_coltivatori.setModel(modelColtivatori);
         table_coltivatori.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table_coltivatori.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -92,7 +101,12 @@ public class Progetti_creation_scheme extends JFrame {
                     {"Raccolta"}, {"Semina"}, {"Irrigazione"}, {"Concimazione"},
                     {"Controllo parassiti"}, {"Potatura"}, {"Vendita"}, {"Monitoraggio crescita"}
                 },
-                new String[]{"Nome attività"});
+                new String[]{"Nome attività"}) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table_activities = new JTable(modelActivities);
         table_activities.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table_activities.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -101,7 +115,6 @@ public class Progetti_creation_scheme extends JFrame {
         scrollActivities.setBounds(1169, 175, 249, 220);
         page.add(scrollActivities);
 
-        // campo durata
         textFieldDurata = new JTextField();
         textFieldDurata.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         textFieldDurata.setBounds(499, 467, 483, 37);
@@ -112,7 +125,6 @@ public class Progetti_creation_scheme extends JFrame {
         lblDurata.setBounds(499, 435, 466, 37);
         page.add(lblDurata);
 
-        // campo quantità raccolta (nascosto di default)
         textFieldQuantita = new JTextField();
         textFieldQuantita.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         textFieldQuantita.setBounds(499, 539, 483, 37);
@@ -125,7 +137,6 @@ public class Progetti_creation_scheme extends JFrame {
         lblQuantita.setVisible(false);
         page.add(lblQuantita);
 
-        // mostra/nascondi campo quantità a seconda attività selezionata
         table_activities.getSelectionModel().addListSelectionListener(e -> {
             int row = table_activities.getSelectedRow();
             if (row != -1) {
@@ -140,183 +151,162 @@ public class Progetti_creation_scheme extends JFrame {
             }
         });
 
-        // bottone aggiungi
         JButton aggiungi = new JButton("aggiungi attività al progetto");
         aggiungi.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         aggiungi.setBounds(499, 581, 483, 60);
         aggiungi.addActionListener(e -> {
-        	    List<String> entry = new ArrayList<>();
-        	        try {
-        	            int rColtivatore = table_coltivatori.getSelectedRow();
-        	            int rColtura = table_colture.getSelectedRow();
-        	            int rAttività = table_activities.getSelectedRow();
-        	            String durata = textFieldDurata.getText();
-        	            textFieldDurata.setBackground(Color.WHITE);
-        	            textFieldQuantita.setBackground(Color.WHITE);
-        	            if (rColtivatore == -1) {
-        	                throw new Global_exceptions("Coltivatore", Global_exceptions.Tipo.empty_field);
-        	            }
-        	            if (rColtura == -1) {
-        	                throw new Global_exceptions("Coltura", Global_exceptions.Tipo.empty_field);
-        	            }
-        	            if (rAttività == -1) {
-        	                throw new Global_exceptions("Attività", Global_exceptions.Tipo.empty_field);
-        	            }
-        	            if (durata == null || durata.isEmpty()) {
-        	               textFieldDurata.setBackground(Color.RED);
-        	            	throw new Global_exceptions("Durata", Global_exceptions.Tipo.empty_field);
-        	            }
-        	            // Parsing durata con controllo errori formato
-        	            int valoreDurata;
-        	            try {
-        	                valoreDurata = Integer.parseInt(durata);
-        	            } catch (NumberFormatException nfe) {
-        	            	textFieldDurata.setBackground(Color.RED);
-        	            	throw new Global_exceptions("Durata", Global_exceptions.Tipo.format_mismatch);
-        	            }
-        	            if (valoreDurata <= 0) {
-        	            	textFieldDurata.setBackground(Color.RED);
-        	                throw new Global_exceptions("Durata", Global_exceptions.Tipo.Type_mismatch);
-        	            }
+            List<String> entry = new ArrayList<>();
+            try {
+                int rColtivatore = table_coltivatori.getSelectedRow();
+                int rColtura = table_colture.getSelectedRow();
+                int rAttività = table_activities.getSelectedRow();
+                String durata = textFieldDurata.getText();
+                textFieldDurata.setBackground(Color.WHITE);
+                textFieldQuantita.setBackground(Color.WHITE);
+                if (rColtivatore == -1) {
+                    throw new Global_exceptions("Coltivatore", Global_exceptions.Tipo.empty_field);
+                }
+                if (rColtura == -1) {
+                    throw new Global_exceptions("Coltura", Global_exceptions.Tipo.empty_field);
+                }
+                if (rAttività == -1) {
+                    throw new Global_exceptions("Attività", Global_exceptions.Tipo.empty_field);
+                }
+                if (durata == null || durata.isEmpty()) {
+                    textFieldDurata.setBackground(Color.RED);
+                    throw new Global_exceptions("Durata", Global_exceptions.Tipo.empty_field);
+                }
+                int valoreDurata;
+                try {
+                    valoreDurata = Integer.parseInt(durata);
+                } catch (NumberFormatException nfe) {
+                    textFieldDurata.setBackground(Color.RED);
+                    throw new Global_exceptions("Durata", Global_exceptions.Tipo.format_mismatch);
+                }
+                if (valoreDurata <= 0) {
+                    textFieldDurata.setBackground(Color.RED);
+                    throw new Global_exceptions("Durata", Global_exceptions.Tipo.Type_mismatch);
+                }
 
-        	            String nome = table_coltivatori.getValueAt(rColtivatore, 0).toString();
-        	            String cognome = table_coltivatori.getValueAt(rColtivatore, 1).toString();
-        	            String coltura = table_colture.getValueAt(rColtura, 0).toString();
-        	            String attività = table_activities.getValueAt(rAttività, 0).toString();
+                String nome = table_coltivatori.getValueAt(rColtivatore, 0).toString();
+                String cognome = table_coltivatori.getValueAt(rColtivatore, 1).toString();
+                String coltura = table_colture.getValueAt(rColtura, 0).toString();
+                String attività = table_activities.getValueAt(rAttività, 0).toString();
 
-        	            entry.add(nome + " " + cognome);
-        	            entry.add(coltura);
-        	            entry.add(attività);
-        	            entry.add(durata);
+                entry.add(nome + " " + cognome);
+                entry.add(coltura);
+                entry.add(attività);
+                entry.add(durata);
 
-        	            if (attività.equalsIgnoreCase("Raccolta")) {
-        	                String quantita = textFieldQuantita.getText();
-        	                if (quantita == null || quantita.trim().isEmpty()) {
-        	                	textFieldQuantita.setBackground(Color.RED);
-        	                	throw new Global_exceptions("Quantità", Global_exceptions.Tipo.empty_field);
-        	                }
-        	                int valoreQuantita;
-        	                try {
-        	                    valoreQuantita = Integer.parseInt(quantita.trim());
-        	                } catch (NumberFormatException nfe) {
-        	                	textFieldQuantita.setBackground(Color.RED);
-        	                	throw new Global_exceptions("Quantità", Global_exceptions.Tipo.format_mismatch);
-        	                }
-        	                if (valoreQuantita <= 0) {
-        	                	textFieldQuantita.setBackground(Color.RED);
-        	                	throw new Global_exceptions("Quantità", Global_exceptions.Tipo.Type_mismatch);
-        	                }
-        	                entry.add(quantita);
-        	            }
+                if (attività.equalsIgnoreCase("Raccolta")) {
+                    String quantita = textFieldQuantita.getText();
+                    if (quantita == null || quantita.trim().isEmpty()) {
+                        textFieldQuantita.setBackground(Color.RED);
+                        throw new Global_exceptions("Quantità", Global_exceptions.Tipo.empty_field);
+                    }
+                    int valoreQuantita;
+                    try {
+                        valoreQuantita = Integer.parseInt(quantita.trim());
+                    } catch (NumberFormatException nfe) {
+                        textFieldQuantita.setBackground(Color.RED);
+                        throw new Global_exceptions("Quantità", Global_exceptions.Tipo.format_mismatch);
+                    }
+                    if (valoreQuantita <= 0) {
+                        textFieldQuantita.setBackground(Color.RED);
+                        throw new Global_exceptions("Quantità", Global_exceptions.Tipo.Type_mismatch);
+                    }
+                    entry.add(quantita);
+                }
 
-        	            if (attivitàSelezionate.contains(entry)) {
-        	                throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.adding_same_activity_twice);
-        	            }
+                if (attivitàSelezionate.contains(entry)) {
+                    throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.adding_same_activity_twice);
+                }
 
-        	            attivitàSelezionate.add(entry);
-        	            System.out.println("Aggiunta: " + entry);
-        	            textFieldDurata.setBackground(Color.WHITE);
-        	            textFieldQuantita.setBackground(Color.WHITE);
-        	            JOptionPane.showMessageDialog(null, "Attività aggiunta con successo.", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                attivitàSelezionate.add(entry);
+                System.out.println("Aggiunta: " + entry);
+                textFieldDurata.setBackground(Color.WHITE);
+                textFieldQuantita.setBackground(Color.WHITE);
+                JOptionPane.showMessageDialog(null, "Attività aggiunta con successo.", "Successo", JOptionPane.INFORMATION_MESSAGE);
 
-        	            // Pulizia selezioni e campi
-        	            table_coltivatori.clearSelection();
-        	            table_colture.clearSelection();
-        	            table_activities.clearSelection();
-        	            textFieldDurata.setText("");
-        	            textFieldQuantita.setText("");
+                table_coltivatori.clearSelection();
+                table_colture.clearSelection();
+                table_activities.clearSelection();
+                textFieldDurata.setText("");
+                textFieldQuantita.setText("");
 
-        	        } catch (Prop_Project_exceptions ex) {
-        	            if (ex.getTipo() == Prop_Project_exceptions.Tipo.adding_same_activity_twice) {
-        	                JOptionPane.showMessageDialog(null, "Attività già presente nel progetto.", "Attenzione", JOptionPane.WARNING_MESSAGE);
-        	            } else {
-        	                JOptionPane.showMessageDialog(null, "Errore di progetto: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-        	                attivitàSelezionate.remove(entry);
-        	            }
-        	        } catch (Global_exceptions ex) {
-        	            JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-        	            attivitàSelezionate.remove(entry);
-        	        } catch (Exception ex) {
-        	            JOptionPane.showMessageDialog(null, "Errore imprevisto: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-        	            attivitàSelezionate.remove(entry);
-        	        }
-        	    });
-        	    
-        	    page.add(aggiungi);
+            } catch (Prop_Project_exceptions ex) {
+                if (ex.getTipo() == Prop_Project_exceptions.Tipo.adding_same_activity_twice) {
+                    JOptionPane.showMessageDialog(null, "Attività già presente nel progetto.", "Attenzione", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Errore di progetto: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    attivitàSelezionate.remove(entry);
+                }
+            } catch (Global_exceptions ex) {
+                JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                attivitàSelezionate.remove(entry);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Errore imprevisto: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                attivitàSelezionate.remove(entry);
+            }
+        });
+        page.add(aggiungi);
 
-        	    JButton indietro = new JButton("Torna indietro");
-        	    indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        	    indietro.setBounds(499, 721, 483, 60);
-        	    indietro.addActionListener(e -> {
-        	        if (!attivitàSelezionate.isEmpty()) {
-        	            int scelta = JOptionPane.showConfirmDialog(
-        	                null,
-        	                "Ci sono attività già aggiunte al progetto.\nSe torni indietro il progetto verrà cancellato.\nVuoi continuare?",
-        	                "Attenzione",
-        	                JOptionPane.YES_NO_OPTION,
-        	                JOptionPane.WARNING_MESSAGE
-        	            );
-        	            if (scelta != JOptionPane.YES_OPTION) {
-        	                return; // se l'utente NON conferma, rimane nella schermata
-        	            }
-        	        }
-        	        // sempre torna indietro
-        	        Proprietario_logged_in back = new Proprietario_logged_in(username_proprietario, TheController);
-        	        back.setVisible(true);
-        	        dispose();
-        	    });
+        JButton indietro = new JButton("Torna indietro");
+        indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        indietro.setBounds(499, 721, 483, 60);
+        indietro.addActionListener(e -> {
+            if (!attivitàSelezionate.isEmpty()) {
+                int scelta = JOptionPane.showConfirmDialog(
+                        null,
+                        "Ci sono attività già aggiunte al progetto.\nSe torni indietro il progetto verrà cancellato.\nVuoi continuare?",
+                        "Attenzione",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+                if (scelta != JOptionPane.YES_OPTION) {
+                    return;
+                }
+            }
+            TheController.OpenProprietarioLoggedIn_closeCaller(username_proprietario, Progetti_creation_scheme.this);
+        });
+        page.add(indietro);
 
-        	    page.add(indietro);
-
-        setContentPane(page);
-        
         JButton Finalize = new JButton("Concludi e finalizza");
         Finalize.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        	
-        		if (attivitàSelezionate.isEmpty()) {
-					try {
-						throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.no_new_arguments_of_project_added);
-					} catch (Prop_Project_exceptions ex) {
-						JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-				}
-        		String input = null;
-
-        	
-        		while (true) {
-        		    try {
-        			input = JOptionPane.showInputDialog(null, "Inserisci il nome del progetto:", "Nome Progetto", JOptionPane.INFORMATION_MESSAGE);
-        		    
-        		    if (input == null) {
-        		        JOptionPane.showMessageDialog(null, "Devi inserire un nome per procedere.", "Attenzione", JOptionPane.WARNING_MESSAGE);
-        		        continue;
-        		    }
-        		    
-        		    input = input.trim();
-        		    if (input.isEmpty()) {
-        	            throw new Global_exceptions("Nome progetto", Global_exceptions.Tipo.empty_field);
-        	        }
-
-        	        // input valido, esci dal ciclo
-        	        break;
-        	    } catch (Global_exceptions ex) {
-        	        JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-        	       
-        	    }
-        	}
-        		Project_finalize_and_final_adjustments finalizeFrame = new Project_finalize_and_final_adjustments(username_proprietario, TheController, lottoName,input, attivitàSelezionate);
-				finalizeFrame.setVisible(true);
-				Progetti_creation_scheme.this.setVisible(false);
-				
-        	}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (attivitàSelezionate.isEmpty()) {
+                    try {
+                        throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.no_new_arguments_of_project_added);
+                    } catch (Prop_Project_exceptions ex) {
+                        JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                String input = null;
+                while (true) {
+                    try {
+                        input = JOptionPane.showInputDialog(null, "Inserisci il nome del progetto:", "Nome Progetto", JOptionPane.INFORMATION_MESSAGE);
+                        if (input == null) {
+                            JOptionPane.showMessageDialog(null, "Devi inserire un nome per procedere.", "Attenzione", JOptionPane.WARNING_MESSAGE);
+                            continue;
+                        }
+                        input = input.trim();
+                        if (input.isEmpty()) {
+                            throw new Global_exceptions("Nome progetto", Global_exceptions.Tipo.empty_field);
+                        }
+                        break;
+                    } catch (Global_exceptions ex) {
+                        JOptionPane.showMessageDialog(null, "Errore: " + ex.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                TheController.OpenProjectFinalizeAndFinalAdjustments_closeCaller(username_proprietario, lottoName, input, attivitàSelezionate, Progetti_creation_scheme.this);
+            }
         });
         Finalize.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         Finalize.setBounds(499, 651, 483, 60);
-   
         page.add(Finalize);
+
+        setContentPane(page);
     }
-   
 }

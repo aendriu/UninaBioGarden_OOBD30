@@ -53,7 +53,7 @@ public class Proprietario_activities_visual extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Proprietario_activities_visual.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             proprietarioImage = new ImageIcon(imageUrl).getImage();
@@ -162,9 +162,7 @@ public class Proprietario_activities_visual extends JFrame {
         JButton tornaIndietro = new JButton("Torna Indietro");
         tornaIndietro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                pageProprietario = new Proprietario_logged_in(username_prop, TheController);
-                pageProprietario.setVisible(true);
-                dispose();
+               TheController.OpenProprietarioLoggedIn_closeCaller(username_prop, Proprietario_activities_visual.this);
             }
         });
         tornaIndietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));

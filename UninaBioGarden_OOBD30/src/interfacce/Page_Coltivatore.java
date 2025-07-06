@@ -30,7 +30,6 @@ public class Page_Coltivatore extends JFrame {
     private static final long serialVersionUID = 1L;
     private Image coltivatoreImage;
     private String username_colt;
-    private Home home;
     private Controller TheController;
     
     
@@ -47,7 +46,7 @@ public class Page_Coltivatore extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Page_Coltivatore.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             coltivatoreImage = new ImageIcon(imageUrl).getImage();
@@ -91,9 +90,7 @@ public class Page_Coltivatore extends JFrame {
         Vedi_attività.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        	Coltivatore_attività_responsabili frame = new Coltivatore_attività_responsabili(username_colt, TheController);
-        	frame.setVisible(true);
-     		dispose(); // Chiude la finestra corrente
+        		TheController.OpenColtivatoreAttivitaResponsabili_closeCaller(username_colt, Page_Coltivatore.this);
         	}
         });
         Vedi_attività.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -108,10 +105,7 @@ public class Page_Coltivatore extends JFrame {
         Lotti_lavora.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		
-				Coltivatore_lotti_in_cui_lavora frame = new Coltivatore_lotti_in_cui_lavora(username_colt, TheController);
-				frame.setVisible(true);
-				dispose(); // Chiude la finestra corrente
+        		TheController.OpenColtivatoreLottiInCuiLavora_closeCaller(username_colt, Page_Coltivatore.this);
 			}
         });
         Lotti_lavora.addActionListener(new ActionListener() {
@@ -126,9 +120,7 @@ public class Page_Coltivatore extends JFrame {
         Torna_alla_home.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		home = new Home(TheController);
-				home.setVisible(true);
-				dispose(); // Chiude la finestra corrente
+        		TheController.OpenHome_closeCaller(Page_Coltivatore.this);
 			}
         });
         Torna_alla_home.addActionListener(new ActionListener() {

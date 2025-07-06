@@ -28,7 +28,6 @@ public class Coltivatore_lotti_in_cui_lavora extends JFrame {
     private static final long serialVersionUID = 1L;
     private Image coltivatoreImage;
     private String username_colt;
-    private Page_Coltivatore pageColtivatore;
     private JTable table;
     private Controller TheController;
 
@@ -44,7 +43,7 @@ public class Coltivatore_lotti_in_cui_lavora extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Coltivatore_lotti_in_cui_lavora.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             coltivatoreImage = new ImageIcon(imageUrl).getImage();
@@ -116,9 +115,8 @@ public class Coltivatore_lotti_in_cui_lavora extends JFrame {
         Torna_Indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                pageColtivatore = new Page_Coltivatore(username_colt, TheController);
-                pageColtivatore.setVisible(true);
-                dispose(); // Chiude la finestra corrente
+              TheController.OpenPageColtivatore_closeCaller(username_colt, Coltivatore_lotti_in_cui_lavora.this);
+            	// Chiude la finestra corrente
             }
         });
         Tabella_lotti.add(Torna_Indietro);

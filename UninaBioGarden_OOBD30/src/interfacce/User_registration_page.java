@@ -128,10 +128,7 @@ public class User_registration_page extends JFrame {
 	    Indietro.addMouseListener(new MouseAdapter() {
 	        @Override
 	        public void mouseClicked(MouseEvent e) {
-	            Login= new Login(TheController);
-	            Login.setVisible(true);
-	            User_registration_interface.setVisible(false);
-	            dispose(); // Chiude la finestra corrente
+	           TheController.OpenLogin_closeCaller(User_registration_page.this);
 	        }
 	    });
 	    Indietro.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -233,7 +230,8 @@ public class User_registration_page extends JFrame {
 					Cognome_txt.setBackground(Color.WHITE);
 					CF_txt.setBackground(Color.WHITE);
 					password_Registrazione.setBackground(Color.WHITE);
-					//fare registrazione coltivatore e proprietario
+					TheController.OpenLogin_closeCaller(User_registration_page.this);
+					
 				} catch (Global_exceptions | Registration_exceptions e1) {
 				JOptionPane.showMessageDialog(
 			            null,
@@ -255,14 +253,12 @@ public class User_registration_page extends JFrame {
 	    User_registration_interface.add(lblNewLabel);
 	    
 	    Nome_txt = new JTextField();
-	    Nome_txt.setToolTipText("si ricorda che l'email deve seguire il seguente formato, <nome>.<cognome>@[gmail o libero].[it o com]");
 	    Nome_txt.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 	    Nome_txt.setColumns(10);
 	    Nome_txt.setBounds(564, 183, 471, 48);
 	    User_registration_interface.add(Nome_txt);
 	    
 	    Cognome_txt = new JTextField();
-	    Cognome_txt.setToolTipText("si ricorda che l'email deve seguire il seguente formato, <nome>.<cognome>@[gmail o libero].[it o com]");
 	    Cognome_txt.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 	    Cognome_txt.setColumns(10);
 	    Cognome_txt.setBounds(564, 297, 471, 48);
@@ -281,7 +277,6 @@ public class User_registration_page extends JFrame {
 	    User_registration_interface.add(COGNOME);
 	    
 	    CF_txt = new JTextField();
-	    CF_txt.setToolTipText("si ricorda che l'email deve seguire il seguente formato, <nome>.<cognome>@[gmail o libero].[it o com]");
 	    CF_txt.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 	    CF_txt.setColumns(10);
 	    CF_txt.setBounds(564, 406, 471, 48);

@@ -34,13 +34,14 @@ import javax.swing.JOptionPane;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 public class Prop_organizza_attività extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private Controller TheController;
     private String username;
     private Image PropImage;
-    private Proprietario_logged_in Plin;
     private boolean First_time_getting_data_lotto = true;
     private boolean First_time_getting_data_attività = true;
     private boolean First_time_getting_data_coltura = true;
@@ -84,7 +85,7 @@ public class Prop_organizza_attività extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Prop_organizza_attività.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -334,6 +335,10 @@ public class Prop_organizza_attività extends JFrame {
     });
    
     JButton Torna_indietro = new JButton("Torna indietro");
+    Torna_indietro.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    	}
+    });
     Torna_indietro.addMouseListener(new MouseAdapter() {
     	@Override
     	public void mouseClicked(MouseEvent e) {
@@ -376,16 +381,12 @@ public class Prop_organizza_attività extends JFrame {
     				Coltura_list.clearSelection();
     				Nome_colt_list.clearSelection();
     				cognome_list.clearSelection();
-    				Plin = new Proprietario_logged_in(username, TheController);
-    		    	Plin.setVisible(true);
-    		    	dispose();
+    				TheController.OpenProprietarioLoggedIn_closeCaller(username, Prop_organizza_attività.this);
     			} else if  (risposta == JOptionPane.NO_OPTION) {
     				return; // Annulla l'azione
     			}
     		}else {
-				Plin = new Proprietario_logged_in(username, TheController);
-		    	Plin.setVisible(true);
-		    	dispose();
+    			TheController.OpenProprietarioLoggedIn_closeCaller(username, Prop_organizza_attività.this);
 			}
     	
     	}

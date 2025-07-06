@@ -26,7 +26,7 @@ public class Progetti_visual_scheme extends JFrame {
     private Image Prop_lotti_visual_scheme_image;
     private JTable Project_table;
     private DefaultTableModel tableModel;
-    private Istance_of_progetto_selected iops;
+    private Instance_of_progetto_selected iops;
     private String Proprietario_username;
     private String Progetto_selezionato;
     // Variabili per mantenere dati originali
@@ -69,9 +69,7 @@ public class Progetti_visual_scheme extends JFrame {
 				// Gestione del click sulla tabella
 				int selectedRow = Project_table.getSelectedRow();
 					Progetto_selezionato = (String) tableModel.getValueAt(selectedRow, 0);
-					iops = new Istance_of_progetto_selected(username, TheController, Progetto_selezionato);
-					iops.setVisible(true);
-					dispose();
+					TheController.OpenInstanceOfProgettoSelected_closeCaller(Proprietario_username, Progetti_visual_scheme.this, Progetto_selezionato);
 				
 			}
 		});
@@ -95,9 +93,7 @@ public class Progetti_visual_scheme extends JFrame {
         Torna_indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Proprietario_logged_in proprietario_logged_in = new Proprietario_logged_in(username, TheController);
-                proprietario_logged_in.setVisible(true);
-                dispose();
+               TheController.OpenProprietarioLoggedIn_closeCaller(username, Progetti_visual_scheme.this);
             }
         });
         Torna_indietro.setPreferredSize(new Dimension(200, 70));
@@ -174,7 +170,7 @@ public class Progetti_visual_scheme extends JFrame {
        
 
         // icona
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Progetti_visual_scheme .class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             Prop_lotti_visual_scheme_image = new ImageIcon(imageUrl).getImage();

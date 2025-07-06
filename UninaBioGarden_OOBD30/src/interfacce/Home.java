@@ -40,7 +40,6 @@ public class Home extends JFrame {
 	private JPanel Home;
 	private Image HomeImage;
 	private JTextField txtUninabioGarden;
-	private Login LoginFrame;
 	private Controller TheController;
 	/**
 	 * Launch the application.
@@ -122,12 +121,8 @@ public class Home extends JFrame {
 	    JButton Enter = new JButton("Entra");
 	    Enter.addMouseListener(new MouseAdapter() {@Override
 	    	public void mouseClicked(MouseEvent e) {
-	    		LoginFrame = new Login(controller);
-	    		LoginFrame.setVisible(true);
-	    		Home.setVisible(false);
-	    		dispose(); // Chiude la finestra corrente
-	    	
-	    }
+	    		TheController.OpenLogin_closeCaller(Home.this);
+	    	}
 	    });
 	    Enter.setVisible(false);
 	    Enter.setBackground(new Color(0, 51, 255));

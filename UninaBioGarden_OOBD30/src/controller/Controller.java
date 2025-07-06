@@ -9,7 +9,6 @@ import java.awt.EventQueue;
 
 import dao.*;
 import entità.*;
-import interfacce.Home;
 
 public class Controller {
 	String userDir = System.getProperty("user.dir");
@@ -23,7 +22,27 @@ public class Controller {
 	public RaccoltoDAO raccoltoDAO;
 	public ColturaDAO coltureDAO;
 	public ProgettoDAO progettoDAO;
-
+	public UtenteDAO utenteDAO;
+	private Coltivatore_attività_responsabili Colt_attività_frame;
+	private Coltivatore_lotti_in_cui_lavora Colt_lotti_frame;
+	private Free_coltivatori Colt_free_frame;
+	private Free_colture Colture_free_frame;
+	private Free_lotti Free_lotti_frame;
+	private Home Home_frame;
+	private instance_of_lotto_selected Lotto_select_frame;
+	private Instance_of_progetto_selected Progetto_select_frame;
+	private Login Login_frame;
+	private Page_Coltivatore Page_coltivatore_frame;
+	private Progetti_creation_scheme Progetti_creation_frame;
+	private Progetti_visual_scheme Progetti_visual_frame;
+	private Project_finalize_and_final_adjustments Project_finalize_frame;
+	private Prop_lotti_visual_scheme Prop_lotti_frame;
+	private Prop_organizza_attività Prop_organizza_attività_frame;
+	private Proprietario_activities_visual Proprietario_activities_frame;
+	private Proprietario_logged_in Proprietario_logged_in_frame;
+	private Report_frame Report_frame;
+	private User_registration_page User_registration_frame;
+	private String CF;
 	TESTING tests;
 	
 	/* ***** CONSTRUCTOR ***** */
@@ -38,12 +57,13 @@ public class Controller {
 			raccoltoDAO = new RaccoltoDAO(dbprop.toString(), this);
 			coltureDAO = new ColturaDAO(dbprop.toString(), this);
 			progettoDAO = new ProgettoDAO(dbprop.toString(), this);
-			
+			utenteDAO = new UtenteDAO(dbprop.toString(), this);
 			
 			coltivatoreDAO.connect();
             propDAO.connect();
             attivitaDAO.connect();
             lottoDAO.connect();
+            utenteDAO.connect(); 
 			
 			
 			// TO COMMENT
@@ -57,8 +77,8 @@ public class Controller {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		Home home = new Home(this);
-        home.setVisible(true);
+		 Home_frame = new Home(this);
+        Home_frame.setVisible(true);
 	}
 	
 	/* ***** MAIN ***** */
@@ -537,21 +557,172 @@ public class Controller {
     		    for (String coltura : colturePossibili) {
     		        Map<String, Object> info = new HashMap<>();
     		        info.put("coltura", coltura);
-    		        info.put("media",  10 + rnd.nextDouble() * 80); // 10..50 kg medi
-    		        info.put("min",    5  + rnd.nextDouble() * 40); // 5..15 kg min
-    		        info.put("max",    30 + rnd.nextDouble() * 90); // 30..50 kg max
-
+    		        info.put("media",  10 + rnd.nextDouble() * 80);
+    		        info.put("min",    5  + rnd.nextDouble() * 40);
+    		        info.put("max",    30 + rnd.nextDouble() * 90);
+    		        info.put("numeroRaccolte", 1 + rnd.nextInt(15));  // da 1 a 15 raccolte
     		        raccolte.add(info);
+    		    
+
     		    }
 
     		    return raccolte;
     		}
+    	   
+    	  //DAO
+//    	  public String Convert_UsernameToCF(String username) {
+//    		  try {
+//				CF=utenteDAO.Convert_UsernameToCF(username);
+//				return CF;
+//    		  } catch (SQLException e) {
+//				e.printStackTrace();
+//				return null;
+//			}
+//    		  
+//    		   
+//    	   }
+    	   
+    	   
+    	  //Metodi per la gestione delle finestre aprtura e chiusura
+    	// Metodo generico che apre un frame e chiude il caller
+    	  public void openFrameAndCloseCaller(JFrame newFrame, JFrame caller) {
+    	      newFrame.setVisible(true);
+    	          caller.dispose();
+    	      
+    	  }
 
-    	  
+    	  // Metodi specifici che creano il frame desiderato e usano il metodo generico
+
+    	// LOGIN
+    	  public void OpenLogin_closeCaller(JFrame caller) {
+    	      System.out.println("DEBUG: OpenLogin_closeCaller chiamato");
+    	      Login loginFrame = new Login(this);
+    	      openFrameAndCloseCaller(loginFrame, caller);
+    	  }
+
+    	  // HOME
+    	  public void OpenHome_closeCaller(JFrame caller) {
+    	      System.out.println("DEBUG: OpenHome_closeCaller chiamato");
+    	      Home homeFrame = new Home(this);
+    	      openFrameAndCloseCaller(homeFrame, caller);
+    	  }
+
+    	  // REGISTRAZIONE UTENTE
+    	  public void OpenUserRegistration_closeCaller(JFrame caller) {
+    	      System.out.println("DEBUG: OpenUserRegistration_closeCaller chiamato");
+    	      User_registration_page regFrame = new User_registration_page(this);
+    	      openFrameAndCloseCaller(regFrame, caller);
+    	  }
+
+    	  // PAGINA COLTIVATORE
+    	  public void OpenPageColtivatore_closeCaller(String credenziali, JFrame caller) {
+    	      System.out.println("DEBUG: OpenPageColtivatore_closeCaller chiamato con username: " + credenziali);
+    	      Page_Coltivatore coltFrame = new Page_Coltivatore(credenziali, this);
+    	      openFrameAndCloseCaller(coltFrame, caller);
+    	  }
+
+    	  // PAGINA PROPRIETARIO
+    	  public void OpenProprietarioLoggedIn_closeCaller(String credenziali, JFrame caller) {
+    	      System.out.println("DEBUG: OpenProprietarioLoggedIn_closeCaller chiamato con username: " + credenziali);
+    	      Proprietario_logged_in propFrame = new Proprietario_logged_in(credenziali, this);
+    	      openFrameAndCloseCaller(propFrame, caller);
+    	  }
+
+    	  // COLTIVATORE ATTIVITÀ RESPONSABILI
+    	  public void OpenColtivatoreAttivitaResponsabili_closeCaller(String cf, JFrame caller) {
+    	      System.out.println("DEBUG: OpenColtivatoreAttivitaResponsabili_closeCaller chiamato con username: " + cf);
+    	      Coltivatore_attività_responsabili attivitaFrame = new Coltivatore_attività_responsabili(cf, this);
+    	      openFrameAndCloseCaller(attivitaFrame, caller);
+    	  }
+
+    	  // COLTIVATORE LOTTI IN CUI LAVORA
+    	  public void OpenColtivatoreLottiInCuiLavora_closeCaller(String cf, JFrame caller) {
+    	      System.out.println("DEBUG: OpenColtivatoreLottiInCuiLavora_closeCaller chiamato con username: " + cf);
+    	      Coltivatore_lotti_in_cui_lavora lottiFrame = new Coltivatore_lotti_in_cui_lavora(cf, this);
+    	      openFrameAndCloseCaller(lottiFrame, caller);
+    	  }
+
+    	  // PROPRIETARIO LOTTI VISUAL SCHEME
+    	  public void OpenPropLottiVisualScheme_closeCaller(String cf, int decisor, JFrame caller) {
+    	      System.out.println("DEBUG: OpenPropLottiVisualScheme_closeCaller chiamato con username: " + cf);
+    	      Prop_lotti_frame = new Prop_lotti_visual_scheme(cf, this, decisor);
+    	      openFrameAndCloseCaller(Prop_lotti_frame, caller);
+    	  }
+
+    	  // PROPRIETARIO ATTIVITÀ VISUAL
+    	  public void OpenPropAttivitàVisualScheme_closeCaller(String cf, JFrame caller) {
+    	      System.out.println("DEBUG: OpenPropAttivitàVisualScheme_closeCaller chiamato con username: " + cf);
+    	      Proprietario_activities_frame = new Proprietario_activities_visual(cf, this);
+    	      openFrameAndCloseCaller(Proprietario_activities_frame, caller);
+    	  }
+
+    	  // PROPRIETARIO ORGANIZZA ATTIVITÀ
+    	  public void OpenPropAttivitàOrganizza_closeCaller(String cf, JFrame caller) {
+    	      System.out.println("DEBUG: OpenPropAttivitàOrganizza_closeCaller chiamato con username: " + cf);
+    	      Prop_organizza_attività_frame = new Prop_organizza_attività(cf, this);
+    	      openFrameAndCloseCaller(Prop_organizza_attività_frame, caller);
+    	  }
+
+    	  // PROPRIETARIO PROGETTI VISUAL SCHEME
+    	  public void OpenPropProgettiVisualScheme_closeCaller(String cf, JFrame caller) {
+    	      System.out.println("DEBUG: OpenPropProgettiVisualScheme_closeCaller chiamato con username: " + cf);
+    	      Progetti_visual_frame = new Progetti_visual_scheme(cf, this);
+    	      openFrameAndCloseCaller(Progetti_visual_frame, caller);
+    	  }
+
+    	  // FREE LOTTI (PROPRIETARIO)
+    	  public void OpenFreeLotti_closeCaller(String CF, JFrame caller) {
+    	      System.out.println("DEBUG: OpenFreeLotti_closeCaller chiamato con username: " + CF);
+    	      Free_lotti_frame = new Free_lotti(CF, this);
+    	      openFrameAndCloseCaller(Free_lotti_frame, caller);
+    	  }
+
+    	  // ISTANZA DI LOTTO SELEZIONATO
+    	  public void OpenIstanceOfLottoSelected_closeCaller(String CF, JFrame caller, String nomeLotto) {
+    	      System.out.println("DEBUG: OpenIstanceOfLottoSelected_closeCaller chiamato con username: " + CF);
+    	      Lotto_select_frame = new instance_of_lotto_selected(CF, this, nomeLotto);
+    	      openFrameAndCloseCaller(Lotto_select_frame, caller);
+    	  }
+
+    	  // FREE COLTIVATORI
+    	  public void OpenFreeColtivatori_closeCaller(String CF, String lottoname, JFrame caller) {
+    	      System.out.println("DEBUG: OpenFreeColtivatori_closeCaller chiamato con username: " + CF);
+    	      Colt_free_frame = new Free_coltivatori(CF, this, lottoname);
+    	      openFrameAndCloseCaller(Colt_free_frame, caller);
+    	  }
+
+    	  // FREE COLTURE
+    	  public void OpenFreeColture_closeCaller(String CF, String lottoname, JFrame caller) {
+    	      System.out.println("DEBUG: OpenFreeColture_closeCaller chiamato con username: " + CF);
+    	      Colture_free_frame = new Free_colture(CF, this, lottoname);
+    	      openFrameAndCloseCaller(Colture_free_frame, caller);
+    	  }
+
+    	  // PROGETTI CREATION SCHEME
+    	  public void OpenProgettoCreationScheme_closeCaller(String CF, JFrame caller, String lottoname) {
+    	      System.out.println("DEBUG: OpenProgettoCreationScheme_closeCaller chiamato con username: " + CF);
+    	      Progetti_creation_frame = new Progetti_creation_scheme(CF, this, lottoname);
+    	      openFrameAndCloseCaller(Progetti_creation_frame, caller);
+    	  }
+
+    	  // ISTANZA DI PROGETTO SELEZIONATO
+    	  public void OpenInstanceOfProgettoSelected_closeCaller(String CF, JFrame caller, String nomeProgetto) {
+    	      System.out.println("DEBUG: OpenInstanceOfProgettoSelected_closeCaller chiamato con username: " + CF);
+    	      Progetto_select_frame = new Instance_of_progetto_selected(CF, this, nomeProgetto);
+    	      openFrameAndCloseCaller(Progetto_select_frame, caller);
+    	  }
+
+    	  // PROGETTO FINALIZE AND FINAL ADJUSTMENTS
+    	  public void OpenProjectFinalizeAndFinalAdjustments_closeCaller(String CF, String lottoname, String nomeProgetto, Set<List<String>> Project_layout, JFrame caller) {
+    	      System.out.println("DEBUG: OpenProjectFinalizeAndFinalAdjustments_closeCaller chiamato con username: " + CF);
+    	      Project_finalize_frame = new Project_finalize_and_final_adjustments(CF, this,  lottoname,nomeProgetto, Project_layout);
+    	      openFrameAndCloseCaller(Project_finalize_frame, caller);
+    	  }
+
+    	  // REPORT FRAME
+    	  public void OpenReportFrame_closeCaller(String CF, JFrame caller) {
+    	      System.out.println("DEBUG: OpenReportFrame_closeCaller chiamato con username: " + CF);
+    	      Report_frame = new Report_frame(CF, this);
+    	      openFrameAndCloseCaller(Report_frame, caller);
+    	  }
 }
-
-
-
-		
-	
-

@@ -32,7 +32,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 
-public class Istance_of_progetto_selected extends JFrame {
+public class Instance_of_progetto_selected extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private Image proprietarioImage;             
@@ -40,9 +40,8 @@ public class Istance_of_progetto_selected extends JFrame {
     private Controller TheController;              
     private String nome_progetto;                  
     private JTable Project_overall;  
-    private Progetti_visual_scheme pageProgettiVisualScheme;
 
-    public Istance_of_progetto_selected(String username_prop, Controller TheController, String nome_progetto) {
+    public Instance_of_progetto_selected(String username_prop, Controller TheController, String nome_progetto) {
         setResizable(false);
         this.username_prop = username_prop;
         this.TheController = TheController;
@@ -54,7 +53,7 @@ public class Istance_of_progetto_selected extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl =  Instance_of_progetto_selected.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             proprietarioImage = new ImageIcon(imageUrl).getImage();
@@ -230,9 +229,7 @@ public class Istance_of_progetto_selected extends JFrame {
 
         JButton tornaIndietro = new JButton("Torna Indietro");
         tornaIndietro.addActionListener(e -> {
-            pageProgettiVisualScheme = new Progetti_visual_scheme(username_prop, TheController);
-            pageProgettiVisualScheme.setVisible(true);
-            dispose(); // Chiude la finestra corrente
+            TheController.OpenPropProgettiVisualScheme_closeCaller(username_prop, Instance_of_progetto_selected.this);
         });
         tornaIndietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         tornaIndietro.setBounds(645, screenSize.height - 80, 210, 43);

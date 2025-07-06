@@ -24,7 +24,6 @@ public class Free_coltivatori extends JFrame {
     private Controller TheController;
     private String username;
     private String Lottoname;
-    private instance_of_lotto_selected iols;
     
     public Free_coltivatori(String username, Controller TheController, String Lottoname) {
         this.TheController = TheController;
@@ -97,9 +96,7 @@ public class Free_coltivatori extends JFrame {
         torna_indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                iols = new instance_of_lotto_selected(username, TheController, Lottoname);
-                iols.setVisible(true);
-                dispose();
+               TheController.OpenIstanceOfLottoSelected_closeCaller(username,Free_coltivatori.this ,Lottoname);
             }
         });
         JButton add_coltivatore = new JButton("aggiungi coltivatore");

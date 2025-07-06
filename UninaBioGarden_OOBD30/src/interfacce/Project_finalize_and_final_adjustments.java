@@ -11,6 +11,8 @@ import controller.Controller;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import interfacce.Exceptions.Specific_exceptions.Prop_Project_exceptions;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 public class Project_finalize_and_final_adjustments extends JFrame {
     private static final long serialVersionUID = 1L;
     private Image PropImage;
@@ -38,7 +40,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Caricamento immagine
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl =  Project_finalize_and_final_adjustments.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -119,6 +121,10 @@ public class Project_finalize_and_final_adjustments extends JFrame {
         setContentPane(page);
         
         JButton indietro = new JButton("Torna indietro");
+        indietro.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        	}
+        });
         indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -130,9 +136,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
                     JOptionPane.WARNING_MESSAGE
                 );
                 if (scelta == JOptionPane.YES_OPTION) {
-                    Progetti_creation_scheme Progetti_creation = new Progetti_creation_scheme(username, TheController, lottoname);
-                    Progetti_creation.setVisible(true);
-                    dispose(); // chiude la finestra corrente liberando risorse
+                    TheController.OpenProprietarioLoggedIn_closeCaller(username, Project_finalize_and_final_adjustments.this);
                 }
                return;
             }
@@ -197,9 +201,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
 						"Informazione",
 						JOptionPane.INFORMATION_MESSAGE
 					);
-        		Progetti_creation_scheme Progetti_creation = new Progetti_creation_scheme(username, TheController, lottoname);
-                Progetti_creation.setVisible(true);
-                dispose(); // chiude 
+        		TheController.OpenProprietarioLoggedIn_closeCaller(username, Project_finalize_and_final_adjustments.this); 
         	}catch(Prop_Project_exceptions ex) {
 					JOptionPane.showMessageDialog(
 							null,
@@ -207,9 +209,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
 							"Errore",
 							JOptionPane.ERROR_MESSAGE
 						);
-					Progetti_creation_scheme Progetti_creation = new Progetti_creation_scheme(username, TheController, lottoname);
-                    Progetti_creation.setVisible(true);
-                    dispose(); // chiude 
+					 TheController.OpenPropProgettiVisualScheme_closeCaller(username, Project_finalize_and_final_adjustments.this);
 				}
         	}
         });

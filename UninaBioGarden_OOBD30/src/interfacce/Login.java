@@ -45,12 +45,10 @@ public class Login extends JFrame {
 	private Image LoginImage;
 	private JTextField username_txt;
 	private JPasswordField password_login;
-	private Home Home;
 	private Login LoginFrame;
 	private JCheckBox Temporary_coltivator_access;
-	private Proprietario_logged_in Proprietario;
-	private Page_Coltivatore coltivatore;
 	private Controller TheController;
+	private String username_converted_to_CF;
 	/**
 	 * Launch the application.
 	 */
@@ -146,10 +144,7 @@ public class Login extends JFrame {
 		});
 	    Indietro.addMouseListener(new MouseAdapter() {@Override
 	    	public void mouseClicked(MouseEvent e) {
-	    		Home = new Home(TheController);
-	    		Home.setVisible(true);
-	    		Login.setVisible(false);
-	    		dispose(); // Chiude la finestra corrente
+	    		TheController.OpenHome_closeCaller(Login.this);
 	    }
 	    });
 		Indietro.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -169,10 +164,7 @@ public class Login extends JFrame {
 					if (!password.isEmpty()) {
 						throw new Global_exceptions("il campo password deve essere vuoto");
 					}
-					User_registration_page user_registration_page = new User_registration_page(TheController);
-					user_registration_page.setVisible(true);
-					Login.setVisible(false);
-					dispose(); // Chiude la finestra corrente
+					TheController.OpenUserRegistration_closeCaller(Login.this);
 				} catch (Global_exceptions e1) {
 					JOptionPane.showMessageDialog(
 						null,
@@ -229,18 +221,20 @@ public class Login extends JFrame {
 			        }
 			        username_txt.setBackground(Color.WHITE);
 			        password_login.setBackground(Color.WHITE);
+			        String Username_to_convert = username_txt.getText();
+			        //String CF= TheController.Convert_UsernameToCF(Username_to_convert);
+//			        if (CF == null) {
+//			            throw new Global_exceptions("errore di connesione col db");
+			        //}
+			        String CF= username_txt.getText();
 			        if (Temporary_coltivator_access.isSelected()){
-			        	String username_4_colt = username_txt.getText();
-			        	coltivatore = new Page_Coltivatore(username_4_colt,TheController);
-			        	coltivatore.setVisible(true);
-			        	Login.setVisible(false);
-			        	dispose(); // Chiude la finestra corrente
+			        	String username_4_colt = CF;
+			        	TheController.OpenPageColtivatore_closeCaller(username_4_colt, Login.this);
+			        	// Chiude la finestra corrente
 			        }else { 
-			        String username_4_prop = username_txt.getText();
-			        	Proprietario = new Proprietario_logged_in(username_4_prop,TheController);
-					Proprietario.setVisible(true);
-				    Login.setVisible(false);
-				   dispose(); // Chiude la finestra corrente
+			        String username_4_prop = CF;
+			        TheController.OpenProprietarioLoggedIn_closeCaller(username_4_prop, Login.this);
+			        	
 			        }
 			        } catch (Global_exceptions e1) {
 			        JOptionPane.showMessageDialog(

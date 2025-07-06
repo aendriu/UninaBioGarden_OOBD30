@@ -22,7 +22,6 @@ public class Free_lotti extends JFrame {
     private Controller TheController;
     private String username;
     private String Lottoname;
-    private instance_of_lotto_selected iols;
     public Free_lotti(String username, Controller TheController) {
         this.TheController = TheController;
         this.username = username;
@@ -89,9 +88,7 @@ public class Free_lotti extends JFrame {
         torna_indietro.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        	iols= new instance_of_lotto_selected(username, TheController, Lottoname);
-        	iols.setVisible(true);
-        	dispose();
+        	TheController.OpenProprietarioLoggedIn_closeCaller(username, Free_lotti.this);
         	}
         });
         JButton add_lotto = new JButton("aggiungi lotto");

@@ -34,7 +34,6 @@ public class Prop_lotti_visual_scheme extends JFrame {
     private Image Prop_lotti_visual_scheme_image;
     private JList<String> list;
     private MyListModel model;
-    private instance_of_lotto_selected iols;
     private int selectedIndex;
     private Progetti_creation_scheme Progetti_creation_page;
     private class MyListModel extends AbstractListModel<String> {
@@ -89,13 +88,9 @@ public class Prop_lotti_visual_scheme extends JFrame {
 			// Azione da eseguire quando si seleziona un lotto
 			String selectedLotto = list.getSelectedValue();
 			if (selectedIndex==0) {
-			iols = new instance_of_lotto_selected(selectedLotto, TheController, username);
-			iols.setVisible(true);
-			dispose();
+				TheController.OpenIstanceOfLottoSelected_closeCaller(username, Prop_lotti_visual_scheme.this, selectedLotto);
 			}else if (SelectedIndex==1) {
-				Progetti_creation_page = new Progetti_creation_scheme(selectedLotto, TheController, username);
-				Progetti_creation_page.setVisible(true);
-				dispose();
+				TheController.OpenProgettoCreationScheme_closeCaller(username, Prop_lotti_visual_scheme.this, selectedLotto);
 			}
 		});
         // scroll pane per renderla scrollabile
@@ -109,9 +104,7 @@ public class Prop_lotti_visual_scheme extends JFrame {
         Torna_indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	Proprietario_logged_in proprietario_logged_in = new Proprietario_logged_in(username, TheController);
-                proprietario_logged_in.setVisible(true);
-                dispose(); // chiude la finestra corrente
+            	TheController.OpenProprietarioLoggedIn_closeCaller(username, Prop_lotti_visual_scheme.this);
             }
         });
         Torna_indietro.setPreferredSize(new Dimension(200, 70));

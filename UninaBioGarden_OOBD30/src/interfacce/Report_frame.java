@@ -30,7 +30,7 @@ public class Report_frame extends JFrame {
     private String username;
 
     public Report_frame(String username, Controller controller) {
-    	setResizable(false);
+        setResizable(false);
         this.TheController = controller;
         this.username = username;
         initUI();
@@ -42,7 +42,7 @@ public class Report_frame extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width, screenSize.height);
 
-        // Pannello con sfondo
+        // sfondo
         JPanel pageProp = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -58,7 +58,7 @@ public class Report_frame extends JFrame {
         pageProp.setLayout(new BorderLayout());
         setContentPane(pageProp);
 
-        // Carica icona e immagine sfondo
+        // icona e sfondo
         URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
@@ -67,49 +67,36 @@ public class Report_frame extends JFrame {
             System.out.println("Immagine non trovata!");
         }
 
-        // Label titolo
         title_reports = new JLabel("Report per i lotti di " + username, SwingConstants.CENTER);
         title_reports.setPreferredSize(new Dimension(getWidth(), 40));
         title_reports.setFont(new Font("Times New Roman", Font.BOLD, 20));
         pageProp.add(title_reports, BorderLayout.NORTH);
 
-        // Bottone torna indietro
         torna_indietro = new JButton("Torna indietro");
         torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        torna_indietro.setAlignmentX(Component.CENTER_ALIGNMENT);
-        torna_indietro.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-        torna_indietro.setVisible(true);
         torna_indietro.addActionListener(e -> {
-            Proprietario_logged_in frame = new Proprietario_logged_in(username, TheController);
-            frame.setVisible(true);
-            dispose();
+            TheController.OpenProprietarioLoggedIn_closeCaller(username, Report_frame.this);
         });
 
-        // Lista sinistra
         listModel = new DefaultListModel<>();
         lottoList = new JList<>(listModel);
         lottoList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lottoList.setFixedCellWidth(300);
         lottoList.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-
         JScrollPane listScrollPane = new JScrollPane(lottoList);
-        listScrollPane.setPreferredSize(new Dimension(300, 0)); // larghezza fissa
+        listScrollPane.setPreferredSize(new Dimension(300, 0));
 
-        // Pannello sinistro con BoxLayout verticale: lista + spazio + bottone
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.add(listScrollPane);
-        leftPanel.add(Box.createRigidArea(new Dimension(0, 10))); // spazio
+        leftPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         leftPanel.add(torna_indietro);
 
         pageProp.add(leftPanel, BorderLayout.WEST);
 
-        // Contenitore grafico a destra
         chartContainer = new JPanel(new BorderLayout());
         chartScrollPane = new JScrollPane(chartContainer);
         pageProp.add(chartScrollPane, BorderLayout.CENTER);
 
-        // Listener lista selezione
         lottoList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int idx = lottoList.getSelectedIndex();
@@ -149,18 +136,13 @@ public class Report_frame extends JFrame {
             dataset.addValue(min, "Min", coltura);
             dataset.addValue(max, "Max", coltura);
 
-            if (min < globalMin) globalMin = min;
-            if (media < globalMin) globalMin = media;
-            if (max < globalMin) globalMin = max;
-
-            if (min > globalMax) globalMax = min;
-            if (media > globalMax) globalMax = media;
-            if (max > globalMax) globalMax = max;
+            globalMin = Math.min(globalMin, Math.min(min, Math.min(media, max)));
+            globalMax = Math.max(globalMax, Math.max(min, Math.max(media, max)));
         }
 
         JFreeChart chart = ChartFactory.createBarChart(
                 nomeLotto,
-                "Coltura",
+                "",
                 "quantità raccolti",
                 dataset,
                 PlotOrientation.VERTICAL,
@@ -169,19 +151,13 @@ public class Report_frame extends JFrame {
                 false);
 
         CategoryPlot plot = chart.getCategoryPlot();
-
-        // Font assi e label
         plot.getDomainAxis().setTickLabelFont(new Font("Times New Roman", Font.PLAIN, 20));
         plot.getRangeAxis().setTickLabelFont(new Font("Times New Roman", Font.PLAIN, 20));
         plot.getDomainAxis().setLabelFont(new Font("Times New Roman", Font.PLAIN, 20));
         plot.getRangeAxis().setLabelFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-        // Range dinamico + margine
-        double lowerBound = globalMin;
+        double lowerBound = globalMin > 0 ? 0 : globalMin;
         double upperBound = globalMax + 20;
-
-        if (lowerBound > 0) lowerBound = 0;
-
         plot.getRangeAxis().setRange(lowerBound, upperBound);
 
         plot.getDomainAxis().setCategoryMargin(0.4);
@@ -197,10 +173,28 @@ public class Report_frame extends JFrame {
         if (chartPanel != null) {
             chartContainer.remove(chartPanel);
         }
-
         chartPanel = new ChartPanel(chart);
-        // NON impostare dimensioni fisse, lascia gestire al layout e allo scrollpane
+
+        // tabella raccolte
+        String[] columnNames = { "Coltura", "Numero raccolte" };
+        String[][] data = new String[raccolte.size()][2];
+        int i = 0;
+        for (Map<String, Object> info : raccolte) {
+            data[i][0] = (String) info.get("coltura");
+            data[i][1] = String.valueOf(info.get("numeroRaccolte"));
+            i++;
+        }
+        JTable raccolteTable = new JTable(data, columnNames);
+        raccolteTable.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        raccolteTable.setRowHeight(25);
+
+        JScrollPane tableScrollPane = new JScrollPane(raccolteTable);
+
+        // aggiungi chart + tabella
+        chartContainer.removeAll();
         chartContainer.add(chartPanel, BorderLayout.CENTER);
+        chartContainer.add(tableScrollPane, BorderLayout.SOUTH);
+
         chartContainer.revalidate();
         chartContainer.repaint();
     }
