@@ -10,6 +10,8 @@ public class Global_exceptions extends Exception {
         not_found_in_DB,
         already_exists_in_DB,
         empty_field,
+        correct_username_but_wrong_password,
+        DB_fault,
     }
     private Tipo tipo;
 
@@ -40,6 +42,10 @@ public class Global_exceptions extends Exception {
                 return super.getMessage() + " è già registrato nella piattaforma, impossibile procedere";
             case empty_field:
                 return "Il campo " + super.getMessage() + " è vuoto";
+            case correct_username_but_wrong_password:
+				return "La password inserita per l'username " + super.getMessage() + " è errata";
+            case DB_fault:
+				return "Si è verificato un errore durante l'accesso al database: " + super.getMessage();
             default:
                 return super.getMessage();
         }

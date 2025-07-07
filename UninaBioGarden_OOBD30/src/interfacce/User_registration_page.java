@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-
+import entità.Utente;
 import controller.Controller;
 
 import javax.swing.JLabel;
@@ -46,6 +46,9 @@ public class User_registration_page extends JFrame {
 	private JCheckBox Colt_optz;
 	private JCheckBox Prop_optz;
 	private Controller TheController;
+	private int validat;
+	private Utente Utente_registrato;
+	int Where_must_it_go;
 	/**
 	 * Launch the application.
 	 */
@@ -139,10 +142,10 @@ public class User_registration_page extends JFrame {
 	    Registrati_button.addMouseListener(new MouseAdapter() {
 	        @Override
 	        public void mouseClicked(MouseEvent e) {
-	            String username = username_txt.getText();
-	            String nome = Nome_txt.getText();
-	            String cognome = Cognome_txt.getText();
-	            String cf = CF_txt.getText();
+	            String username = username_txt.getText().trim();
+	            String nome = Nome_txt.getText().trim();
+	            String cognome = Cognome_txt.getText().trim();
+	            String cf = CF_txt.getText().trim();
 	            String password = new String(password_Registrazione.getPassword());
 	            try {
 					if (nome.isEmpty()){
@@ -195,27 +198,36 @@ public class User_registration_page extends JFrame {
 						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.format_mismatch);
 					}
 					
-					if (!username.matches("^([A-Za-z]{2,}[A-Za-z]*[0-9]*|[A-Za-z]{2,}\\\\.[A-Za-z]{2,}[0-9]*)$")) {
+					if (!username.matches("^(?=.*[A-Za-z])[A-Za-z0-9]{2,}$")) {
 					    username_txt.setBackground(Color.RED);
 						throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
 					}
-					if (password.length() < 8||!password.matches(".*[A-Z].*")) {
+					if (password.length() < 4||!password.matches(".*[A-Z-0-9].*")) {
 						password_Registrazione.setBackground(Color.RED);
 						throw new Global_exceptions("password", Global_exceptions.Tipo.format_mismatch);
 					}
-					if(cf.matches("Abcdefghijklmnopqrstu")) {
+					validat= TheController.Check_if_CF_exists(cf);
+					if(validat==1) {
 						CF_txt.setBackground(Color.RED);
 						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.already_exists_in_DB);
+					}else if (validat==-99) {
+						throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
 					}
-					 if (username.equals("annabartolini")){
+					validat= TheController.Check_if_username_exists(username);
+					 if (validat==1) {	
 				            username_txt.setBackground(Color.RED);
 				        	throw new Registration_exceptions("username", Registration_exceptions.Tipo.username_already_exists);
+				        }else if (validat==-99) {
+				            throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
 				        }
-					 if (password.equals("12345678")) {
+					 validat= TheController.Check_if_password_exists(password);
+					 if (validat==1) {
 				            password_Registrazione.setBackground(Color.RED);
 				        	throw new Registration_exceptions("password", Registration_exceptions.Tipo.password_already_exists);
+				        }else if (validat==-99) {
+				            throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
 				        }
-					if (Colt_optz.isSelected() && Prop_optz.isSelected()) {
+					 if (Colt_optz.isSelected() && Prop_optz.isSelected()) {
 						Colt_optz.setBackground(Color.RED);
 						Prop_optz.setBackground(Color.RED);
 						throw new Registration_exceptions("Errore", Registration_exceptions.Tipo.Double_checkbox_selected);
@@ -230,6 +242,13 @@ public class User_registration_page extends JFrame {
 					Cognome_txt.setBackground(Color.WHITE);
 					CF_txt.setBackground(Color.WHITE);
 					password_Registrazione.setBackground(Color.WHITE);
+					Utente_registrato = new Utente(nome, cognome, cf, username, password);
+					if (Colt_optz.isSelected()) {
+						Where_must_it_go = 0; // Coltivatore
+					}else if (Prop_optz.isSelected()) {
+						Where_must_it_go = 1; // Proprietario
+					}
+					TheController.inserisci_utente(Utente_registrato, Where_must_it_go);
 					TheController.OpenLogin_closeCaller(User_registration_page.this);
 					
 				} catch (Global_exceptions | Registration_exceptions e1) {

@@ -291,10 +291,10 @@ public class TESTING {
 				: colt2.getUsername() + " Has NOT been removed" 
 		);
 		
-	    System.out.println(coltDAO.InsertUser(colt2)
-	            ? "Coltivatore inserito con successo: " + colt2.getUsername()
-	            : "Errore nell'inserimento del coltivatore " + colt2.getUsername()
-	        );
+//	    System.out.println(coltDAO.InsertUser(colt2)
+//	            ? "Coltivatore inserito con successo: " + colt2.getUsername()
+//	            : "Errore nell'inserimento del coltivatore " + colt2.getUsername()
+//	        );
 	    }
 
 

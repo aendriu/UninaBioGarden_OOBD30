@@ -49,6 +49,7 @@ public class Login extends JFrame {
 	private JCheckBox Temporary_coltivator_access;
 	private Controller TheController;
 	private String username_converted_to_CF;
+	private boolean validat= true;
 	/**
 	 * Launch the application.
 	 */
@@ -187,8 +188,8 @@ public class Login extends JFrame {
 		Accedi_button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			    String username = username_txt.getText();
-			    String password = new String(password_login.getPassword());
+			    String username = username_txt.getText().trim();
+			    String password = new String(password_login.getPassword()).trim();
 			    username_txt.setBackground(Color.WHITE);
 			    password_login.setBackground(Color.WHITE);
 			    try {
@@ -196,45 +197,45 @@ public class Login extends JFrame {
 			            username_txt.setBackground(Color.RED);
 			        	throw new Global_exceptions("username", Global_exceptions.Tipo.empty_field);
 			        }
-			        if (!username.matches("^([A-Za-z]{2,}[A-Za-z]*[0-9]*|[A-Za-z]{2,}\\.[A-Za-z]{2,}[0-9]*)$")) {
+			        if (!username.matches("^(?=.*[A-Za-z])[A-Za-z0-9]{2,}$")) {
 			            username_txt.setBackground(Color.RED);
-			        	throw new Global_exceptions("Username", Global_exceptions.Tipo.format_mismatch);
+			            throw new Global_exceptions("Username", Global_exceptions.Tipo.format_mismatch);
 			        }
-
-			        if (!username.equals("annabartolini")) {
-			            username_txt.setBackground(Color.RED);
-			        	throw new Global_exceptions("username", Global_exceptions.Tipo.not_found_in_DB);
-			        }
-
 			        if (password.isEmpty()) {
 			            password_login.setBackground(Color.RED);
 			        	throw new Global_exceptions("password", Global_exceptions.Tipo.empty_field);
 			        }
-			        if (password.length() < 8) {
+			        if (password.length() < 4) {
 			            password_login.setBackground(Color.RED);
 			        	throw new Global_exceptions("password", Global_exceptions.Tipo.format_mismatch);
-			        }
-
-			        if (!password.equals("12345678")) {
-			            password_login.setBackground(Color.RED);
-			        	throw new Global_exceptions("password", Global_exceptions.Tipo.not_found_in_DB);
 			        }
 			        username_txt.setBackground(Color.WHITE);
 			        password_login.setBackground(Color.WHITE);
 			        String Username_to_convert = username_txt.getText();
-			        //String CF= TheController.Convert_UsernameToCF(Username_to_convert);
-//			        if (CF == null) {
-//			            throw new Global_exceptions("errore di connesione col db");
-			        //}
-			        String CF= username_txt.getText();
-			        if (Temporary_coltivator_access.isSelected()){
-			        	String username_4_colt = CF;
+			        String CF= TheController.Convert_UsernameToCF(Username_to_convert);
+			        if (CF == null) {
+			            username_txt.setBackground(Color.RED);
+			        	throw new Global_exceptions("Username", Global_exceptions.Tipo.not_found_in_DB);
+			        }
+			        String validat=TheController.Get_password(Username_to_convert);
+			        if (validat == null) {
+			        	throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+			        }
+			        if (!password.trim().equals(validat.trim())) {
+			        	username_txt.setBackground(Color.RED);
+			        	throw new Global_exceptions(Username_to_convert, Global_exceptions.Tipo.correct_username_but_wrong_password);
+			        }
+			        int userType = TheController.Find_where_to_acces(Username_to_convert);
+			        if (userType==0){
+			        	String username_4_colt = Username_to_convert;
 			        	TheController.OpenPageColtivatore_closeCaller(username_4_colt, Login.this);
-			        	// Chiude la finestra corrente
+			        	
 			        }else { 
-			        String username_4_prop = CF;
+			        String username_4_prop = Username_to_convert;
 			        TheController.OpenProprietarioLoggedIn_closeCaller(username_4_prop, Login.this);
 			        	
+			        }if (userType==-99 || password.equals(null)) {
+			        	throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
 			        }
 			        } catch (Global_exceptions e1) {
 			        JOptionPane.showMessageDialog(
