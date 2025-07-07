@@ -116,25 +116,25 @@ public class UtenteDAO extends DAO {
 
 	
 	
-	// INSERT FUNCIONS
-//	public boolean InsertUser(Utente u) {
-//	    String tabName = u.GetTableName();
-//	    String sql = "INSERT INTO " + tabName + " VALUES (?, ?, ?, ?, ?)";
-//
-//	    try (PreparedStatement ps = connection.prepareStatement(sql)) {
-//	        ps.setString(1, u.getNome());
-//	        ps.setString(2, u.getCognome());
-//	        ps.setString(3, u.getCF());
-//	        ps.setString(4, u.getUsername());
-//	        ps.setString(5, u.getPassword());
-//
-//	        int rows = ps.executeUpdate();
-//	        return rows > 0;
-//	    } catch (SQLException e) {
-//	        e.printStackTrace();
-//	        return false;
-//	    }
-//	}
+	 //INSERT FUNCIONS
+	public boolean InsertUser(Utente u) {
+	    String tabName = u.GetTableName();
+	    String sql = "INSERT INTO " + tabName + " VALUES (?, ?, ?, ?, ?)";
+
+	    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+	        ps.setString(1, u.getNome());
+	        ps.setString(2, u.getCognome());
+	        ps.setString(3, u.getCF());
+	        ps.setString(4, u.getUsername());
+	        ps.setString(5, u.getPassword());
+
+	        int rows = ps.executeUpdate();
+	        return rows > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 	public boolean InsertUser(Utente u, int tipoUtente) {
 	    String tabName;
 
