@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import entità.Utente;
+import entità.*;
 import controller.Controller;
 
 import javax.swing.JLabel;
@@ -47,8 +47,8 @@ public class User_registration_page extends JFrame {
 	private JCheckBox Prop_optz;
 	private Controller TheController;
 	private int validat;
-	private Utente Utente_registrato;
-	int Where_must_it_go;
+	private String Where_must_it_go;
+	private Utente Utente_registrato=null;
 	/**
 	 * Launch the application.
 	 */
@@ -242,13 +242,12 @@ public class User_registration_page extends JFrame {
 					Cognome_txt.setBackground(Color.WHITE);
 					CF_txt.setBackground(Color.WHITE);
 					password_Registrazione.setBackground(Color.WHITE);
-					Utente_registrato = new Utente(nome, cognome, cf, username, password);
 					if (Colt_optz.isSelected()) {
-						Where_must_it_go = 0; // Coltivatore
+					Coltivatore Utente_registrato= new Coltivatore(nome, cognome, cf, username, password);
 					}else if (Prop_optz.isSelected()) {
-						Where_must_it_go = 1; // Proprietario
+						ProprietarioDiLotto Utente_registrato=new ProprietarioDiLotto(nome, cognome, cf, username, password);
 					}
-					TheController.inserisci_utente(Utente_registrato, Where_must_it_go);
+					TheController.inserisci_utente(Utente_registrato);
 					TheController.OpenLogin_closeCaller(User_registration_page.this);
 					
 				} catch (Global_exceptions | Registration_exceptions e1) {

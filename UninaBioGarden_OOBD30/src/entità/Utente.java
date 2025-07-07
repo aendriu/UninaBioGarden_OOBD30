@@ -1,7 +1,7 @@
 package entità;
 import java.util.Random;
 
-public class Utente extends Entita{
+public abstract class Utente extends Entita{
 	protected String username;
 	protected String nome;
 	protected String cognome;

@@ -642,8 +642,8 @@ public class Controller {
 			  		  }
 		  }
     	   
-    	  public void inserisci_utente(Utente utente, int decisor) {
-				   utenteDAO.InsertUser(utente, decisor);
+    	  public void inserisci_utente(Utente utente) {
+				   utenteDAO.InsertUser(utente);
 		  }
     	  
     	  
