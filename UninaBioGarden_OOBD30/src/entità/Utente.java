@@ -1,5 +1,4 @@
 package entità;
-import java.util.Random;
 
 public abstract class Utente extends Entita{
 	protected String username;
