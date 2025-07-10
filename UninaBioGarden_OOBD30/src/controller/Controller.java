@@ -270,7 +270,7 @@ public class Controller {
     	            Object[] riga = { nome, numeroColture, attivitaInCorso };
     	            lista.add(riga);
     	        }
-
+    	        	
     	        return lista;
     	    }
     	 public List<Object[]> Riempi_tab_attività_vista_proprietario(String username_colt) {
@@ -573,7 +573,7 @@ public class Controller {
     	  //DAO INTERACTIONS
     	  public String Convert_UsernameToCF(String username) {
     		  try {
-				CF=utenteDAO.Convert_UsernameToCF(username);
+				CF=utenteDAO.ConvertUsernameToCF(username);
 				return CF;
     		  } catch (SQLException e) {
 				e.printStackTrace();
@@ -585,7 +585,7 @@ public class Controller {
     	   
     	  public String Get_password(String username) {
 			 		try {
-			 			password = utenteDAO.Get_Password_of_that_username(username);
+			 			password = utenteDAO.GetPasswordOfThatUsername(username);
 			 		
 			 			return password;
 			 		} catch (SQLException e) {
@@ -596,7 +596,7 @@ public class Controller {
     	  
     	  public int Find_where_to_acces (String username) {
 			  try {
-				  int decisor = utenteDAO.Where_is_that_username_into(username);
+				  int decisor = utenteDAO.WhereIsThatUsernameInto(username);
 				  return decisor;
 			  } catch (SQLException e) {
 				  e.printStackTrace();

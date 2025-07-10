@@ -14,7 +14,7 @@ public class UtenteDAO extends DAO {
 		super(filePath, c);
 	}
 	
-	public int Where_is_that_username_into (String username) throws SQLException {
+	public int WhereIsThatUsernameInto (String username) throws SQLException {
 	    String sql = "SELECT 'coltivatore' AS table_name FROM coltivatore WHERE username = ? " +
 	                 "UNION ALL " +
 	                 "SELECT 'proprietariodilotto' AS table_name FROM proprietariodilotto WHERE username = ?";
@@ -25,13 +25,13 @@ public class UtenteDAO extends DAO {
 	        if (rs.next()) {
 	            return rs.getString("table_name").equals("coltivatore") ? 0 : 1;
 	        } else {
-	            return -1; // Username not found
+	            return -1; 
 	        }
 	    }
 	}
 	
 	
-	public String Convert_UsernameToCF(String username) throws SQLException {
+	public String ConvertUsernameToCF(String username) throws SQLException {
 	    String sql = "SELECT cf_coltivatore AS cf FROM coltivatore WHERE username = ? " +
 	                 "UNION " +
 	                 "SELECT cf_proprietario AS cf FROM proprietariodilotto WHERE username = ?";
@@ -47,7 +47,7 @@ public class UtenteDAO extends DAO {
 	    }
 	}
 	
-	public String Get_Password_of_that_username(String username) throws SQLException {
+	public String GetPasswordOfThatUsername(String username) throws SQLException {
 	    String sql = "SELECT password FROM coltivatore WHERE username = ? " +
 	                 "UNION " +
 	                 "SELECT password FROM proprietariodilotto WHERE username = ?";
@@ -110,7 +110,7 @@ public class UtenteDAO extends DAO {
 	        ps.setString(1, CF);
 	        ps.setString(2, CF);
 	        ResultSet rs = ps.executeQuery();
-	        return rs.next(); // true se il CF esiste, false altrimenti
+	        return rs.next();
 	    }
 	}
 
