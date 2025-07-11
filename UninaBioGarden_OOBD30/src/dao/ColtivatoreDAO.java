@@ -11,7 +11,9 @@ import entità.Attivita;
 import entità.Coltivatore;
 import entità.Coltura;
 import entità.Lotto;
+import entità.Progetto;
 import entità.ProprietarioDiLotto;
+import entità.Raccolto;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -71,11 +73,13 @@ public class ColtivatoreDAO extends UtenteDAO{
                     int idL = rs.getInt("idLotto");
                     int numColt = rs.getInt("NumColture");
                     String nomeLotto = rs.getString("NomeLotto");
-                    int idProj = rs.getInt("idProgetto");
-                    String CFprop = rs.getString("CF_Proprietario");
-                    ProprietarioDiLotto prop = new ProprietarioDiLotto("", "", "", "", CFprop);
+                    ProprietarioDiLotto prop = new ProprietarioDiLotto("", "", "", "", rs.getString("CF_Proprietario"));
+                    Progetto Proj = c.progettoDAO.FindSpecificProgetto(rs.getInt("idProgetto"));
+                    ArrayList<Coltura> colture = c.coltureDAO.GetColtureOfLotto(idL);
+                    ArrayList<Coltivatore> coltivatori = c.coltivatoreDAO.GetColtivatoriLotto(idL);
+                    ArrayList<Raccolto> raccolti = c.raccoltoDAO.GetRaccoltiLotto(idL);
                     
-                    Lotto lotto = new Lotto(idL, numColt, nomeLotto, prop, idProj);
+                    Lotto lotto = new Lotto(idL, numColt, nomeLotto, prop, Proj, colture, coltivatori, raccolti);
                     
                     foundLotti.add(lotto);
                 }

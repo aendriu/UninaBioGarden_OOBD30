@@ -32,7 +32,7 @@ public class LottoDAO extends DAO {
 						rs.getInt("NumColture"),
 						rs.getString("NomeLotto"),
 						c.propDAO.FindSpecificProprietario(rs.getString("CF_Proprietario")),
-						rs.getInt("idProgetto"),
+						c.progettoDAO.FindSpecificProgetto(rs.getInt("idLotto")),
 						c.coltureDAO.GetColtureOfLotto(rs.getInt("idLotto")),
 						c.coltivatoreDAO.GetColtivatoriLotto(rs.getInt("idLotto")),
 						c.raccoltoDAO.GetRaccoltiLotto(rs.getInt("idLotto"))
