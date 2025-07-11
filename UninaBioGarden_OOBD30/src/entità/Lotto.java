@@ -8,7 +8,7 @@ public class Lotto extends Entita {
 	private String nomeLotto;
 	//FK
 	private ProprietarioDiLotto proprietario;
-	private int myProgetto;
+	private Progetto myProgetto;
 	private ArrayList<Coltura> myColture;
 	private ArrayList<Coltivatore> myColtivatori;
 	private ArrayList<Raccolto> myRaccolti;
@@ -31,7 +31,7 @@ public class Lotto extends Entita {
 		tableName = "lotto";
 	}
 	
-	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, int myProgetto) {
+	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, Progetto myProgetto) {
 		super();
 		this.idLotto = idLotto;
 		this.numColture = numColture;
@@ -41,7 +41,7 @@ public class Lotto extends Entita {
 		tableName = "lotto";
 	}
 	
-	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, int myProgetto,
+	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, Progetto myProgetto,
 			ArrayList<Coltura> myColture) {
 		super();
 		this.idLotto = idLotto;
@@ -53,7 +53,7 @@ public class Lotto extends Entita {
 		tableName = "lotto";
 	}
 	
-	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, int myProgetto,
+	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, Progetto myProgetto,
 			ArrayList<Coltura> myColture, ArrayList<Coltivatore> myColtivatori, ArrayList<Raccolto> myRaccolti) {
 		super();
 		this.idLotto = idLotto;
@@ -102,11 +102,11 @@ public class Lotto extends Entita {
 		this.proprietario = proprietario;
 	}
 
-	public int getMyProgetto() {
+	public Progetto getMyProgetto() {
 		return myProgetto;
 	}
 
-	public void setMyProgetto(int myProgetto) {
+	public void setMyProgetto(Progetto myProgetto) {
 		this.myProgetto = myProgetto;
 	}
 
