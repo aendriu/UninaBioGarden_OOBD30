@@ -43,6 +43,13 @@ public class ProprietarioDAO extends UtenteDAO{
 	    return null;
 	}
 	
+	
+	/* ****************************** */
+
+	public ProprietarioDiLotto FindSpecificProprietario(ProprietarioDiLotto p) throws SQLException {
+	    return FindSpecificProprietario(p.getCF());
+	}
+	
 	/* ****************************** */
 	
 	public ArrayList<Lotto> GetLottiProprietario(String CF) throws SQLException {
@@ -73,6 +80,15 @@ public class ProprietarioDAO extends UtenteDAO{
         }
         return foundLotti;
     }
+	
+	/* ****************************** */
+
+	public ArrayList<Lotto> GetLottiProprietario(ProprietarioDiLotto p) throws SQLException {
+	    return GetLottiProprietario(p.getCF());
+	}
+	
+	/* ****************************** */
+
 	
 	/* INSERT FUNCTIONS */
 	
@@ -109,6 +125,12 @@ public class ProprietarioDAO extends UtenteDAO{
 	        e.printStackTrace();
 	        return false;
 	    }
+	}
+	
+	/* ****************************** */
+
+	public boolean AddLottoToProprietario(ProprietarioDiLotto p, int idL) throws SQLException {
+	    return AddLottoToProprietario(p.getCF(), idL);
 	}
 	
 	/* ****************************** */
@@ -152,6 +174,12 @@ public class ProprietarioDAO extends UtenteDAO{
 	        e.printStackTrace();
 	        return false;
 	    }
+	}
+	
+	/* ****************************** */
+
+	public boolean RemoveLottoFromProprietario(ProprietarioDiLotto p, int idL) throws SQLException {
+	    return RemoveLottoFromProprietario(p.getCF(), idL);
 	}
 	
 	/* ****************************** */

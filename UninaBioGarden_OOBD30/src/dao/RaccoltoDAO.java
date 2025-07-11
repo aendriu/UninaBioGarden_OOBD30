@@ -62,8 +62,8 @@ public class RaccoltoDAO extends DAO {
 						rs.getInt("idRaccolto"),
 						rs.getString("nomecolturaraccolta"),
 						rs.getInt("QuantitàRaccolta"),
-						rs.getInt("idLotto")
-					));
+						rs.getInt("idLotto"))
+					);
 				}
 				return raccoltiList;
 			}
@@ -85,8 +85,8 @@ public class RaccoltoDAO extends DAO {
 						rs.getInt("idRaccolto"),
 						rs.getString("nomecolturaraccolta"),
 						rs.getInt("QuantitàRaccolta"),
-						rs.getInt("idLotto")
-					));
+						rs.getInt("idLotto"))
+					);
 				}
 				return raccoltiList;
 			}
@@ -97,7 +97,7 @@ public class RaccoltoDAO extends DAO {
 	/* *************** */
 
 	public ArrayList<Raccolto> GetRaccoltiLotto(Raccolto r) throws SQLException {
-		if (r == null || r.getIdLotto() <= 0) {
+		if (r == null || r.getIdLotto() < 0) {
 			throw new IllegalArgumentException("Raccolto non valido: " + r);
 		}
 		return GetRaccoltiLotto(r.getIdLotto());

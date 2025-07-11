@@ -54,11 +54,20 @@ public class ColtivatoreDAO extends UtenteDAO{
 
     	return null;
     }
+    
+    /* ****************************** */
+
+    public Coltivatore FindSpecificColtivatore(Coltivatore coltivatore) throws SQLException {
+		if (coltivatore == null || coltivatore.getCF() == null || coltivatore.getCF().isEmpty()) {
+			throw new IllegalArgumentException("Coltivatore non valido: " + coltivatore);
+		}
+		return FindSpecificColtivatore(coltivatore.getCF());
+	}
 
     
     /* ****************************** */
     
-    public Lotto[] GetLottiColtivatore(String CF) throws SQLException {
+    public ArrayList<Lotto> GetLottiColtivatore(String CF) throws SQLException {
         String sql =
             "SELECT l.idLotto, l.NumColture, l.NomeLotto, l.CF_Proprietario, l.idProgetto " +
             "FROM Lavora_in li " +
@@ -85,7 +94,13 @@ public class ColtivatoreDAO extends UtenteDAO{
                 }
             }
         }
-        return foundLotti.toArray(new Lotto[0]);
+        return foundLotti;
+    }
+    
+    /* ****************************** */
+
+    public ArrayList<Lotto> GetLottiColtivatore(Coltivatore coltivatore) throws SQLException {
+    	return GetLottiColtivatore(coltivatore.getCF());
     }
     
     /* ****************************** */
@@ -124,6 +139,13 @@ public class ColtivatoreDAO extends UtenteDAO{
     }
     
     /* ****************************** */
+    
+    public ArrayList<Attivita> GetAttivitaColtivatore(Coltivatore coltivatore) throws SQLException {
+		return GetAttivitaColtivatore(coltivatore.getCF());
+	}
+    
+    /* ****************************** */
+
 
     public ArrayList<Coltivatore> GetColtivatoriLotto(int idLotto) throws SQLException {
 		String sql = "SELECT CF_coltivatore FROM lavora_in WHERE idLotto = ?";
@@ -146,6 +168,13 @@ public class ColtivatoreDAO extends UtenteDAO{
 
     
     /* ****************************** */
+    
+    public ArrayList<Coltivatore> GetColtivatoriLotto(Lotto l) throws SQLException {
+    	return GetColtivatoriLotto(l.getIdLotto());
+    }
+    
+    /* ****************************** */
+
 
     /* INSERT FUNCTIONS */
         
@@ -172,9 +201,6 @@ public class ColtivatoreDAO extends UtenteDAO{
     
     /* ************* */
     
-
-
-
     /* REMOVE FUNCTION */
     
     public boolean RemoveColtivatoreFromLotto(Coltivatore colt, Lotto l) throws SQLException {
@@ -193,16 +219,7 @@ public class ColtivatoreDAO extends UtenteDAO{
         }
     }
 
-
-
-    
-    
     /* ****************************** */
-    
-    
-
-    
-    
     /* OVERRIDES */
 
 	@Override

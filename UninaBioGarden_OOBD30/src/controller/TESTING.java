@@ -236,7 +236,7 @@ public class TESTING {
 		// ***** 
 		
 		System.out.println("TESTING getLottiColt");
-		Lotto[] colt1_lotti = coltDAO.GetLottiColtivatore(colt1.getCF());
+		ArrayList<Lotto> colt1_lotti = coltDAO.GetLottiColtivatore(colt1.getCF());
 		for(Lotto l : colt1_lotti) {
 			System.out.println(l);
 		}

@@ -5,10 +5,8 @@ public class Raccolto extends Entita{
 	private String nomeRaccolto;
 	private int quantitaRaccolta;
 	private int idLotto;
-	
-	
-	
-	
+
+		
 	/* CONSTRUCTORS */
 	
 	public Raccolto(String nomeRaccolto, int quantitaRaccolta, int idLotto) {
@@ -18,6 +16,8 @@ public class Raccolto extends Entita{
 		this.idLotto = idLotto;
 	}
 	
+	// *****
+	
 	public Raccolto(int idRaccolto, String nomeRaccolto, int quantitaRaccolta, int idLotto) {
 		super();
 		this.idRaccolto = idRaccolto;
@@ -25,6 +25,8 @@ public class Raccolto extends Entita{
 		this.quantitaRaccolta = quantitaRaccolta;
 		this.idLotto = idLotto;
 	}
+	
+	/* GETTERS and SETTERS */
 
 	public int getIdRaccolto() {
 		return idRaccolto;

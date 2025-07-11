@@ -48,6 +48,16 @@ public class AttivitaDAO extends DAO {
     
     /* ******************************* */
     
+    public Attivita FindSpecificAttivita(Attivita a) throws SQLException {
+		if (a == null || a.getIdAttivita() <= 0) {
+			throw new IllegalArgumentException("Attività non valida: " + a);
+		}
+		return FindSpecificAttivita(a.getIdAttivita());
+	}
+    
+    /* ******************************* */
+
+    
     public ArrayList<Attivita> GetAttivitaColtivatore(String cf_coltivatore) throws SQLException {
         String sql = "SELECT * FROM attività WHERE cf_Coltivatore = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

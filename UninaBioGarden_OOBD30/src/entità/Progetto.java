@@ -11,6 +11,17 @@ public class Progetto extends Entita{
 	private ArrayList<Attivita> attivitaProgetto;
 	
 	/* CONSTRUCTORS */
+	
+	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
+			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
+		this.annoProgetto = annoProgetto;
+		this.proprietario = proprietario;
+		this.lotto = lotto;
+		this.coltProgetto = coltProgetto;
+		this.attivitaProgetto = attivitaProgetto;
+		this.tableName = "progetto";
+	}
+	
 	public Progetto(int idProgetto, int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
 			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
 		this.idProgetto = idProgetto;
