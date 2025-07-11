@@ -15,6 +15,7 @@ public class Attivita extends Entita {
 
 
     /* CONSTRUCTORS */
+   
     
     public Attivita(String nomeAttivita, Date inizio, Date fine, String cfColtivatore) {
     	this.nomeAttivita = nomeAttivita;

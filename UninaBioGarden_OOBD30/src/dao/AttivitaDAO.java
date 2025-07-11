@@ -83,8 +83,11 @@ public class AttivitaDAO extends DAO {
     /* ******************************* */
     
     public ArrayList<Attivita> GetAttivitaColtivatore(Coltivatore coltivatore) throws SQLException {
-        return GetAttivitaColtivatore(coltivatore.getCF());
-    }
+		if (coltivatore == null || coltivatore.getCF() == null || coltivatore.getCF().isEmpty()) {
+			throw new IllegalArgumentException("Coltivatore non valido: " + coltivatore);
+		}
+		return GetAttivitaColtivatore(coltivatore.getCF());
+	}
     
     /* ******************************* */
     

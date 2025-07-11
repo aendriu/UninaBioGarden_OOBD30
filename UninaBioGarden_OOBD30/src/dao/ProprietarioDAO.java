@@ -108,10 +108,7 @@ public class ProprietarioDAO extends UtenteDAO{
 	                try (PreparedStatement updateStmt = connection.prepareStatement(updateSql)) {
 	                    updateStmt.setString(1, CF);
 	                    updateStmt.setInt(2, idL);
-	                    int rowsUpdated = updateStmt.executeUpdate();
-	                    
-	                    ApplyChangesOfAdd(CF, idL);
-	                    
+	                    int rowsUpdated = updateStmt.executeUpdate();	                    
 	                    return rowsUpdated > 0; 
 	                }
 	                
@@ -135,10 +132,6 @@ public class ProprietarioDAO extends UtenteDAO{
 	
 	/* ****************************** */
 
-	private void ApplyChangesOfAdd(String CF, int idL) throws SQLException {
-		c.propDAO.FindSpecificProprietario(CF).aggiungiLotto(c.lottoDAO.FindSpecificLotto(idL));
-        c.lottoDAO.FindSpecificLotto(idL).setProprietario(c.propDAO.FindSpecificProprietario(CF));
-	}
 	
 	
 	/* REMOVAL FUNCTIONS*/
@@ -159,8 +152,7 @@ public class ProprietarioDAO extends UtenteDAO{
 	                try (PreparedStatement updateStmt = connection.prepareStatement(updateSql)) {
 	                    updateStmt.setInt(1, idL);
 	                    int rowsUpdated = updateStmt.executeUpdate();
-	                    
-	                    ApplyChangesOfRemove(CF, idL);
+
 	                    
 	                    return rowsUpdated > 0; 
 	                }
@@ -184,10 +176,6 @@ public class ProprietarioDAO extends UtenteDAO{
 	
 	/* ****************************** */
 
-	private void ApplyChangesOfRemove(String CF, int idL) throws SQLException {
-		c.propDAO.FindSpecificProprietario(CF).rimuoviLotto(c.lottoDAO.FindSpecificLotto(idL));
-		c.lottoDAO.FindSpecificLotto(idL).setProprietario(null);
-	}
 	
 	
 	
