@@ -126,6 +126,7 @@ public class ColturaDAO extends DAO {
 	
 	/* ************************* */
 
+	// Restituisce una lista di colture di un lotto specifico filtrate per nome della coltura	
 	public ArrayList<Coltura> GetColturaOfLottoByNomeColtura(String nomeColt, Lotto l) throws SQLException {
 		if (l == null || l.getIdLotto() <= 0) {
 			throw new IllegalArgumentException("Lotto non valido: " + l);

@@ -7,10 +7,18 @@ public class ProprietarioDiLotto extends Utente {
 	
 	
 	/* CONSTRUCTORS */
-	public ProprietarioDiLotto(String username, String nome, String cognome, String password, String CF) {
-		super(username, nome, cognome, password, CF);
+	public ProprietarioDiLotto(String nome, String cognome, String CF, String username, String password) {
+		super(nome, cognome, CF, username, password);
 		tableName = "proprietariodilotto";
 	}
+	
+	public ProprietarioDiLotto(String nome, String cognome, String CF, String username, String password, ArrayList<Lotto> lottiProprietario) {
+		super(nome, cognome, CF, username, password);
+		this.lottiProprietario = lottiProprietario;
+		tableName = "proprietariodilotto";
+	}
+	
+	/* ***** */
 	
 	public void aggiungiLotto(Lotto lotto) {
         lottiProprietario.add(lotto);

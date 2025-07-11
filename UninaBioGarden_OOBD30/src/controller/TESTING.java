@@ -49,14 +49,13 @@ public class TESTING {
 	// TESTING
 	
 	public void InitTests() throws SQLException {
-		//InitTestPropDAO();
-		//InitTestColtDAO();
-		
-		//InitTestLottoDAO();
-		InitTestAttDAO();
-		//InitTestRacDAO();
-		//InitTestColturaDAO();
-		//InitTestProgettoDAO();
+		//1. InitTestPropDAO();
+		//2. InitTestColtDAO();
+		//3. InitTestLottoDAO();
+		//4. InitTestAttDAO();
+		//5. InitTestRacDAO();
+		//6. InitTestColturaDAO();
+		//7. InitTestProgettoDAO();
 		return;
 	}
 	

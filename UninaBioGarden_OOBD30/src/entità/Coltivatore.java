@@ -22,7 +22,6 @@ public class Coltivatore extends Utente{
 		tableName = "coltivatore";
 	}
 	
-	/**/
 	
 	/* FUNCTIONS */
 	
@@ -30,8 +29,18 @@ public class Coltivatore extends Utente{
         lottiColtivatore.add(lotto);
     }
 	
+	public void rimuoviLotto(Lotto lotto) {
+		lottiColtivatore.remove(lotto);
+	}
+	
+	/* ***** */
+	
 	public void aggiungiAttivita(Attivita att) {
 		attivitaColtivatore.add(att);
+	}
+	
+	public void rimuoviAttivita(Attivita att) {
+		attivitaColtivatore.remove(att);
 	}
 	
 	public ArrayList<Lotto> getLotti() {
