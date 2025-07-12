@@ -97,26 +97,7 @@ public class Controller {
 		return colt;
 	}
 	
-	
-	public List<Object[]> Riempi_tab_lotti_in_cui_lavora(String username_colt) {
-        List<Object[]> lista = new ArrayList<>();
-        Random rnd = new Random();
 
-        String[] nomiLotti = {
-            "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
-            "Vigneto Sud", "Frutteto Ovest", "Pista Agraria", "Bosco Urbano",
-            "Prato Fiorito", "Collina Blu"
-        };
-
-        for (String nome : nomiLotti) {
-            int numeroColture = 1 + rnd.nextInt(10); // 1..10
-            int attivitaInCorso = rnd.nextInt(4);    // 0..3
-            Object[] riga = { nome, numeroColture, attivitaInCorso };
-            lista.add(riga);
-        }
-
-        return lista;
-    }
     public List<Object[]> Riempi_tab_attività_responsabili(String username_colt) {
         List<Object[]> lista = new ArrayList<>();
         Random rnd = new Random();
@@ -156,15 +137,7 @@ public class Controller {
 
         return lista;
     }
-    public String[] getNomiLottiPlaceholder(String username_colt) {
-        List<Object[]> lista = Riempi_tab_lotti_in_cui_lavora(username_colt);
-        int size = Math.min(lista.size(), 10);
-        String[] nomi = new String[size];
-        for (int i = 0; i < size; i++) {
-            nomi[i] = (String) lista.get(i)[0]; // prendo solo il nome del lotto
-        }
-        return nomi;
-    }
+   
     public List<Object[]> Riempi_tab_Proprietario_nome_coltura(String username_colt, String Lottoname) { //METTERE PURE LOTTO NAME QUANDO HO LE DAO
         List<Object[]> lista = new ArrayList<>();
         Random rnd = new Random();
@@ -645,8 +618,49 @@ public class Controller {
     	  public void inserisci_utente(Utente utente) {
 				   utenteDAO.InsertUser(utente);
 		  }
+    	  public String get_Info_From_Username(String username, int decisor) {
+    		    try {
+    		        String CF = utenteDAO.ConvertUsernameToCF(username);
+
+    		        if (decisor == 0) {
+    		            Coltivatore c = coltivatoreDAO.FindSpecificColtivatore(CF);
+    		            return c.getNome() + " " + c.getCognome();
+    		        } else if (decisor == 1) {
+    		            ProprietarioDiLotto p = propDAO.FindSpecificProprietario(CF);
+    		            return p.getNome() + " " + p.getCognome();
+    		        } else {
+    		            return null; 
+    		        }
+
+    		    } catch (SQLException e) {
+    		        e.printStackTrace(); // utile per debug
+    		        return null;
+    		    }
+    		}
     	  
-    	  
+    	  public List<Object[]> Riempi_tab_lotti_in_cui_lavora(String username){
+    		  
+    		  List<Object[]> Righe = new ArrayList<>();
+    		  try {
+    			  String CF = utenteDAO.ConvertUsernameToCF(username);
+    			  ArrayList<Lotto> lotti = coltivatoreDAO.GetLottiColtivatore(CF);
+    			  if (lotti.isEmpty()) {
+    				  return Righe; 
+    			  }
+    			  for(Lotto lotto_to_get : lotti) {
+    				  String nome = lotto_to_get.getNomeLotto();
+    		            int numColture = lotto_to_get.getNumColture();
+    		            Righe.add(new Object[]{nome, numColture});
+    		            
+    			  }
+    		  }
+    		  catch (SQLException e) {
+				  e.printStackTrace();
+				  return Righe;
+			  }
+			  return Righe;
+    	  }
+
     	  //Metodi per la gestione delle finestre aprtura e chiusura
     	// Metodo generico che apre un frame e chiude il caller
     	  public void openFrameAndCloseCaller(JFrame newFrame, JFrame caller) {

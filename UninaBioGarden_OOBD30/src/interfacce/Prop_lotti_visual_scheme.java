@@ -122,8 +122,8 @@ public class Prop_lotti_visual_scheme extends JFrame {
         }
 
         // Carico dati dal controller e aggiorno la lista
-        String[] nomiLotti = TheController.getNomiLottiPlaceholder(username);
-        model.setValues(nomiLotti);
+//        String[] nomiLotti = TheController.getNomiLottiPlaceholder(username);
+        //model.setValues(nomiLotti);
     }
 
 }

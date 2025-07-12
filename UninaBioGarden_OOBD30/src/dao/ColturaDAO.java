@@ -56,7 +56,7 @@ public class ColturaDAO extends DAO {
 	}
 	
 	/* ************************* */
-	
+	//CAMBIATO IL MODO IN CUI PIGLI IL TEMPO MATURAZIONE SENNO CRASHA
 	public ArrayList<Coltura> GetColtureOfLotto(int idLotto) throws SQLException {
 		String sql = "SELECT * FROM coltura WHERE idLotto = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -64,9 +64,12 @@ public class ColturaDAO extends DAO {
 			try (ResultSet rs = stmt.executeQuery()) {
 				ArrayList<Coltura> coltureList = new ArrayList<>();
 				while (rs.next()) {
-					java.sql.Time time = rs.getTime("tempomaturazione");
-					Duration durata = Duration.ofSeconds(time.toLocalTime().toSecondOfDay());
+					 // Leggi come stringa
+	                String tempoMaturazioneStr = rs.getString("tempomaturazione");
 
+	                // Estrai i giorni (es. "40 days")
+	                long giorni = Long.parseLong(tempoMaturazioneStr.split(" ")[0]);
+	                Duration durata = Duration.ofDays(giorni);
 					String giornoSeminaStr = rs.getString("giornoSemina");
 					LocalDate giornoSemina = LocalDate.parse(giornoSeminaStr); 
 

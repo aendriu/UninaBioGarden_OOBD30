@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -76,9 +77,23 @@ public class Coltivatore_lotti_in_cui_lavora extends JFrame {
 
         // Prendo i dati dal controller
         List<Object[]> righe = TheController.Riempi_tab_lotti_in_cui_lavora(username_colt);
+        try {
+        	if (righe.isEmpty()) {
+        	    throw new IllegalArgumentException("Nessun lotto trovato per il coltivatore: " + username_colt+ "si verrà reindirizzati alla pagina principale");
+        	}
+        	} catch (Exception e) {
+        	    JOptionPane.showMessageDialog(
+        	        null,
+        	        e.getMessage(),
+        	        "Errore",
+        	        JOptionPane.ERROR_MESSAGE
+        	    		);
+        	    TheController.OpenPageColtivatore_closeCaller(username_colt, Coltivatore_lotti_in_cui_lavora.this);	
+        	}
+
 
         // Intestazioni colonne
-        String[] colonne = { "Nome Lotto", "Numero colture", "Numero attività in corso" };
+        String[] colonne = { "Nome Lotto", "Numero colture" };
 
         // Conversione lista a matrice
         Object[][] dati = new Object[righe.size()][colonne.length];

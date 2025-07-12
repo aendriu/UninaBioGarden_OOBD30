@@ -15,8 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.Controller;
+import interfacce.Exceptions.Global_exceptions;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -80,7 +83,21 @@ public class Page_Coltivatore extends JFrame {
         pageColtivatorePanel.add(User_name_printer,TheController);
         
         // Qui mostri la stringa username passata
-        JLabel User_name_printer_actual = new JLabel(username_colt);
+        String Print_details= TheController.get_Info_From_Username(username_colt, 0);
+        
+        try {
+			if (Print_details.isEmpty()){
+				throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+			}
+		} catch (Global_exceptions e) {
+			 JOptionPane.showMessageDialog(
+					 null,
+			          e.getMessage(),
+			            "Errore",
+			            JOptionPane.ERROR_MESSAGE
+			        );
+		}
+        JLabel User_name_printer_actual = new JLabel(Print_details);
         User_name_printer_actual.setHorizontalAlignment(SwingConstants.CENTER);
         User_name_printer_actual.setFont(new Font("Times New Roman", Font.PLAIN, 40));
         User_name_printer_actual.setBounds(51, 59, 1461, 56);
