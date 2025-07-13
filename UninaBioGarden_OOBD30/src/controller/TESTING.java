@@ -125,7 +125,7 @@ public class TESTING {
 	    System.out.println("BEFORE");
 	    System.out.println(att1);
 	    //att1.AddTempoLavorato(java.sql.Time.valueOf("01:00:00"));
-	    attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), java.sql.Time.valueOf("01:00:00"));
+	    //attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), java.sql.Time.valueOf("01:00:00"));
 	    //att1.setTempoLavorato(java.sql.Time.valueOf("01:00:00"));
 	    System.out.println("AFTER");
 	    System.out.println(att1);

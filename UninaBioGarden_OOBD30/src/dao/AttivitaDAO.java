@@ -284,6 +284,7 @@ public class AttivitaDAO extends DAO {
                    + "SET tempoLavorato = (tempoLavorato + ?::interval) "
         		
                    + "WHERE idAttività = ?";
+                   
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, nuovoTempo.toLocalTime().toString());

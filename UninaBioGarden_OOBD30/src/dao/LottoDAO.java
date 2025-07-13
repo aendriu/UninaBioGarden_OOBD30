@@ -20,6 +20,26 @@ public class LottoDAO extends DAO {
 	}
 
 	// RETRIEVAL FUNCTIONS
+//	public int findIdLottoByNome(String nomeLotto) throws SQLException {
+//	    if (nomeLotto == null || nomeLotto.trim().isEmpty()) {
+//	        throw new IllegalArgumentException("Nome lotto non valido: " + nomeLotto);
+//	    }
+//
+//	    String query = "SELECT idlotto FROM lotto WHERE nomelotto = ?";
+//	    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+//	        stmt.setString(1, nomeLotto);
+//
+//	        try (ResultSet rs = stmt.executeQuery()) {
+//	            if (rs.next()) {
+//	                return rs.getInt("idlotto");
+//	            } else {
+//	                // Se non trovato, puoi decidere di lanciare eccezione o restituire -1
+//	                throw new SQLException("Nessun lotto trovato con nome: " + nomeLotto);
+//	            }
+//	        }
+//	    }
+//	}
+
 	
 	public Lotto FindSpecificLotto(int idLotto) throws SQLException {
 		String sql = "SELECT * FROM lotto WHERE idLotto = ?";

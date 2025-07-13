@@ -4,6 +4,8 @@ import interfacce.*;
 import java.util.*;
 import javax.swing.*;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.nio.file.Path;
 import java.awt.EventQueue;
 
@@ -98,45 +100,7 @@ public class Controller {
 	}
 	
 
-    public List<Object[]> Riempi_tab_attività_responsabili(String username_colt) {
-        List<Object[]> lista = new ArrayList<>();
-        Random rnd = new Random();
-
-        String[] nomiAttività = {
-            "Irrigazione", "Potatura", "Raccolta", "Semina",
-            "Concimazione", "Controllo Parassiti", "Monitoraggio Clima", "Applica Pesticida"
-        };
-
-        String[] nomiLotti = {
-            "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
-            "Vigneto Sud", "Frutteto Ovest", "Prato Fiorito", "Collina Blu"
-        };
-        String[] colture = {
-			"Pomodoro", "Lattuga", "Carota", "Zucchina",
-			"Peperone", "Melanzana", "Cetriolo", "Spinaci"
-		};
-        for (int i = 0; i < 20; i++) {  // genero 20 righe di esempio
-            String nomeAttivita = nomiAttività[rnd.nextInt(nomiAttività.length)];
-            String nomeLotto = nomiLotti[rnd.nextInt(nomiLotti.length)];
-            String coltura = colture[rnd.nextInt(colture.length)];
-            String stato = "In corso";
-            int percentuale = rnd.nextInt(101); // 0..100
-         
-
-            Object[] riga = { 
-                nomeLotto, 
-                nomeAttivita, 
-                coltura, 
-                stato, 
-                percentuale, 
-                
-            };
-
-            lista.add(riga);
-        }
-
-        return lista;
-    }
+   
    
     public List<Object[]> Riempi_tab_Proprietario_nome_coltura(String username_colt, String Lottoname) { //METTERE PURE LOTTO NAME QUANDO HO LE DAO
         List<Object[]> lista = new ArrayList<>();
@@ -668,7 +632,74 @@ public class Controller {
     	          caller.dispose();
     	      
     	  }
+    	  
+    	  
+    	  public List<Object[]> Riempi_tab_attività_responsabili(String username) {
+    		    List<Object[]> righe = new ArrayList<>();
+    		    try {
+    		        String CF = utenteDAO.ConvertUsernameToCF(username);
+    		        ArrayList<Lotto> lotti = coltivatoreDAO.GetLottiColtivatore(CF);
+    		        if (lotti.isEmpty()) return righe;
 
+    		        Set<Integer> attivitaViste = new HashSet<>(); // Moved fuori dal ciclo lotti per evitare duplicati
+
+    		        for (Lotto lotto : lotti) {
+    		            String nomeLotto = lotto.getNomeLotto();
+    		            int lottoID = lotto.getIdLotto();
+
+    		            List<Coltura> colturePerLotto = coltureDAO.GetColtureOfLotto(lottoID);
+
+    		            for (Coltura colturaObj : colturePerLotto) {
+    		                String nomeColtura = colturaObj.getNomeColtura();
+
+    		                // Ottieni attività filtrate per lotto, coltivatore e coltura
+    		                List<Attivita> attivitaFiltrate = coltivatoreDAO.getAttivitaPerColtivatoreELotto(lottoID, CF, nomeColtura);
+
+    		                for (Attivita att : attivitaFiltrate) {
+    		                    if (!attivitaViste.add(att.getIdAttivita())) {
+    		                        // Salta attività già viste per evitare duplicati
+    		                        continue;
+    		                    }
+
+    		                    int idAttività= att.getIdAttivita();
+    		                    String nomeAttività = att.getNomeAttivita();
+    		                    String stato = att.getStato();
+    		                    Date dataInizio = att.getInizio();
+    		                    Date dataFine = att.getFine();
+    		                    Time tempo = att.getTempoLavorato();
+
+    		                    long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
+
+    		                    // Calcolo millisecondi tempo lavorato
+    		                    LocalTime localTime = tempo.toLocalTime();
+    		                    int ore = localTime.getHour();
+    		                    int minuti = localTime.getMinute();
+    		                    int secondi = localTime.getSecond();
+    		                    long tempoLavoratoEffettivoMillis = (ore * 3600 + minuti * 60 + secondi) * 1000;
+
+    		                    int percentuale = (durataTotaleMillis <= 0) ? 0 :
+    		                        (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
+
+    		                    righe.add(new Object[] {nomeLotto, nomeAttività, nomeColtura, stato, percentuale, idAttività, lottoID});
+    		                }
+    		            }
+    		        }
+    		    } catch (SQLException e) {
+    		        e.printStackTrace();
+    		    }
+    		    return righe;
+    		}
+
+
+    	  public boolean aggiorna_tempo_lavorato(int idAttività, Time tempoLavorato) {
+			  try {
+				  attivitaDAO.UpdateTempoLavoratoAttivita(idAttività, tempoLavorato);
+			  } catch (SQLException e) {
+				  e.printStackTrace();
+				  return false; // Errore durante l'aggiornamento
+				  			  }
+			  return true; // Aggiornamento riuscito
+			  		  }
     	  // Metodi specifici che creano il frame desiderato e usano il metodo generico
 
     	// LOGIN
