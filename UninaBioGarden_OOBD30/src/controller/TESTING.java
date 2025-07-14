@@ -49,13 +49,13 @@ public class TESTING {
 	// TESTING
 	
 	public void InitTests() throws SQLException {
-		InitTestPropDAO();
+		//InitTestPropDAO();
 		InitTestColtDAO();
-		//3. InitTestLottoDAO();
-		InitTestAttDAO();
-		//5. InitTestRacDAO();
-		//6. InitTestColturaDAO();
-		//7. InitTestProgettoDAO();
+		//InitTestLottoDAO();
+		//InitTestAttDAO();
+		//InitTestRacDAO();
+		// InitTestColturaDAO();
+		//InitTestProgettoDAO();
 		return;
 	}
 	
@@ -294,7 +294,16 @@ public class TESTING {
 //	            ? "Coltivatore inserito con successo: " + colt2.getUsername()
 //	            : "Errore nell'inserimento del coltivatore " + colt2.getUsername()
 //	        );
-	    }
+		
+		
+		System.out.println("Testing GetFreeColtivatori...");
+		ArrayList<Coltivatore> freeColtivatori = coltDAO.GetFreeColtivatori();
+		for(Coltivatore c : freeColtivatori) {
+			System.out.println(c);
+		}
+	}
+	
+		
 
 
 

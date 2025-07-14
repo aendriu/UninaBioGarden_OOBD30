@@ -70,6 +70,31 @@ public class ColtivatoreDAO extends UtenteDAO{
     
     /* ****************************** */
     
+    public ArrayList<Coltivatore> GetFreeColtivatori() throws SQLException {
+		// un coltivatore che ha solo attività completate è libero
+    	String sql = "SELECT * FROM coltivatore WHERE CF_coltivatore NOT IN "
+				+ "(SELECT DISTINCT CF_coltivatore FROM attività WHERE Stato != 'Completata')";
+		
+		ArrayList<Coltivatore> freeColtivatori = new ArrayList<>();
+		try (PreparedStatement stmt = connection.prepareStatement(sql);
+			 ResultSet rs = stmt.executeQuery()) {
+			while (rs.next()) {
+				Coltivatore coltivatore = new Coltivatore(
+					rs.getString("nome"),
+					rs.getString("cognome"),
+					rs.getString("CF_coltivatore"),
+					rs.getString("username"),
+					rs.getString("password")
+				);
+				freeColtivatori.add(coltivatore);
+			}
+		}
+		return freeColtivatori;
+	}
+    
+    /* ****************************** */
+
+    
     public ArrayList<Lotto> GetLottiColtivatore(String cf) {
         if (cf == null || cf.isEmpty()) {
             throw new IllegalArgumentException("CF Coltivatore non valido: " + cf);

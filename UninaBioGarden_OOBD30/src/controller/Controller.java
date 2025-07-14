@@ -91,6 +91,8 @@ public class Controller {
         SwingUtilities.invokeLater(() -> {
             new Controller();
         });
+        
+        
        
     }
 	/* *************** ColtivatoreDAO test *************** */
