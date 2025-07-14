@@ -74,8 +74,6 @@ public class Coltivatore_attività_responsabili extends JFrame {
                 String lottoName = (String) table.getModel().getValueAt(modelRow, 0);
                 String attivitaName = (String) table.getModel().getValueAt(modelRow, 1);
                 String stato = (String) table.getModel().getValueAt(modelRow, 3);
-                int idAttivita = (int) table.getModel().getValueAt(modelRow, 5);
-                int idLotto = (int) table.getModel().getValueAt(modelRow, 6);
 
                 try {
                     if (stato.equalsIgnoreCase("completata")) {
@@ -102,8 +100,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
                         }
                         LocalTime localTime = LocalTime.of(time_spent, 0, 0);
                         Time time = Time.valueOf(localTime);
-
-                        boolean validat = TheController.aggiorna_tempo_lavorato(idAttivita, time);
+                        boolean validat = TheController.aggiorna_tempo_lavorato(username_colt, lottoName, attivitaName, time);
                         if (validat) {
                             JOptionPane.showMessageDialog(
                                 null, "Tempo aggiornato con successo per l'attività " + attivitaName + " del lotto " + lottoName,
@@ -151,7 +148,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
         righe.sort(Comparator.comparing(a -> ((String) a[0]))); // Ordina per nome lotto
 
         String[] colonne = {
-            "Nome Lotto", "Nome Attività", "Coltura", "Stato", "Percentuale Completamento", "id Attività hidden", "id lotto hidden"
+            "Nome Lotto", "Nome Attività", "Coltura", "Stato", "Percentuale Completamento"
         };
 
         Object[][] dati = new Object[righe.size()][colonne.length];
@@ -197,18 +194,12 @@ public class Coltivatore_attività_responsabili extends JFrame {
             }
         });
 
-        hideColumn(table, 5);
-        hideColumn(table, 6);
+    
     }
 
     private void reloadTableData() {
         loadTableData();
     }
 
-    private void hideColumn(JTable table, int index) {
-        TableColumn col = table.getColumnModel().getColumn(index);
-        col.setMinWidth(0);
-        col.setMaxWidth(0);
-        col.setPreferredWidth(0);
-    }
+    
 }

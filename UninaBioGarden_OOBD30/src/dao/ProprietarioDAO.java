@@ -52,6 +52,7 @@ public class ProprietarioDAO extends UtenteDAO{
 	
 	/* ****************************** */
 	
+	
 	public ArrayList<Lotto> GetLottiProprietario(String CF) throws SQLException {
         String sql =
             "SELECT l.idLotto, l.NumColture, l.NomeLotto, l.CF_Proprietario, l.idProgetto "

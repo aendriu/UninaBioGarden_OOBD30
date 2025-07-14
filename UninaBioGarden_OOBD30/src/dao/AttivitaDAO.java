@@ -121,8 +121,41 @@ public class AttivitaDAO extends DAO {
         }
         return attivitaList.toArray(new Attivita[0]);
     }
+//TODO NUOVA QUERY
+    public ArrayList<Attivita> GetAttivitaOfLotto(int idLotto, String CF) throws SQLException {
+        String sql = """
+            SELECT a.*
+            FROM attività a
+            WHERE a.cf_coltivatore = ?
+              AND EXISTS (
+                  SELECT 1
+                  FROM lavora_in li
+                  WHERE li.cf_coltivatore = a.cf_coltivatore
+                    AND li.idlotto = ?
+              )
+            """;
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, CF);
+            stmt.setInt(2, idLotto);
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Attivita> attivitaList = new ArrayList<>();
+                while (rs.next()) {
+                    attivitaList.add(new Attivita(
+                            rs.getInt("idattività"),
+                            rs.getString("nomeattività"),
+                            rs.getDate("inizio"),
+                            rs.getDate("fine"),
+                            rs.getString("cf_coltivatore"),
+                            rs.getTime("tempolavorato"),
+                            rs.getString("stato")
+                    
+                    		));
+                }
+                return new ArrayList<>(attivitaList);
+            }
+        }
+    }
 
-    
     /* ******************************* */
     
     /* INSERT ATTIVITA */
