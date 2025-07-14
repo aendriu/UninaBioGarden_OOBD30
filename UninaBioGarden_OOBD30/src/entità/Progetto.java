@@ -16,6 +16,14 @@ public class Progetto extends Entita{
 	    this.idProgetto = idProgetto;
 	}
 	
+	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto) {
+		this.annoProgetto = annoProgetto;
+		this.proprietario = proprietario;
+		this.lotto = lotto;
+		this.coltProgetto = new ArrayList<>();
+		this.attivitaProgetto = new ArrayList<>();
+	}
+	
 	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
 			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
 		this.annoProgetto = annoProgetto;
@@ -23,7 +31,7 @@ public class Progetto extends Entita{
 		this.lotto = lotto;
 		this.coltProgetto = coltProgetto;
 		this.attivitaProgetto = attivitaProgetto;
-		this.tableName = "progetto";
+
 	}
 	
 	public Progetto(int idProgetto, int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
@@ -34,7 +42,6 @@ public class Progetto extends Entita{
 		this.lotto = lotto;
 		this.coltProgetto = coltProgetto;
 		this.attivitaProgetto = attivitaProgetto;
-		this.tableName = "progetto";
 	}
 	
 	/* GETTERS and SETTERS */

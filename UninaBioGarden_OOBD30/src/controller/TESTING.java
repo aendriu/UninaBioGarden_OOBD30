@@ -25,8 +25,68 @@
 //	ProgettoDAO progettoDAO;
 //	
 
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+import dao.AttivitaDAO;
+import dao.ColtivatoreDAO;
+import dao.ColturaDAO;
+import dao.LottoDAO;
+import dao.ProgettoDAO;
+import dao.ProprietarioDAO;
+import dao.RaccoltoDAO;
+import entità.*;
+
+public class TESTING {
+	ColtivatoreDAO coltDAO;
+	ProprietarioDAO propDAO;
+	LottoDAO lottoDAO;
+	AttivitaDAO attDAO;
+	RaccoltoDAO racDAO;
+	ColturaDAO coltuDAO;
+	ProgettoDAO progettoDAO;
+	
+
 	
 	
+	public TESTING(String propertiesFilePath, Controller c) throws SQLException, IOException {
+        coltDAO = new ColtivatoreDAO(propertiesFilePath, c);
+        propDAO = new ProprietarioDAO(propertiesFilePath, c);
+        lottoDAO = new LottoDAO(propertiesFilePath, c);
+        attDAO = new AttivitaDAO(propertiesFilePath, c);
+        racDAO = new RaccoltoDAO(propertiesFilePath, c);
+        coltuDAO = new ColturaDAO(propertiesFilePath, c);
+        progettoDAO = new ProgettoDAO(propertiesFilePath, c);
+        
+        coltDAO.connect();
+        propDAO.connect();
+        lottoDAO.connect();
+        attDAO.connect();
+        racDAO.connect();
+        coltuDAO.connect();
+        progettoDAO.connect();
+    }
+	
+	
+	// TESTING
+	
+	public void InitTests() throws SQLException {
+		//InitTestPropDAO();
+		//InitTestColtDAO();
+		//InitTestLottoDAO();
+		//InitTestAttDAO();
+		//InitTestRacDAO();
+		// InitTestColturaDAO();
+		InitTestProgettoDAO();
+		return;
+	}
+	
+	public void InitTestProgettoDAO() throws SQLException {
+		
+		// *****
 
 //	public TESTING(String propertiesFilePath, Controller c) throws SQLException, IOException {
 //        coltDAO = new ColtivatoreDAO(propertiesFilePath, c);
