@@ -105,6 +105,17 @@ public class instance_of_lotto_selected extends JFrame {
 
         // Popolo modello con i dati ricevuti dal controller
         List<Object[]> nomi = TheController.Riempi_tab_Proprietario_nome_coltura(username_proprietario, lottoName);
+       try {
+    	   if (nomi==null) {
+    		   throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+    	   }else if (nomi.isEmpty()) {
+			   JOptionPane.showMessageDialog(null, "Non ci sono colture associate a questo lotto.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+			   return;
+		   }
+	   } catch (Global_exceptions e) {
+		   JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+		   return;
+       }
         for (Object[] nome : nomi) {
             model.addRow(new Object[] { nome[0] });
         }
@@ -123,7 +134,20 @@ public class instance_of_lotto_selected extends JFrame {
         table_coltivatori = new JTable();
 
         List<Object[]> daticoltivatori = TheController.Riempi_tab_Proprietario_nome_coltivatore(username_proprietario, lottoName);
+        try {
+			if (daticoltivatori.isEmpty()) {
+				throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+				
+			}
+		} catch (Global_exceptions e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
+		if (daticoltivatori.size() == 0) {
+			JOptionPane.showMessageDialog(null, "Non ci sono coltivatori associati a questo lotto.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
         int n = daticoltivatori.size();
         Object[][] dati = new Object[n][2];
         for (int i = 0; i < n; i++) {

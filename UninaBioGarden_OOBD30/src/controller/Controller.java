@@ -126,32 +126,7 @@ public class Controller {
     	        return lista;
     	    }
     	 
-    	 public List<Object[]> Riempi_tab_Proprietario_nome_coltivatore_free(String username_colt,String Lottoname ) { //METTERE PURE LOTTO NAME QUANDO HO LE DAO
-    			List<Object[]> lista = new ArrayList<>();
-    			Random rnd = new Random();
-    			String[] nomiColtivatori = {
-    				"Mario ", "Luca ", "Giulia ", "Anna ",
-    				"Marco ", "Sara ", "Francesco ", "Elena "
-    				, "Alessandro", "Chiara", "Giovanni", "Martina", "Stefano", "Laura"
-    				, "Davide", "Federica", "Simone", "Valentina", "Giorgio", "Claudia"
-    				, "Roberto", "Silvia", "Antonio", "Francesca"
-    			};
-    			String[] cognomiColtivatori = {
-    				"Rossi", "Bianchi", "Verdi", "Neri",
-    				"Gialli", "Blu", "Arancio", "Viola", "Grigi", "Marroni", "Rossi", "Neri"
-    				, "Bianchi", "Verdi", "Gialli", "Blu", "Arancio", "Viola"
-    			};
-    			for (int i = 0; i < 40; i++) {  // genero 20 righe di esempio
-    				String nome = nomiColtivatori[rnd.nextInt(nomiColtivatori.length)];
-    				String cognome = cognomiColtivatori[rnd.nextInt(cognomiColtivatori.length)];
-    				Object[] riga = { 
-    					nome, 
-    					cognome
-    				};
-    				lista.add(riga);
-    			}
-    			return lista;
-    	}
+    	
     	 public List<Object[]> Riempi_tab_lotti_free(String username_colt) {
     	        List<Object[]> lista = new ArrayList<>();
     	        Random rnd = new Random();
@@ -737,7 +712,48 @@ public class Controller {
     		    return new ArrayList<>(righeSet);
     		}
 
-    	 
+    	  public List<Object[]> Riempi_tab_Proprietario_nome_coltivatore_free(String username, String lottoName) {
+    		    List<Object[]> righe = new ArrayList<>();
+    		    try {
+    		        List<Coltivatore> coltivatoriLiberi = coltivatoreDAO.GetFreeColtivatori();
+
+    		        for (Coltivatore coltivatore : coltivatoriLiberi) {
+    		            String nome = coltivatore.getNome();
+    		            String cognome = coltivatore.getCognome();
+    		            String cf = coltivatore.getCF();
+    		            righe.add(new Object[]{nome, cognome, CF});
+    		        }
+
+    		    } catch (SQLException e) {
+    		        return new ArrayList<>(); // In caso di errore, ritorna lista vuota
+    		    }
+    		    return righe;
+    		}
+
+    	  public boolean Aggiungi_coltivatore(String username, String Lottoname, String CF) {
+    		    try {
+    		        Coltivatore colt_to_add = coltivatoreDAO.FindSpecificColtivatore(CF);
+    		        int id_lotto_to_insert = 0;
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(Convert_UsernameToCF(username));
+    		        if (lotti.isEmpty()) return false; // Lista vuota se niente lotti
+    		        for (Lotto lotto : lotti) {
+    		            if (lotto.getNomeLotto().equals(Lottoname)) {
+    		                id_lotto_to_insert = lotto.getIdLotto();
+    		                break; // Trovato il lotto, esci dal ciclo perché nome lotto è unico
+    		            }
+    		        }
+    		        if (id_lotto_to_insert == 0) return false; // Nessun lotto trovato con quel nome
+    		        lottoDAO.AddColtivatoreToLotto(colt_to_add, id_lotto_to_insert);
+    		    } catch (SQLException e) {
+    		        return false; // In caso di errore, ritorna false
+    		    }
+    		    return true;
+    		}
+
+    		  
+    		  
+    		  
+    		  
     	  // Metodi specifici che creano il frame desiderato e usano il metodo generico
 
     	// LOGIN
