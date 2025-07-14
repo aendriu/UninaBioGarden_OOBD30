@@ -139,7 +139,6 @@ public class ColturaDAO extends DAO {
 	
 	/* ************************* */
 
-
 	
 
 
