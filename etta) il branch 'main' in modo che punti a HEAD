@@ -1,0 +1,108 @@
+* [33m8bf27df[m[33m ([m[1;36mHEAD[m[33m)[m Added GetLottiSenzaProprietario in LottoDAO
+* [33m5b22b32[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m mergecommit
+* [33m85c2314[m fatto parte di proprietario
+*   [33m92b4578[m commetato tutto testing
+[32m|[m[33m\[m  
+* [33m|[m [33mb9833b3[m fatto un pezzo, mo pullo
+[33m|[m [33m|[m * [33m27c2f03[m[33m ([m[1;32mmain[m[33m)[m fixed bugs in DAO
+[33m|[m [33m|[m * [33ma272b44[m Added Insert And removal functions in ProgettoDAO
+[33m|[m [33m|[m[33m/[m  
+[33m|[m * [33m3cf72a6[m Added GetFreeColtivatori in coltDAO
+[33m|[m[33m/[m  
+* [33md7975f8[m modified UpdateTempoLavorato
+*   [33m7575bea[m (perhaps) fixed a (not so) minor bug
+[35m|[m[36m\[m  
+[35m|[m * [33m7b860b9[m paused
+* [36m|[m [33mbe4395c[m Fixed a (not so) minor bug
+[36m|[m[36m/[m  
+* [33mab8e218[m Added some functions to LottoDAO and ProgettoDAO
+* [33m7d03be2[m fatto ora funziona
+* [33m405e8e5[m fatta metà page coltivatore
+* [33ma1f4c59[m Removed some useless functions
+* [33m13cad22[m Continuing fixing
+* [33m96886c0[m Modified ColtivatoreDAO and LottoDAO to apply to changes of previous commits
+* [33me72ba20[m Modified int myProgetto into Progetto myProgetto in Prop
+* [33m0ca958a[m Added 2 functs in Coltivatore, Added a constructor in Prop
+* [33mc43072a[m Modified some function to apply to CamelCase convention
+* [33m37a2a98[m removed some imports from UtenteDAO
+* [33mcf5e80a[m u
+* [33m0b106aa[m h
+* [33mc591c26[m primi due frame finiti
+* [33m5fdbcba[m frame scollegati
+* [33mc9ca711[m cambi minori
+* [33m6c6cd79[m f
+* [33med8ea7e[m fine progetto, ora inizia lo staccamento dei frame e integrazione dao
+* [33mb06d44b[m cose nuove
+*   [33mb3a9c52[m Merge branch 'main' of https://github.com/aendriu/UninaBioGarden_OOBD30
+[1;31m|[m[1;32m\[m  
+[1;31m|[m * [33me6e9598[m Modified UpdateTempoLavorato in AttivitaDAO
+* [1;32m|[m [33m10b871b[m boh
+[1;32m|[m[1;32m/[m  
+* [33mbd102ca[m finito progetto
+* [33md305e00[m Rimane da fare ProgettoDAO
+* [33mb9dd97f[m modified AttivitaDAO
+* [33m5eb0ec2[m risolto conflitto minore
+*   [33mae28c77[m risolto, spero, fammi sapere
+[1;33m|[m[1;34m\[m  
+[1;33m|[m * [33mfba5b54[m Modified Attivita to work with Intervals
+* [1;34m|[m [33maff841a[m aggiunto parte di progetti
+[1;34m|[m[1;34m/[m  
+*   [33mdfeeccd[m Merge branch 'main' of https://github.com/aendriu/UninaBioGarden_OOBD30
+[1;35m|[m[1;36m\[m  
+[1;35m|[m * [33mddc0bd0[m aggiunto parte di progetto
+* [1;36m|[m [33md4a5907[m Added AttivitaDAO (to modify), RaccoltoDAO
+[1;36m|[m[1;36m/[m  
+* [33m89ff7a4[m g
+* [33mde13e4a[m finito attività
+* [33m5b789af[m Added AttivitaDAO but it needs testing
+*   [33mf1d5555[m Merge remote-tracking branch 'origin/main'
+[31m|[m[32m\[m  
+[31m|[m * [33m38f8fd8[m aggiunta mezza funzionalità attività prop
+* [32m|[m [33mff1bcfc[m Added stuff
+[32m|[m[32m/[m  
+* [33md974739[m +AddLottoToProprietario (x2), +RemoveLottoFromProprietario(x2)
+*   [33m016f26f[m Merge branch 'main' of https://github.com/aendriu/UninaBioGarden_OOBD30
+[33m|[m[34m\[m  
+[33m|[m * [33m8705beb[m X
+* [34m|[m [33mdaa1fed[m niente
+[35m|[m[34m\[m[34m|[m 
+[35m|[m * [33m6d3c5ee[m Added TestPropDAO
+[35m|[m * [33m5664e98[m preattified
+[35m|[m * [33m923fde9[m Removed InsertColt and RemoveColt and put them in UtenteDao as InsertUser and RemoveUser
+[35m|[m * [33m2522be9[m Added InsertUser and RemoveUser
+[35m|[m * [33m959fad8[m Added InsertColt in Lotto and RemoveColt in Lotto
+* [36m|[m [33m38d6583[m aggiunte metà delle funzionalità per il proprietario
+[36m|[m[36m/[m  
+* [33m0a0a1d1[m Added TESTING class, Added DoesUsernameExist, Added DAO class, Added UserDAO class, modified ColtivatoreDAO inheritance and DAOs hierarchy
+*   [33m90a3845[m Merge branch 'main' of https://github.com/aendriu/UninaBioGarden_OOBD30
+[1;31m|[m[1;32m\[m  
+[1;31m|[m * [33m84922ce[m a
+* [1;32m|[m [33m9a2a5fd[m fixed bugs
+* [1;32m|[m [33mc75a9c6[m WIP
+[1;32m|[m[1;32m/[m  
+* [33ma67e41a[m added Avvio, Controller, ColtivatoreDAO, PropDAO
+* [33m762c904[m nuove piccole aggiunte
+* [33m51489c0[m aggiunta schermata login coltivatore
+* [33m1be4ff3[m f
+* [33m1736aee[m Ignore dbprop 2
+* [33m1a074b3[m Ignore dbprop
+* [33m9728fd7[m modified .gitignore
+* [33mbbc3171[m renamed db.prop into dbprop.txt
+* [33m6fe0970[m moved db.properties and modified .gitignore
+* [33m5c39945[m increased portability with Path class
+* [33mc27a02c[m fixed ProvaDao
+* [33meca0005[m Added ProvaDao to test connection to db
+* [33mbad1a63[m added db.properties and modified .gitignore to ignore it
+* [33m4cf2b5d[m modified .gitignore to not track bin
+* [33mf2d2aec[m Interfaccia di registrazione funzionante
+* [33m1681103[m ora linterfaccia di login funziona, aggiunti controllo eccezioni per login, inizio scheletro interfaccia di registrazione
+* [33mfc66cca[m aggiunta la schermata di login, il pulasente indietro funziona, mancano del tutto controlli e le funzioni degli altri due bottoni
+* [33m57d09e7[m fix della immagine Home
+* [33m511e6fd[m modificati i pulsanti, erano decentrati
+* [33m03ade9f[m moved text
+* [33m6ae0998[m Schermata home aggiunta, i bottoni vanno ancora fatti, il layout è da rivedere
+* [33me5a51fa[m a
+* [33m50593a7[m prova
+* [33mf05dd68[m added .gitkeep (again)
+* [33mb7f23f1[m added .gitkeep
+* [33m8399dd1[m batman
