@@ -69,32 +69,34 @@ public class ColtivatoreDAO extends UtenteDAO{
     
     /* ****************************** */
     
-    public ArrayList<Lotto> GetLottiColtivatore(String CF) throws SQLException {
-        String sql =
-            "SELECT l.idLotto, l.NumColture, l.NomeLotto, l.CF_Proprietario, l.idProgetto " +
-            "FROM Lavora_in li " +
-            "  JOIN Lotto l ON li.idLotto = l.idLotto " +
-            "WHERE li.CF_Coltivatore = ?";
+    public ArrayList<Lotto> GetLottiColtivatore(String cf) {
+        if (cf == null || cf.isEmpty()) {
+            throw new IllegalArgumentException("CF Coltivatore non valido: " + cf);
+        }
+        
+        String sql = "SELECT l.idLotto, l.NumColture, l.NomeLotto, "
+                   + "l.CF_Proprietario, l.idProgetto "
+                   + "FROM lavora_in li "
+                   + "JOIN lotto l ON li.idLotto = l.idLotto "
+                   + "WHERE li.CF_Coltivatore = ?";
         
         ArrayList<Lotto> foundLotti = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, CF);                      
+            stmt.setString(1, cf);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    int idL = rs.getInt("idLotto");
-                    int numColt = rs.getInt("NumColture");
-                    String nomeLotto = rs.getString("NomeLotto");
-                    ProprietarioDiLotto prop = new ProprietarioDiLotto("", "", "", "", rs.getString("CF_Proprietario"));
-                    Progetto Proj = c.progettoDAO.FindSpecificProgetto(rs.getInt("idProgetto"));
-                    ArrayList<Coltura> colture = c.coltureDAO.GetColtureOfLotto(idL);
-                    ArrayList<Coltivatore> coltivatori = c.coltivatoreDAO.GetColtivatoriLotto(idL);
-                    ArrayList<Raccolto> raccolti = c.raccoltoDAO.GetRaccoltiLotto(idL);
-                    
-                    Lotto lotto = new Lotto(idL, numColt, nomeLotto, prop, Proj, colture, coltivatori, raccolti);
-                    
+                    Lotto lotto = new Lotto(
+                        rs.getInt("idLotto"),
+                        rs.getInt("NumColture"),
+                        rs.getString("NomeLotto"),
+                        new ProprietarioDiLotto(rs.getString("CF_Proprietario")), 
+                        new Progetto(rs.getInt("idProgetto")) 
+                    );
                     foundLotti.add(lotto);
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return foundLotti;
     }
@@ -121,7 +123,7 @@ public class ColtivatoreDAO extends UtenteDAO{
                     Date inizio = rs.getDate("Inizio");
                     Date fine   = rs.getDate("Fine");
                     Time tempoLavorato = rs.getTime("TempoLavorato");
-                    String nome  = rs.getString("NomeAttività");
+                    String nome  = rs.getString("nomeattività");
                     String cf    = rs.getString("CF_coltivatore");
                     String stato = rs.getString("Stato");
 
@@ -151,7 +153,7 @@ public class ColtivatoreDAO extends UtenteDAO{
     public List<Attivita> getAttivitaPerColtivatoreELotto(int idLotto, String cfColtivatore, String nomecoltura) throws SQLException {
         List<Attivita> risultati = new ArrayList<>();
 
-        String query = "SELECT  * FROM attività NATURAL JOIN lavora_in NATURAL JOIN lotto NATURAL JOIN coltura WHERE lotto.idlotto = ? "
+        String query = "SELECT * FROM attività NATURAL JOIN lavora_in NATURAL JOIN lotto NATURAL JOIN coltura WHERE lotto.idlotto = ? "
         		+ "AND lavora_in.cf_coltivatore = ? "
         		+ "AND coltura.nomecoltura = ? ";
 
@@ -162,7 +164,7 @@ public class ColtivatoreDAO extends UtenteDAO{
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Attivita a = new Attivita(
-                        rs.getInt("idattività"),
+                        rs.getInt("idAttività"),
                         rs.getString("nomeattività"),
                         rs.getDate("inizio"),
                         rs.getDate("fine"),
@@ -182,23 +184,28 @@ public class ColtivatoreDAO extends UtenteDAO{
 
     
     public ArrayList<Coltivatore> GetColtivatoriLotto(int idLotto) throws SQLException {
-		String sql = "SELECT CF_coltivatore FROM lavora_in WHERE idLotto = ?";
-		List<Coltivatore> coltivatoriList = new ArrayList<>();
-		
-		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-			stmt.setInt(1, idLotto);
-			try (ResultSet rs = stmt.executeQuery()) {
-				while (rs.next()) {
-					String CF = rs.getString("CF_coltivatore");
-					Coltivatore coltivatore = FindSpecificColtivatore(CF);
-					if (coltivatore != null) {
-						coltivatoriList.add(coltivatore);
-					}
-				}
-			}
-		}
-		return new ArrayList<>(coltivatoriList);
-	}
+        String sql = "SELECT c.* FROM Coltivatore c "
+                   + "JOIN lavora_in li ON c.CF_coltivatore = li.CF_coltivatore "
+                   + "WHERE li.idLotto = ?";
+        
+        List<Coltivatore> coltivatoriList = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idLotto);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Coltivatore coltivatore = new Coltivatore(
+                        rs.getString("nome"),
+                        rs.getString("cognome"),
+                        rs.getString("CF_coltivatore"),
+                        rs.getString("username"),
+                        rs.getString("password")
+                    );
+                    coltivatoriList.add(coltivatore);
+                }
+            }
+        }
+        return new ArrayList<>(coltivatoriList);
+    }
 
     
     /* ****************************** */

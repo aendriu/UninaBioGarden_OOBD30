@@ -24,25 +24,25 @@ public class LottoDAO extends DAO {
 
 	
 	public Lotto FindSpecificLotto(int idLotto) throws SQLException {
-		String sql = "SELECT * FROM lotto WHERE idLotto = ?";
-		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-			stmt.setInt(1, idLotto);
-			try (ResultSet rs = stmt.executeQuery()) {
-				if (rs.next()) {
-					return new Lotto(
-						rs.getInt("idLotto"),
-						rs.getInt("NumColture"),
-						rs.getString("NomeLotto"),
-						c.propDAO.FindSpecificProprietario(rs.getString("CF_Proprietario")),
-						c.progettoDAO.FindSpecificProgetto(rs.getInt("idLotto")),
-						c.coltureDAO.GetColtureOfLotto(rs.getInt("idLotto")),
-						c.coltivatoreDAO.GetColtivatoriLotto(rs.getInt("idLotto")),
-						c.raccoltoDAO.GetRaccoltiLotto(rs.getInt("idLotto"))
-					);
-				}
-			}
-		}
-		return null;
+	    String sql = "SELECT * FROM lotto WHERE idLotto = ?";
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setInt(1, idLotto);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                return new Lotto(
+	                    rs.getInt("idLotto"),
+	                    rs.getInt("NumColture"),
+	                    rs.getString("NomeLotto"),
+	                    new ProprietarioDiLotto(rs.getString("CF_Proprietario")), 
+	                    new Progetto(rs.getInt("idProgetto")), 
+	                    c.coltureDAO.GetColtureOfLotto(rs.getInt("idLotto")),
+	                    c.coltivatoreDAO.GetColtivatoriLotto(rs.getInt("idLotto")), 
+	                    c.raccoltoDAO.GetRaccoltiLotto(rs.getInt("idLotto"))
+	                );
+	            }
+	        }
+	    }
+	    return null;
 	}
 	
 	/* *************** */
@@ -187,6 +187,28 @@ public class LottoDAO extends DAO {
 			}
 		}
 		return false;
+	}
+
+	public ArrayList<Lotto> GetLottiColtivatore(String string) {
+		if (string == null || string.isEmpty()) {
+			throw new IllegalArgumentException("CF Coltivatore non valido: " + string);
+		}
+		String sql = "SELECT idLotto FROM lavora_in WHERE CF_Coltivatore = ?";
+		ArrayList<Lotto> foundLotti = new ArrayList<>();
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, string);                      
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					Lotto lotto = FindSpecificLotto(rs.getInt("idLotto"));
+					if (lotto != null) {
+						foundLotti.add(lotto);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return foundLotti;
 	}
 	
 }

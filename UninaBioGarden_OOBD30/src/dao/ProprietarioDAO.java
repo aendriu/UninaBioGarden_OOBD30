@@ -54,9 +54,9 @@ public class ProprietarioDAO extends UtenteDAO{
 	
 	public ArrayList<Lotto> GetLottiProprietario(String CF) throws SQLException {
         String sql =
-            "SELECT l.idLotto, l.NumColture, l.NomeLotto, l.CF_Proprietario, l.idProgetto\n"
-            + "FROM Lotto l\n"
-            + "WHERE l.CF_Proprietario = ?\n";
+            "SELECT l.idLotto, l.NumColture, l.NomeLotto, l.CF_Proprietario, l.idProgetto "
+            + "FROM Lotto l "
+            + "WHERE l.CF_Proprietario = ? ";
         
         ArrayList<Lotto> foundLotti = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

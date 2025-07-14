@@ -49,10 +49,10 @@ public class TESTING {
 	// TESTING
 	
 	public void InitTests() throws SQLException {
-		//1. InitTestPropDAO();
-		//2. InitTestColtDAO();
+		InitTestPropDAO();
+		InitTestColtDAO();
 		//3. InitTestLottoDAO();
-		//4. InitTestAttDAO();
+		InitTestAttDAO();
 		//5. InitTestRacDAO();
 		//6. InitTestColturaDAO();
 		//7. InitTestProgettoDAO();
@@ -84,7 +84,7 @@ public class TESTING {
 	public void InitTestAttDAO() throws SQLException {
 		
 		System.out.println("TESTING FindSpecificAttività");
-		Attivita att1 = attDAO.FindSpecificAttivita(292);
+		Attivita att1 = attDAO.FindSpecificAttivita(187);
 		System.out.println(att1);
 		
 		// ***** 
@@ -121,12 +121,12 @@ public class TESTING {
 		
 	    // *****
 
+	    
 	    System.out.println("TESTING UpdateTempoTrascorsoAttività...");
 	    System.out.println("BEFORE");
 	    System.out.println(att1);
-	    //att1.AddTempoLavorato(java.sql.Time.valueOf("01:00:00"));
-	    //attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), java.sql.Time.valueOf("01:00:00"));
-	    //att1.setTempoLavorato(java.sql.Time.valueOf("01:00:00"));
+	    att1.AddTempoLavorato(java.sql.Time.valueOf("05:00:00"));
+	    attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), java.sql.Time.valueOf("05:00:00"));
 	    System.out.println("AFTER");
 	    System.out.println(att1);
 	    

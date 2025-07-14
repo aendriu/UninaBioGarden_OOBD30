@@ -57,7 +57,7 @@ public class ProgettoDAO extends DAO {
 	/* ************************* */
 
 	public ArrayList<Attivita> GetAttivitaProgetto(int idProgetto) {
-		String sql = "SELECT * FROM progetto_coltivatore WHERE idprogetto = ?";
+		String sql = "SELECT * FROM attività NATURAL JOIN progetto_coltivatori NATURAL JOIN progetto WHERE idprogetto = ?";
 		ArrayList<Attivita> attivitaList = new ArrayList<>();
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, idProgetto);
@@ -85,7 +85,7 @@ public class ProgettoDAO extends DAO {
 	/* ************************* */
 
 	public ArrayList<Coltivatore> GetColtivatoriProgetto(int idProgetto) throws SQLException {
-		String sql = "SELECT CF_coltivatore FROM progetto_coltivatore WHERE idprogetto = ?";
+		String sql = "SELECT CF_coltivatore FROM progetto_coltivatori WHERE idprogetto = ?";
 		ArrayList<Coltivatore> coltivatoriList = new ArrayList<>();
 		
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -128,7 +128,7 @@ public class ProgettoDAO extends DAO {
 	/* ************************* */
 	
 	public ArrayList<Attivita> GetAllAttivitaProgetto(int idP) throws SQLException {
-		String sql = "SELECT * FROM attività NATURAL JOIN progetto_coltivatore WHERE idProgetto = ?";
+		String sql = "SELECT * FROM attività NATURAL JOIN progetto_coltivatori WHERE idProgetto = ?";
 		ArrayList<Attivita> attivitaList = new ArrayList<>();
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, idP);

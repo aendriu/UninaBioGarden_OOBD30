@@ -23,6 +23,8 @@ public class Coltivatore extends Utente{
 	}
 	
 	
+	
+	
 	/* FUNCTIONS */
 	
 	public void aggiungiLotto(Lotto lotto) {

@@ -12,6 +12,10 @@ public class Progetto extends Entita{
 	
 	/* CONSTRUCTORS */
 	
+	public Progetto(int idProgetto) {
+	    this.idProgetto = idProgetto;
+	}
+	
 	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
 			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
 		this.annoProgetto = annoProgetto;

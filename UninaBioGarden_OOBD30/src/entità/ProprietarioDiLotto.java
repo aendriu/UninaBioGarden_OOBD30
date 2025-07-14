@@ -7,6 +7,11 @@ public class ProprietarioDiLotto extends Utente {
 	
 	
 	/* CONSTRUCTORS */
+	
+	public ProprietarioDiLotto(String CF) {
+	    super(CF);
+	}
+	
 	public ProprietarioDiLotto(String nome, String cognome, String CF, String username, String password) {
 		super(nome, cognome, CF, username, password);
 		tableName = "proprietariodilotto";
