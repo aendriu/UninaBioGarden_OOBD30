@@ -155,11 +155,7 @@ public class instance_of_lotto_selected extends JFrame {
                 {"Raccolta"},
                 {"Semina"},
                 {"Irrigazione"},
-                {"Concimazione"},
-                {"Controllo parassiti"},
-                {"Potatura"},
-                {"Vendita"},
-                {"Monitoraggio crescita"}
+                {"Applica Pesticida"},
             },
             new String[] { "Nome attività" }
         ) {
