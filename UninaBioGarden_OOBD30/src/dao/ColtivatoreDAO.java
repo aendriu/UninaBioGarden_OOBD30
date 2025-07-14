@@ -46,9 +46,9 @@ public class ColtivatoreDAO extends UtenteDAO{
 						rs.getString("cognome"),
 						rs.getString("CF_coltivatore"),
 						rs.getString("username"),
-						rs.getString("password")
-						//c.attivitaDAO.GetAttivitaColtivatore(CF)
-						//c.lottoDAO.GetLottiColtivatore(CF)
+						rs.getString("password"),
+						GetLottiColtivatore(CF),
+						c.attivitaDAO.GetAttivitaColtivatore(CF)
 				);
 			}
 		}

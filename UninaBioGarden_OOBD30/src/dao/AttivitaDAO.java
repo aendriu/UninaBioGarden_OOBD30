@@ -249,6 +249,30 @@ public class AttivitaDAO extends DAO {
     
     /* ******************************* */
     
+    public boolean RemoveAllAttivitaOfColtivatore(String cfColtivatore) throws SQLException {
+		String sql = "DELETE FROM attività WHERE cf_Coltivatore = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, cfColtivatore);
+			int rowsAffected = stmt.executeUpdate();
+			return rowsAffected > 0;
+		}
+	}
+    
+    /* ******************************* */
+    
+    public boolean RemoveAllAttivitaOfColtivatoreInLotto(String cfColtivatore, int idL) throws SQLException {
+    	String sql = "DELETE FROM attività WHERE cf_Coltivatore = ? "
+    			+ "AND idLotto IN (SELECT idLotto FROM lavora_in WHERE CF_Coltivatore = ? AND idLotto = ?)";
+				try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, cfColtivatore);
+			stmt.setString(2, cfColtivatore);
+			stmt.setInt(3, idL);
+			int rowsAffected = stmt.executeUpdate();
+			return rowsAffected > 0;
+		}
+	}
+
+    
     /* UPDATE ATTIVITA */
     
     public boolean UpdateStatoAttivita(int idAttivita, String nuovoStato) throws SQLException {

@@ -14,6 +14,8 @@ public class UtenteDAO extends DAO {
 		super(filePath, c);
 	}
 	
+	/* ***** */
+	
 	public int WhereIsThatUsernameInto (String username) throws SQLException {
 	    String sql = "SELECT 'coltivatore' AS table_name FROM coltivatore WHERE username = ? " +
 	                 "UNION ALL " +
@@ -29,6 +31,8 @@ public class UtenteDAO extends DAO {
 	        }
 	    }
 	}
+	
+	/* ***** */
 	
 	
 	public String ConvertUsernameToCF(String username) throws SQLException {
@@ -47,6 +51,8 @@ public class UtenteDAO extends DAO {
 	    }
 	}
 	
+	/* ***** */
+	
 	public String GetPasswordOfThatUsername(String username) throws SQLException {
 	    String sql = "SELECT password FROM coltivatore WHERE username = ? " +
 	                 "UNION " +
@@ -62,6 +68,8 @@ public class UtenteDAO extends DAO {
 	        }
 	    }
 	}
+	
+	/* ***** */
 	
 	// BOOLEAN FUNCTIONS
 	
@@ -83,6 +91,8 @@ public class UtenteDAO extends DAO {
 	    return false;
 	}
 	
+	/* ***** */
+	
 	public boolean DoesPasswordExist(String password) throws SQLException {
 	    String sql = "SELECT password FROM coltivatore " +
 	                 "UNION " +
@@ -101,6 +111,8 @@ public class UtenteDAO extends DAO {
 	    return false;
 	}
 	
+	/* ***** */
+	
 	public boolean DoesCFExist(String CF) throws SQLException {
 	    String sql = "SELECT CF_coltivatore AS cf FROM coltivatore WHERE CF_coltivatore = ? " +
 	                 "UNION " +
@@ -114,7 +126,7 @@ public class UtenteDAO extends DAO {
 	    }
 	}
 
-	
+	/* ***** */
 	
 	 //INSERT FUNCIONS
 	public boolean InsertUser(Utente u) {
@@ -136,7 +148,7 @@ public class UtenteDAO extends DAO {
 	    }
 	}
 	
-
+	/* ***** */
 	
 	// REMOVE FUNCIONS
 	public boolean RemoveUser(Utente u) {
@@ -154,9 +166,36 @@ public class UtenteDAO extends DAO {
 	        return false;
 	    }
 	}
+	
+	/* ***** */
+
+	public boolean ChangePassword(String username, String newPassword) throws SQLException {
+	    if (DoesUsernameExist(username)) {
+	        int totalRowsUpdated = 0;
+
+	        String sql1 = "UPDATE coltivatore SET password = ? WHERE username = ?";
+	        try (PreparedStatement ps1 = connection.prepareStatement(sql1)) {
+	            ps1.setString(1, newPassword);
+	            ps1.setString(2, username);
+	            totalRowsUpdated += ps1.executeUpdate();
+	        }
+
+	        String sql2 = "UPDATE proprietariodilotto SET password = ? WHERE username = ?";
+	        try (PreparedStatement ps2 = connection.prepareStatement(sql2)) {
+	            ps2.setString(1, newPassword);
+	            ps2.setString(2, username);
+	            totalRowsUpdated += ps2.executeUpdate();
+	        }
+
+	        return totalRowsUpdated > 0;
+	    } else {
+	        System.out.println("Username does not exist.");
+	        return false;
+	    }
+	}
 
 
 
 
 }
-;
+

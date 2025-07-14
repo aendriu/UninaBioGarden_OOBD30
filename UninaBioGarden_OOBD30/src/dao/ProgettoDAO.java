@@ -44,7 +44,16 @@ public class ProgettoDAO extends DAO {
 		}
 		return null;
 	}
+	
+	/* ************************* */
 
+	public Progetto FindSpecificProgetto(Progetto p) throws SQLException {
+		if (p == null || p.getIdProgetto() <= 0) {
+			throw new IllegalArgumentException("Progetto non valido: " + p);
+		}
+		return FindSpecificProgetto(p.getIdProgetto());
+	}
+	
 	/* ************************* */
 
 	public ArrayList<Attivita> GetAttivitaProgetto(int idProgetto) {
@@ -93,6 +102,58 @@ public class ProgettoDAO extends DAO {
 		}
 		return new ArrayList<>(coltivatoriList);
 	}
+	
+	/* ************************* */
+
+	public Lotto GetLottoProgetto(int idProgetto) throws SQLException {
+		String sql = "SELECT idLotto FROM progetto WHERE idProgetto = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idProgetto);
+			try (ResultSet rs = stmt.executeQuery()) {
+				if (rs.next()) {
+					int idLotto = rs.getInt("idLotto");
+					return c.lottoDAO.FindSpecificLotto(idLotto);
+				}
+			}
+		}
+		return null;
+	}
+		
+	/* ************************* */
+
+	public Lotto GetLottoProgetto(Progetto p) throws SQLException {
+		return GetLottoProgetto(p.getIdProgetto());
+	}
+	
+	/* ************************* */
+	
+	public ArrayList<Attivita> GetAllAttivitaProgetto(int idP) throws SQLException {
+		String sql = "SELECT * FROM attività NATURAL JOIN progetto_coltivatore WHERE idProgetto = ?";
+		ArrayList<Attivita> attivitaList = new ArrayList<>();
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idP);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					Attivita attivita = new Attivita(
+						rs.getInt("idAttività"),
+						rs.getString("nomeAttività"),
+						rs.getDate("inizio"),
+						rs.getDate("fine"),
+						rs.getString("CF_Coltivatore"),
+						rs.getTime("TempoLavorato"),
+						rs.getString("stato")
+					);
+					attivitaList.add(attivita);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return attivitaList;
+	}
+
+	
+
 
 	public boolean InsertProgetto(Progetto p2) {
 		// TODO Auto-generated method stub

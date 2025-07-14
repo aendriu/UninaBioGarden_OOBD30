@@ -70,6 +70,7 @@ public class Controller {
 			
 			
 			// TO COMMENT
+            //utenteDAO.ChangePassword("andluise04", "gggg");
 			tests = new TESTING(dbprop.toString(), this);
 			tests.InitTests();
 			//
