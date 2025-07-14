@@ -121,9 +121,9 @@ public class Prop_lotti_visual_scheme extends JFrame {
             System.out.println("Immagine non trovata!");
         }
 
-        // Carico dati dal controller e aggiorno la lista
-//        String[] nomiLotti = TheController.getNomiLottiPlaceholder(username);
-        //model.setValues(nomiLotti);
+        
+        String[] nomiLotti = TheController.getNomiLotti(username);
+        model.setValues(nomiLotti);
     }
 
 }

@@ -467,21 +467,7 @@ public class Controller {
 
  		    return lista;
  		}
-    	  public List<String> getNomiLotti(String username) {
-    		    List<String> lotti = new ArrayList<>();
-
-    		    String[] nomiLottiPossibili = {
-    		        "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
-    		        "Vigneto Sud", "Frutteto Ovest", "Pista Agraria", "Bosco Urbano",
-    		        "Prato Fiorito", "Collina Blu"
-    		    };
-
-    		    for (String nome : nomiLottiPossibili) {
-    		        lotti.add(nome);
-    		    }
-
-    		    return lotti;
-    		}
+    	 
     	  public List<Map<String, Object>> getDatiRaccoltaPerLotto(String username, String nomeLotto) {
     		    List<Map<String, Object>> raccolte = new ArrayList<>();
     		    Random rnd = new Random();
@@ -681,7 +667,7 @@ public class Controller {
     		                    int percentuale = (durataTotaleMillis <= 0) ? 0 :
     		                        (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
 
-    		                    righe.add(new Object[] {nomeLotto, nomeAttività, nomeColtura, stato, percentuale, idAttività, lottoID});
+    		                    righe.add(new Object[] {nomeLotto, nomeAttività, nomeColtura, stato, percentuale});
     		                }
     		            }
     		        }
@@ -692,15 +678,50 @@ public class Controller {
     		}
 
 
-    	  public boolean aggiorna_tempo_lavorato(int idAttività, Time tempoLavorato) {
-			  try {
-				  attivitaDAO.UpdateTempoLavoratoAttivita(idAttività, tempoLavorato);
-			  } catch (SQLException e) {
-				  e.printStackTrace();
-				  return false; // Errore durante l'aggiornamento
-				  			  }
-			  return true; // Aggiornamento riuscito
-			  		  }
+    	  public boolean aggiorna_tempo_lavorato(String username, String lottoname, String nomeattività, Time tempoLavorato) {
+			 try {
+				 int lotto_id=0;
+				 String CF = utenteDAO.ConvertUsernameToCF(username);
+				 List<Lotto> lotti = coltivatoreDAO.GetLottiColtivatore(CF);
+				 for (Lotto l : lotti) {
+					 if (l.getNomeLotto().equals(lottoname)) {
+						 lotto_id = l.getIdLotto();
+						 break; // Esci dal ciclo una volta trovato il lotto
+						 }
+					 List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto_id, CF);
+					 for (Attivita a : attività) {
+						 if (a.getNomeAttivita().equals(nomeattività)) {
+							attivitaDAO.UpdateTempoLavoratoAttivita(a.getIdAttivita(), tempoLavorato);
+							return true; // Aggiornamento riuscito
+						 }
+				 }
+				 }
+				
+				 
+			 }
+			 catch (SQLException e) {
+				 return false; // Aggiornamento fallito
+			 }
+			return false; // Aggiornamento fallito 
+    	  }
+    	  
+    	  public String[] getNomiLotti(String username) {
+    		  List<Lotto> Lotti = new ArrayList<>();
+    		  List<String> nomiLotti = new ArrayList<>();
+    		  String CF = Convert_UsernameToCF(username);
+    		  try {
+    		  Lotti=propDAO.GetLottiProprietario(CF);
+    		  for (Lotto lotto: Lotti) {
+    			  nomiLotti.add(lotto.getNomeLotto());
+			  }
+			  return nomiLotti.toArray(new String[0]); // Converte la lista in un array di stringhe
+    		  } catch (SQLException e) {
+				 return new String[0]; // Ritorna un array vuoto in caso di errore
+    		  }
+    	  }
+    	  
+    	  
+    	  
     	  // Metodi specifici che creano il frame desiderato e usano il metodo generico
 
     	// LOGIN

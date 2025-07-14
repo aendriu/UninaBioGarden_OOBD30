@@ -34,7 +34,7 @@ public class Report_frame extends JFrame {
         this.TheController = controller;
         this.username = username;
         initUI();
-        loadLotti();
+        //loadLotti();
     }
 
     private void initUI() {
@@ -109,16 +109,16 @@ public class Report_frame extends JFrame {
         });
     }
 
-    private void loadLotti() {
-        listModel.clear();
-        List<String> nomiLotti = TheController.getNomiLotti(username);
-        for (String nome : nomiLotti) {
-            listModel.addElement(nome);
-        }
-        if (!nomiLotti.isEmpty()) {
-            lottoList.setSelectedIndex(0);
-        }
-    }
+//    private void loadLotti() {
+//        listModel.clear();
+//        //List<String> nomiLotti = TheController.getNomiLotti(username);
+//        for (String nome : nomiLotti) {
+//            listModel.addElement(nome);
+//        }
+//        if (!nomiLotti.isEmpty()) {
+//            lottoList.setSelectedIndex(0);
+//        }
+//    }
 
     private void mostraGrafico(String nomeLotto, List<Map<String, Object>> raccolte) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
