@@ -10,6 +10,7 @@ import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -324,10 +325,11 @@ public class AttivitaDAO extends DAO {
     /* ******************************* */
 
     private boolean isNewStateValid(String nuovoStato) {
-        if(nuovoStato == null || nuovoStato.isEmpty()) {
+        String ns = nuovoStato.toLowerCase();
+    	if(nuovoStato == null || nuovoStato.isEmpty()) {
             return false;
         }
-        if(nuovoStato.equals("completata") || nuovoStato.equals("in corso") || nuovoStato.equals("annullata")) {
+        if(ns.equals("completata") || ns.equals("in corso") || ns.equals("pianificata")) {
             return true;
         } else {
             return false;
@@ -337,6 +339,11 @@ public class AttivitaDAO extends DAO {
     /* ******************************* */
 
     public boolean UpdateTempoLavoratoAttivita(int idAttivita, Time nuovoTempo) throws SQLException {
+    	Attivita a = FindSpecificAttivita(idAttivita);
+    	if(WouldExceedMaxTime(a, nuovoTempo)) {
+    		UpdateStatoAttivita(idAttivita, "Completata");
+    		return true;
+    	}
         String sql = "UPDATE attività "
                    + "SET tempoLavorato = (tempoLavorato + ?::interval) "
         		
@@ -349,6 +356,18 @@ public class AttivitaDAO extends DAO {
             return stmt.executeUpdate() > 0;		
         }
     }
+    
+    public boolean WouldExceedMaxTime(Attivita a, Time nuovoTempo) {
+        long max = a.getFine().getTime() - a.getInizio().getTime();
+
+        long lavorato = a.getTempoLavorato().getTime();
+        long nuovo    = nuovoTempo.getTime();
+
+        return (lavorato + nuovo) >= max;
+    }
+
+
+
     
     /* ******************************* */
 }
