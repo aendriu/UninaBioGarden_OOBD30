@@ -701,7 +701,7 @@ public class Controller {
     		                    String nomeColtura = coltura.getNomeColtura();
     		                    righeSet.add(new Object[]{nomeColtura});
     		                }
-    		                break; // trovato lotto, esco dal ciclo
+    		                break;
     		            }
     		        }
     		    } catch (SQLException e) {
