@@ -82,6 +82,31 @@ public class ColturaDAO extends DAO {
 		}
 	}
 	
+	public ArrayList<Coltura> GetColtureNotInLotto(int idLotto) throws SQLException{
+		String sql= "SELECT * FROM coltura WHERE nomeColtura NOT IN (SELECT nomeColtura FROM coltura WHERE idLotto = ?)";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idLotto);
+			try (ResultSet rs = stmt.executeQuery()) {
+				ArrayList<Coltura> coltureList = new ArrayList<>();
+				while (rs.next()) {
+					String tempoMaturazioneStr = rs.getString("tempomaturazione");
+					long giorni = Long.parseLong(tempoMaturazioneStr.split(" ")[0]);
+					Duration durata = Duration.ofDays(giorni);
+					String giornoSeminaStr = rs.getString("giornoSemina");
+					LocalDate giornoSemina = LocalDate.parse(giornoSeminaStr); 
+
+					coltureList.add(new Coltura(
+						rs.getInt("idColtura"),
+						rs.getString("nomeColtura"),
+						rs.getInt("idLotto")
+					));
+				}
+				return coltureList;
+			}
+		}
+		
+		
+	}
 	/* ************************* */
 
 	public ArrayList<Coltura> GetColtureOfLotto(Lotto l) throws SQLException {
