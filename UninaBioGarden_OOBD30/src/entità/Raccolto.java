@@ -31,34 +31,50 @@ public class Raccolto extends Entita{
 	public int getIdRaccolto() {
 		return idRaccolto;
 	}
+	
+	/* ***** */
 
 	public void setIdRaccolto(int idRaccolto) {
 		this.idRaccolto = idRaccolto;
 	}
+	
+	/* ***** */
 
 	public String getNomeRaccolto() {
 		return nomeRaccolto;
 	}
+	
+	/* ***** */
 
 	public void setNomeRaccolto(String nomeRaccolto) {
 		this.nomeRaccolto = nomeRaccolto;
 	}
+	
+	/* ***** */
 
 	public int getQuantitaRaccolta() {
 		return quantitaRaccolta;
 	}
+	
+	/* ***** */
 
 	public void setQuantitaRaccolta(int quantitaRaccolta) {
 		this.quantitaRaccolta = quantitaRaccolta;
 	}
+	
+	/* ***** */
 
 	public int getIdLotto() {
 		return idLotto;
 	}
+	
+	/* ***** */
 
 	public void setIdLotto(int idLotto) {
 		this.idLotto = idLotto;
 	}
+	
+	/* ***** */
 
 	@Override
 	public String toString() {

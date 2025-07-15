@@ -147,7 +147,29 @@ public class LottoDAO extends DAO {
 	}
 	
 	/* *************** */
-
+	
+	public ArrayList<Lotto> GetLottiSenzaProprietario() throws SQLException {
+		String sql = "SELECT * FROM lotto WHERE CF_Proprietario IS NULL";
+		ArrayList<Lotto> lottiSenzaProprietario = new ArrayList<>();
+		try (PreparedStatement stmt = connection.prepareStatement(sql);
+			 ResultSet rs = stmt.executeQuery()) {
+			while (rs.next()) {
+				Lotto lotto = new Lotto(
+					rs.getInt("idLotto"),
+					rs.getInt("NumColture"),
+					rs.getString("NomeLotto"),
+					new ProprietarioDiLotto(rs.getString("CF_Proprietario")), 
+					new Progetto(rs.getInt("idProgetto")), 
+					c.coltureDAO.GetColtureOfLotto(rs.getInt("idLotto")),
+					c.coltivatoreDAO.GetColtivatoriLotto(rs.getInt("idLotto")), 
+					c.raccoltoDAO.GetRaccoltiLotto(rs.getInt("idLotto"))
+				);
+				lottiSenzaProprietario.add(lotto);
+			}
+		}
+		return lottiSenzaProprietario;
+	}
+	
 	/* REMOVE FUNCTIONS */
 	
 	public boolean RemoveColtivatoreFromLotto(Coltivatore coltivatore, int idLotto) throws SQLException {
@@ -168,12 +190,6 @@ public class LottoDAO extends DAO {
 	}
 
 	
-	
-	
-	
-
-
-
 	/* BOOLEAN FUNCIONS */
 	
 	public boolean DoesLottoExist(int idLotto) throws SQLException {

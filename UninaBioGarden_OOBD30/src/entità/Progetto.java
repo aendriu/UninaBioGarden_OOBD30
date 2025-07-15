@@ -16,6 +16,18 @@ public class Progetto extends Entita{
 	    this.idProgetto = idProgetto;
 	}
 	
+	/* ***** */
+	
+	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto) {
+		this.annoProgetto = annoProgetto;
+		this.proprietario = proprietario;
+		this.lotto = lotto;
+		this.coltProgetto = new ArrayList<>();
+		this.attivitaProgetto = new ArrayList<>();
+	}
+	
+	/* ***** */
+	
 	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
 			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
 		this.annoProgetto = annoProgetto;
@@ -23,8 +35,10 @@ public class Progetto extends Entita{
 		this.lotto = lotto;
 		this.coltProgetto = coltProgetto;
 		this.attivitaProgetto = attivitaProgetto;
-		this.tableName = "progetto";
+
 	}
+	
+	/* ***** */
 	
 	public Progetto(int idProgetto, int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
 			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
@@ -34,7 +48,6 @@ public class Progetto extends Entita{
 		this.lotto = lotto;
 		this.coltProgetto = coltProgetto;
 		this.attivitaProgetto = attivitaProgetto;
-		this.tableName = "progetto";
 	}
 	
 	/* GETTERS and SETTERS */
@@ -44,50 +57,74 @@ public class Progetto extends Entita{
 	public int getIdProgetto() {
 		return idProgetto;
 	}
+	
+	/* ***** */
 
 	public void setIdProgetto(int idProgetto) {
 		this.idProgetto = idProgetto;
 	}
+	
+	/* ***** */
 
 	public int getAnnoProgetto() {
 		return annoProgetto;
 	}
+	
+	/* ***** */
 
 	public void setAnnoProgetto(int annoProgetto) {
 		this.annoProgetto = annoProgetto;
 	}
+	
+	/* ***** */
 
 	public ProprietarioDiLotto getProprietario() {
 		return proprietario;
 	}
+	
+	/* ***** */
 
 	public void setProprietario(ProprietarioDiLotto proprietario) {
 		this.proprietario = proprietario;
 	}
+	
+	/* ***** */
 
 	public Lotto getLotto() {
 		return lotto;
 	}
+	
+	/* ***** */
 
 	public void setLotto(Lotto lotto) {
 		this.lotto = lotto;
 	}
+	
+	/* ***** */
 
 	public ArrayList<Coltivatore> getColtProgetto() {
 		return coltProgetto;
 	}
+	
+	/* ***** */
 
 	public void setColtProgetto(ArrayList<Coltivatore> coltProgetto) {
 		this.coltProgetto = coltProgetto;
 	}
+	
+	/* ***** */
 
 	public ArrayList<Attivita> getAttivitaProgetto() {
 		return attivitaProgetto;
 	}
+	
+	/* ***** */
 
 	public void setAttivitaProgetto(ArrayList<Attivita> attivitaProgetto) {
 		this.attivitaProgetto = attivitaProgetto;
 	}
+	
+	/* ***** */
 
 	@Override
 	public String toString() {

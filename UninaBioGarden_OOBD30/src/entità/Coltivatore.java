@@ -14,6 +14,8 @@ public class Coltivatore extends Utente{
 		tableName = "coltivatore";
 	}
 	
+	/* ***** */
+	
 	public Coltivatore(String nome, String cognome, String CF, String username, String password, ArrayList<Lotto> lottiColtivatore
 			,ArrayList<Attivita> attivitaColtivatore) {
 		super(nome, cognome, CF, username, password);
@@ -31,6 +33,8 @@ public class Coltivatore extends Utente{
         lottiColtivatore.add(lotto);
     }
 	
+	/* ***** */
+	
 	public void rimuoviLotto(Lotto lotto) {
 		lottiColtivatore.remove(lotto);
 	}
@@ -41,9 +45,13 @@ public class Coltivatore extends Utente{
 		attivitaColtivatore.add(att);
 	}
 	
+	/* ***** */
+	
 	public void rimuoviAttivita(Attivita att) {
 		attivitaColtivatore.remove(att);
 	}
+	
+	/* ***** */
 	
 	public ArrayList<Lotto> getLotti() {
         return lottiColtivatore;

@@ -71,8 +71,8 @@ public class Controller {
 			
 			// TO COMMENT
             //utenteDAO.ChangePassword("andluise04", "gggg");
-			//tests = new TESTING(dbprop.toString(), this);
-			//tests.InitTests();
+			TESTING tests = new TESTING(dbprop.toString(), this);
+			tests.InitTests();
 			//
 
 
@@ -700,7 +700,7 @@ public class Controller {
     		                    String nomeColtura = coltura.getNomeColtura();
     		                    righeSet.add(new Object[]{nomeColtura});
     		                }
-    		                break; // trovato lotto, esco dal ciclo
+    		                break;
     		            }
     		        }
     		    } catch (SQLException e) {

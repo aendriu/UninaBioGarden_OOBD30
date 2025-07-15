@@ -32,9 +32,7 @@ public class ColtivatoreDAO extends UtenteDAO{
     
     /* RETRIEVAL FUNCTIONS */
 	
-    
-	
-	public Coltivatore FindSpecificColtivatore(String CF) throws SQLException {
+    public Coltivatore FindSpecificColtivatore(String CF) throws SQLException {
     	String CF_Select = "SELECT * FROM coltivatore WHERE CF_coltivatore = ?";
     	PreparedStatement stmt = connection.prepareStatement(CF_Select);
 		stmt.setString(1, CF);
@@ -175,7 +173,7 @@ public class ColtivatoreDAO extends UtenteDAO{
 	}
     
     /* ****************************** */
-    // TODO NUOVA QUERY
+ 
     public List<Attivita> getAttivitaPerColtivatoreELotto(int idLotto, String cfColtivatore, String nomecoltura) throws SQLException {
         List<Attivita> risultati = new ArrayList<>();
 
@@ -206,8 +204,7 @@ public class ColtivatoreDAO extends UtenteDAO{
         return risultati;
     }
 
-
-
+    /* ****************************** */
     
     public ArrayList<Coltivatore> GetColtivatoriLotto(int idLotto) throws SQLException {
         String sql = "SELECT c.* FROM Coltivatore c "

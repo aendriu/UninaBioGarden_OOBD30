@@ -29,13 +29,19 @@ public class ProprietarioDiLotto extends Utente {
         lottiProprietario.add(lotto);
     }
 	
+	/* ***** */
+	
 	public void rimuoviLotto(Lotto lotto) {
 		lottiProprietario.remove(lotto);
 	}
 	
+	/* ***** */
+	
 	public ArrayList<Lotto> getLotti() {
         return lottiProprietario;
     }
+	
+	/* ***** */
 	
 	@Override
 	public String toString() {

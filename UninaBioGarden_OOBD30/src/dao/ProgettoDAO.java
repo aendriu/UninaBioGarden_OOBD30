@@ -1,5 +1,6 @@
 package dao;
 
+import java.beans.Statement;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -7,13 +8,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
-
 import controller.Controller;
 import entità.Attivita;
 import entità.Coltivatore;
 import entità.Lotto;
 import entità.Progetto;
 import entità.ProprietarioDiLotto;
+
 
 public class ProgettoDAO extends DAO {
 
@@ -78,7 +79,7 @@ public class ProgettoDAO extends DAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new ArrayList<>(attivitaList);
 	}
 
 
@@ -153,12 +154,92 @@ public class ProgettoDAO extends DAO {
 	}
 
 	
+	/* ************************* */
 
+	public int InsertProgetto(int annoProg, String CF_prop, int idLotto) throws SQLException {
+	    if (annoProg <= 0 || CF_prop == null || CF_prop.isEmpty() || idLotto <= 0) {
+	        throw new IllegalArgumentException(
+	            "Dati progetto non validi: annoProg=" + annoProg +
+	            ", CF_prop=" + CF_prop +
+	            ", idLotto=" + idLotto
+	        );
+	    }
 
-	public boolean InsertProgetto(Progetto p2) {
-		// TODO Auto-generated method stub
-		return false;
+	    String sql = "INSERT INTO progetto (annoprogetto, cf_proprietario, idlotto) VALUES (?, ?, ?)";
+
+	    try (PreparedStatement stmt = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+	    	stmt.setInt(1, annoProg);
+	        stmt.setString(2, CF_prop);
+	        stmt.setInt(3, idLotto);
+
+	        int affectedRows = stmt.executeUpdate();
+	        if (affectedRows == 0) {
+	            throw new SQLException("InsertProgetto fallita: nessuna riga inserita.");
+	        }
+
+	        try (ResultSet rs = stmt.getGeneratedKeys()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);
+	            } else {
+	                throw new SQLException("InsertProgetto fallita: nessun id restituito.");
+	            }
+	        }
+
+	    }
 	}
+
+	
+	/* ************************* */
+
+	public int InsertProgetto(Progetto p) throws SQLException {
+		if (p == null || p.getAnnoProgetto() <= 0 || p.getProprietario().getCF() == null || p.getLotto().getIdLotto() <= 0) {
+			throw new IllegalArgumentException("Progetto non valido: " + p);
+		}
+		return InsertProgetto(p.getAnnoProgetto(), p.getProprietario().getCF(), p.getLotto().getIdLotto());
+	}
+	
+	/* ************************* */
+
+	public boolean RemoveProgettoUsingIdLotto(int idLotto) throws SQLException {
+	    if (idLotto <= 0) {
+	        throw new IllegalArgumentException("IdL non valido: " + idLotto);
+	    }
+	    String getProj = "SELECT idprogetto FROM lotto WHERE idlotto = ?";
+	    int idProgetto;
+	    try (PreparedStatement ps = connection.prepareStatement(getProj)) {
+	        ps.setInt(1, idLotto);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (!rs.next()) {
+	                return false;  
+	            }
+	            idProgetto = rs.getInt("idprogetto");
+	        }
+	    }
+	    
+	    connection.setAutoCommit(false);
+	    try {
+	        String sql1 = "UPDATE lotto SET idprogetto = NULL WHERE idlotto = ?";
+	        try (PreparedStatement ps1 = connection.prepareStatement(sql1)) {
+	            ps1.setInt(1, idLotto);
+	            ps1.executeUpdate();
+	        }
+
+	        String sql2 = "DELETE FROM progetto WHERE idprogetto = ?";
+	        try (PreparedStatement ps2 = connection.prepareStatement(sql2)) {
+	            ps2.setInt(1, idProgetto);
+	            int deleted = ps2.executeUpdate();
+	            connection.commit();
+	            return deleted > 0;
+	        }
+
+	    } catch (SQLException ex) {
+	        connection.rollback();
+	        throw ex;
+	    } finally {
+	        connection.setAutoCommit(true);
+	    }
+	}
+
 	
 	/* ************************* */
 
