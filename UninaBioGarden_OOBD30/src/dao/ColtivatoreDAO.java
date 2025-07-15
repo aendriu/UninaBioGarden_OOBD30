@@ -173,7 +173,7 @@ public class ColtivatoreDAO extends UtenteDAO{
 	}
     
     /* ****************************** */
-    // TODO NUOVA QUERY
+ 
     public List<Attivita> getAttivitaPerColtivatoreELotto(int idLotto, String cfColtivatore, String nomecoltura) throws SQLException {
         List<Attivita> risultati = new ArrayList<>();
 
@@ -204,8 +204,7 @@ public class ColtivatoreDAO extends UtenteDAO{
         return risultati;
     }
 
-
-
+    /* ****************************** */
     
     public ArrayList<Coltivatore> GetColtivatoriLotto(int idLotto) throws SQLException {
         String sql = "SELECT c.* FROM Coltivatore c "

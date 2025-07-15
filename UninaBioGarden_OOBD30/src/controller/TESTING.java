@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.Time;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -52,9 +53,9 @@ public class TESTING {
 		//InitTestPropDAO();
 		//InitTestColtDAO();
 		//InitTestLottoDAO();
-		//InitTestAttDAO();
+		InitTestAttDAO();
 		//InitTestRacDAO();
-		InitTestColturaDAO();
+		//InitTestColturaDAO();
 		//InitTestProgettoDAO();
 		return;
 	}
@@ -113,8 +114,9 @@ public class TESTING {
 		// *****
 		
 		System.out.println("TESTING InsertProgetto...");
+		int idProgetto = progettoDAO.InsertProgetto(2025, "LMBMTT85D20F205F", 21);
 		System.out.println(
-				progettoDAO.InsertProgetto(2025, "LMBMTT85D20F205F", 21)
+				idProgetto >= 0
 				? "Progetto inserito con successo "
 				: "Errore nell'inserimento del progetto " 
 			);
@@ -156,7 +158,7 @@ public class TESTING {
 		// ***** 
 
 		System.out.println("TESTING GetAttivita completate");
-		Attivita[] att1_colt_completate = attDAO.GetAttivitaCompletate();
+		ArrayList<Attivita> att1_colt_completate = attDAO.GetAttivitaCompletate();
 		for(Attivita a : att1_colt_completate) {
 			System.out.println(a);
 		}
@@ -164,27 +166,35 @@ public class TESTING {
 		// *****
 		
 		System.out.println("TESTING InsertAttività...");
-		Attivita att2 = new Attivita("Applica Pesticida", Date.valueOf(LocalDate.of(2023, 10, 1)), Date.valueOf(LocalDate.of(2023, 10, 15)), "DLSNMN04E14F839Q");
+		Attivita att2 = new Attivita("Applica Pesticida", Date.valueOf(LocalDate.of(2025, 10, 1)), Date.valueOf(LocalDate.of(2025, 10, 15)), "DLSNMN04E14F839Q");
 		System.out.println(att2.getTempoLavorato());
-		System.out.println(attDAO.InsertAttivita(att2)
-	            ? "Attività inserita con successo: " + att2.getNomeAttivita()	
+		att2.setIdAttivita(attDAO.InsertAttivita(att2)); 
+		System.out.println( att2.getIdAttivita() >= 0
+	            ? "Attività inserita con successo: " + att2.getNomeAttivita() + " con ID " + att2.getIdAttivita()
 	            : "Errore nell'inserimento dell'attività " + att2.getNomeAttivita()
 	        );
 	    
-	    System.out.println(
-				attDAO.RemoveAttivita(att2)
-				? att2.getNomeAttivita() + " Has been removed"
-				: att2.getNomeAttivita() + " Has NOT been removed" 
-			);
+		System.out.println(
+			attDAO.RemoveAttivita(att2)
+			? att2.getNomeAttivita() + " Has been removed"
+			: att2.getNomeAttivita() + " Has NOT been removed" 
+		);
 		
+		
+		/*
+		System.out.println(
+				attDAO.RemoveAttivita(416)
+				? "Attività with id Has been removed"
+				: " Has NOT been removed" 
+			);
+		*/
 	    // *****
 
-	    
 	    System.out.println("TESTING UpdateTempoTrascorsoAttività...");
 	    System.out.println("BEFORE");
 	    System.out.println(att1);
 	    att1.AddTempoLavorato(java.sql.Time.valueOf("05:00:00"));
-	    attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), java.sql.Time.valueOf("05:00:00"));
+	    attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), Time.valueOf("05:00:00"));
 	    System.out.println("AFTER");
 	    System.out.println(att1);
 	    
@@ -224,9 +234,9 @@ public class TESTING {
 		Raccolto rac2 = new Raccolto("Pomodoro", 100, 11);
 		
 		// *****
-		
+		int idRaccolto = racDAO.InsertRaccolto(rac2);
 		System.out.println(
-				racDAO.InsertRaccolto(rac2)
+				idRaccolto >= 0
 				? "Raccolto inserito con successo: " + rac2.getNomeRaccolto()
 				: "Errore nell'inserimento del raccolto " + rac2.getNomeRaccolto()
 			);

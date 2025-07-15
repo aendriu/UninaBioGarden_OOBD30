@@ -146,6 +146,8 @@ public class LottoDAO extends DAO {
 		}
 	}
 	
+	/* *************** */
+	
 	public ArrayList<Lotto> GetLottiSenzaProprietario() throws SQLException {
 		String sql = "SELECT * FROM lotto WHERE CF_Proprietario IS NULL";
 		ArrayList<Lotto> lottiSenzaProprietario = new ArrayList<>();
@@ -168,8 +170,6 @@ public class LottoDAO extends DAO {
 		return lottiSenzaProprietario;
 	}
 	
-	/* *************** */
-
 	/* REMOVE FUNCTIONS */
 	
 	public boolean RemoveColtivatoreFromLotto(Coltivatore coltivatore, int idLotto) throws SQLException {
@@ -190,12 +190,6 @@ public class LottoDAO extends DAO {
 	}
 
 	
-	
-	
-	
-
-
-
 	/* BOOLEAN FUNCIONS */
 	
 	public boolean DoesLottoExist(int idLotto) throws SQLException {
