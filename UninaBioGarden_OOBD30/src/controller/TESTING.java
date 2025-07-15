@@ -54,9 +54,37 @@ public class TESTING {
 		//InitTestLottoDAO();
 		//InitTestAttDAO();
 		//InitTestRacDAO();
-		// InitTestColturaDAO();
-		InitTestProgettoDAO();
+		InitTestColturaDAO();
+		//InitTestProgettoDAO();
 		return;
+	}
+	
+	public void InitTestColturaDAO() throws SQLException {
+		System.out.println("TESTING FindSpecificColtura");
+		Coltura c1 = coltuDAO.FindSpecificColtura(1);
+		System.out.println(c1);
+		
+		// *****
+		
+	
+		
+		// *****
+		
+		System.out.println("TESTING InsertColtura...");
+		Coltura c2 = new Coltura("Pomodoro", 11);
+		int idColtura = coltuDAO.InsertColtura(c2);
+		System.out.println(
+				idColtura >= 0
+				? "Coltura inserita con successo: " + c2.getNomeColtura()
+				: "Errore nell'inserimento della coltura " + c2.getNomeColtura()
+			);
+		
+		System.out.println(
+				coltuDAO.RemoveColtura(idColtura)
+				? c2.getNomeColtura() + " Has been removed"
+				: c2.getNomeColtura() + " Has NOT been removed" 
+			);
+		
 	}
 	
 	public void InitTestProgettoDAO() throws SQLException {

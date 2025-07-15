@@ -79,26 +79,38 @@ public class Attivita extends Entita {
 
     public String getNomeAttivita() { return nomeAttivita; }
     public void setNomeAttivita(String nomeAttivita) { this.nomeAttivita = nomeAttivita; }
+    
+    /* ***** */
 
     public Date getInizio() { return inizio; }
     public void setInizio(Date inizio) { this.inizio = inizio; }
+    
+    /* ***** */
 
     public Date getFine() { return fine; }
     public void setFine(Date fine) { this.fine = fine; }
+    
+    /* ***** */
 
 	public Time getTempoLavorato() { return tempoLavorato; }
 	public void setTempoLavorato(Time tempoLavorato) { this.tempoLavorato = tempoLavorato; }
 	
+	/* ***** */
+	
     public String getCfColtivatore() { return cfColtivatore; }
     public void setCfColtivatore(String cfColtivatore) { this.cfColtivatore = cfColtivatore; }
+    
+    /* ***** */
 
     public String getStato() { return stato; }
     public void setStato(String stato) { this.stato = stato; }
     
+    /* ***** */
+    
     public int getIdAttivita() { return idAttivita; }
     public void setIdAttivita(int idAttivita) { this.idAttivita = idAttivita; }
 
-
+    /* ***** */
 
     @Override
     public String toString() {

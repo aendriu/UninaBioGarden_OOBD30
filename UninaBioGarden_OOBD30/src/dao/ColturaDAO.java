@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import controller.Controller;
 import entità.Coltura;
 import entità.Lotto;
+import java.sql.Statement;
+
 
 public class ColturaDAO extends DAO {
 
@@ -27,20 +31,14 @@ public class ColturaDAO extends DAO {
 			stmt.setInt(1, idColtura);
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					java.sql.Time time = rs.getTime("tempomaturazione");
-					Duration durata = Duration.ofSeconds(time.toLocalTime().toSecondOfDay());
-
-					String giornoSeminaStr = rs.getString("giornoSemina");
-					LocalDate giornoSemina = LocalDate.parse(giornoSeminaStr); 
-
 					return new Coltura(
-						rs.getInt("idColtura"),
-						rs.getString("nomeColtura"),
-						durata,
-						giornoSemina,
-						rs.getInt("idLotto")
-					);
-				}
+						    rs.getInt("idColtura"),
+						    rs.getString("nomeColtura"),
+						    rs.getString("tempomaturazione"),
+						    rs.getString("giornoSemina"),
+						    rs.getInt("idLotto")
+						);
+					}
 			}
 		}
 		return null;
@@ -56,7 +54,7 @@ public class ColturaDAO extends DAO {
 	}
 	
 	/* ************************* */
-	//CAMBIATO IL MODO IN CUI PIGLI IL TEMPO MATURAZIONE SENNO CRASHA
+	
 	public ArrayList<Coltura> GetColtureOfLotto(int idLotto) throws SQLException {
 		String sql = "SELECT * FROM coltura WHERE idLotto = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -76,8 +74,6 @@ public class ColturaDAO extends DAO {
 					coltureList.add(new Coltura(
 						rs.getInt("idColtura"),
 						rs.getString("nomeColtura"),
-						durata,
-						giornoSemina,
 						rs.getInt("idLotto")
 					));
 				}
@@ -115,8 +111,6 @@ public class ColturaDAO extends DAO {
 					coltureList.add(new Coltura(
 						rs.getInt("idColtura"),
 						rs.getString("nomeColtura"),
-						durata,
-						giornoSemina,
 						rs.getInt("idLotto")
 					));
 				}
@@ -137,8 +131,71 @@ public class ColturaDAO extends DAO {
 		return GetColturaOfLottoByNomeColtura(nomeColt, l.getIdLotto());
 	}
 	
+	
+	/* INSERT FUNCTIONS */
+	
+	public int InsertColtura(Coltura c) throws SQLException {
+		return InsertColtura(c.getNomeColtura(), c.getIdLotto());
+	}
+	
 	/* ************************* */
 
+	public int InsertColtura(String nomeColt, int idLotto) {
+	    Coltura c = new Coltura(nomeColt, idLotto); // se il formato non è corretto, il costruttore lancia un errore
+	    String sql = "INSERT INTO coltura (nomeColtura, tempomaturazione, giornosemina, idLotto) VALUES (?, ?::interval, ?, ?)";
+
+	    try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	        stmt.setString(1, nomeColt);
+	        stmt.setString(2, c.getTempoMaturazione());
+	        stmt.setNull(3, java.sql.Types.DATE);
+	        stmt.setInt(4, idLotto);
+
+	        stmt.executeUpdate();
+
+	        try (ResultSet rs = stmt.getGeneratedKeys()) {
+	            if (rs.next()) {
+	                return rs.getInt(1);
+	            } else {
+	                throw new SQLException("InsertColtura fallita: nessun id restituito.");
+	            }
+	        }
+
+	    } catch (org.postgresql.util.PSQLException e) {
+	        System.out.println("L'inserimento porterebbe il lotto ad avere troppe colture!");
+	        return -1;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return -1;
+	    }
+	}
+
+	
+	/* REMOVAL FUNCTIONS */
+	
+	public boolean RemoveColtura(Coltura c) throws SQLException {
+		return RemoveColtura(c.getIdColtura());
+	}
+	
+	/* ************************* */
+	
+	public boolean RemoveColtura(int idColtura) throws SQLException {
+		if (idColtura <= 0) {
+			throw new IllegalArgumentException("IdColtura non valido: " + idColtura);
+		}
+		String sql = "DELETE FROM coltura WHERE idColtura = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setInt(1, idColtura);
+			return stmt.executeUpdate() > 0; 
+		}
+	}
+	
+
+	
+
+	
+	
+	
+	
 	
 
 

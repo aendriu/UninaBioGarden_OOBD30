@@ -22,6 +22,8 @@ public class Lotto extends Entita {
 		tableName = "lotto";
 	}
 	
+	/* ***** */
+	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario) {
 		super();
 		this.idLotto = idLotto;
@@ -30,6 +32,8 @@ public class Lotto extends Entita {
 		this.proprietario = proprietario;
 		tableName = "lotto";
 	}
+	
+	/* ***** */
 	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, Progetto myProgetto) {
 		super();
@@ -40,6 +44,8 @@ public class Lotto extends Entita {
 		this.myProgetto = myProgetto;
 		tableName = "lotto";
 	}
+	
+	/* ***** */
 	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, Progetto myProgetto,
 			ArrayList<Coltura> myColture) {
@@ -52,6 +58,8 @@ public class Lotto extends Entita {
 		this.myColture = myColture;
 		tableName = "lotto";
 	}
+	
+	/* ***** */
 	
 	public Lotto(int idLotto, int numColture, String nomeLotto, ProprietarioDiLotto proprietario, Progetto myProgetto,
 			ArrayList<Coltura> myColture, ArrayList<Coltivatore> myColtivatori, ArrayList<Raccolto> myRaccolti) {
@@ -67,68 +75,99 @@ public class Lotto extends Entita {
 		tableName = "lotto";
 	}
 	
+	/* ***** */
 	
 	/* GETTERS AND SETTERS */
 
 	public int getIdLotto() {
 		return idLotto;
 	}
+	
+	/* ***** */
 
 	public void setIdLotto(int idLotto) {
 		this.idLotto = idLotto;
 	}
 
+	/* ***** */
+	
 	public int getNumColture() {
 		return numColture;
 	}
+	
+	/* ***** */
 
 	public void setNumColture(int numColture) {
 		this.numColture = numColture;
 	}
+	
+	/* ***** */
 
 	public String getNomeLotto() {
 		return nomeLotto;
 	}
+	
+	/* ***** */
 
 	public void setNomeLotto(String nomeLotto) {
 		this.nomeLotto = nomeLotto;
 	}
+	
+	/* ***** */
 
 	public ProprietarioDiLotto getProprietario() {
 		return proprietario;
 	}
+	
+	/* ***** */
 
 	public void setProprietario(ProprietarioDiLotto proprietario) {
 		this.proprietario = proprietario;
 	}
+	
+	/* ***** */
 
 	public Progetto getMyProgetto() {
 		return myProgetto;
 	}
+	
+	/* ***** */
 
 	public void setMyProgetto(Progetto myProgetto) {
 		this.myProgetto = myProgetto;
 	}
+	
+	/* ***** */
 
 	public ArrayList<Coltura> getMyColture() {
 		return myColture;
 	}
+	
+	/* ***** */
 
 	public void setMyColture(ArrayList<Coltura> myColture) {
 		this.myColture = myColture;
 	}
+	
+	/* ***** */
 
 	public ArrayList<Coltivatore> getMyColtivatori() {
 		return myColtivatori;
 	}
+	
+	/* ***** */
 
 	public void setMyColtivatori(ArrayList<Coltivatore> myColtivatori) {
 		this.myColtivatori = myColtivatori;
 	}
 	
+	/* ***** */
+	
 	public ArrayList<Raccolto> getMyRaccolti() {
 		return myRaccolti;
 	}
+	
+	/* ***** */
 
 	public void setMyRaccolti(ArrayList<Raccolto> myRaccolti) {
 		this.myRaccolti = myRaccolti;

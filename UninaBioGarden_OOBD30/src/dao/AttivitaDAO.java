@@ -24,6 +24,8 @@ public class AttivitaDAO extends DAO {
         super(filePath, c);
     }
     
+    /* ***** */
+    
     /* RETRIEVAL FUNCTIONS */
     public Attivita FindSpecificAttivita(int idAttivita) throws SQLException {
         String sql = "SELECT * FROM attività WHERE idAttività = ?";
