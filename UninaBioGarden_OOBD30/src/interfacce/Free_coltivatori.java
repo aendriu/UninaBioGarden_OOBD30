@@ -113,7 +113,6 @@ public class Free_coltivatori extends JFrame {
 
                     String selectedNome = (String) tableColtivatori.getValueAt(selectedRow, 0);
                     String selectedCognome = (String) tableColtivatori.getValueAt(selectedRow, 1);
-
                     // Per il CF si prende direttamente dal modello
                     int modelRow = tableColtivatori.convertRowIndexToModel(selectedRow);
                     String selectedCF = (String) tableModel.getValueAt(modelRow, 2);

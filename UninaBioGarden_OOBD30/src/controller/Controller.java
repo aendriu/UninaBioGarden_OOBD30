@@ -681,8 +681,7 @@ public class Controller {
     		            }
     		        }
     		    } catch (SQLException e) {
-    		        // Puoi loggare e/o gestire l'eccezione qui se vuoi
-    		        // Ritorna comunque la lista vuota in caso di errore
+    		       return new ArrayList<>(); // In caso di errore, ritorna lista vuota
     		    }
     		    return righe;
     		}
@@ -720,7 +719,7 @@ public class Controller {
     		        for (Coltivatore coltivatore : coltivatoriLiberi) {
     		            String nome = coltivatore.getNome();
     		            String cognome = coltivatore.getCognome();
-    		            String cf = coltivatore.getCF();
+    		            String CF = coltivatore.getCF();
     		            righe.add(new Object[]{nome, cognome, CF});
     		        }
 
