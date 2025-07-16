@@ -70,6 +70,7 @@ public class ProgettoDAO extends DAO {
 			                rs.getDate("inizio"),
 			                rs.getDate("fine"),
 			                rs.getString("CF_Coltivatore"),
+			                rs.getInt("idColtura"),
 			                rs.getTime("TempoLavorato"),
 			                rs.getString("stato")
 					);
@@ -141,6 +142,7 @@ public class ProgettoDAO extends DAO {
 						rs.getDate("inizio"),
 						rs.getDate("fine"),
 						rs.getString("CF_Coltivatore"),
+						rs.getInt("idColtura"),
 						rs.getTime("TempoLavorato"),
 						rs.getString("stato")
 					);

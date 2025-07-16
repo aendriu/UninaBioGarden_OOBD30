@@ -18,11 +18,12 @@ public class Attivita extends Entita {
     private java.sql.Date fine;  
     private java.sql.Time tempoLavorato;     
     private String cfColtivatore;
+    private int idColtura;
     private String stato;
     
     /* CONSTRUCTORS */
    
-    public Attivita(String nomeAttivita, String cfColtivatore) {
+    public Attivita(String nomeAttivita, String cfColtivatore, int idColtura) {
     	if (!isValidNomeAttivita(nomeAttivita)) {
 			throw new IllegalArgumentException("Nome attività non può essere nullo o vuoto.");
 		}
@@ -33,37 +34,40 @@ public class Attivita extends Entita {
 		this.fine = new Date(System.currentTimeMillis() + HowMuchTime(nomeAttivita.trim().toLowerCase()));
 		this.tempoLavorato = Time.valueOf("00:00:00"); 
 		this.stato = "Pianificata";
+		this.idColtura = idColtura;
 		this.tableName = "Attività";
     }
 
 	/* *************** */
 
-    public Attivita(String nomeAttivita, Date inizio, Date fine, String cfColtivatore) {
+    public Attivita(String nomeAttivita, Date inizio, Date fine, String cfColtivatore, int idColtura) {
     	this.nomeAttivita = nomeAttivita;
     	this.inizio = inizio;
     	this.fine = fine;
         this.tempoLavorato = Time.valueOf("00:00:00"); 
     	this.cfColtivatore = cfColtivatore;
     	this.stato = "Pianificata";
+    	this.idColtura = idColtura;
     	this.tableName = "Attività";
     }
     
     /* *************** */
     
-    public Attivita(String nomeAttivita, Date inizio, Date fine, String cfColtivatore, Time tempoLavorato, String stato) {
+    public Attivita(String nomeAttivita, Date inizio, Date fine, String cfColtivatore, int idColtura, Time tempoLavorato, String stato) {
         this.nomeAttivita = nomeAttivita;
         this.inizio = inizio;
         this.fine = fine;
         this.tempoLavorato = tempoLavorato;
         this.cfColtivatore = cfColtivatore;
         this.stato = stato;
+        this.idColtura = idColtura;
         tableName = "Attività";
     }
     
     /* *************** */
     
   
-    public Attivita(int idAttivita, String nomeAttivita, Date inizio, Date fine, String cfColtivatore, Time tempoLavorato, String stato) {
+    public Attivita(int idAttivita, String nomeAttivita, Date inizio, Date fine, String cfColtivatore, int idColtura, Time tempoLavorato, String stato) {
     	this.idAttivita = idAttivita;
         this.nomeAttivita = nomeAttivita;
         this.inizio = inizio;
@@ -71,6 +75,7 @@ public class Attivita extends Entita {
         this.tempoLavorato = tempoLavorato;
         this.cfColtivatore = cfColtivatore;
         this.stato = stato;
+        this.idColtura = idColtura;
         tableName = "Attività";
     }
 
@@ -131,6 +136,11 @@ public class Attivita extends Entita {
     public int getIdAttivita() { return idAttivita; }
     public void setIdAttivita(int idAttivita) { this.idAttivita = idAttivita; }
 
+    /* ***** */
+    
+    public int getIdColtura() { return idColtura; }
+    public void setIdColtura(int idColtura) { this.idColtura = idColtura; }
+    
     /* ***** */
 
     @Override

@@ -144,20 +144,16 @@ public class ColtivatoreDAO extends UtenteDAO{
             stmt.setString(1, CF);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    Date inizio = rs.getDate("Inizio");
-                    Date fine   = rs.getDate("Fine");
-                    Time tempoLavorato = rs.getTime("TempoLavorato");
-                    String nome  = rs.getString("nomeattività");
-                    String cf    = rs.getString("CF_coltivatore");
-                    String stato = rs.getString("Stato");
-
+                   
                     Attivita a = new Attivita(
-                        nome,
-                        inizio,
-                        fine,
-                        cf,
-                        tempoLavorato,
-                        stato
+                    	rs.getInt("idAttività"),
+    					rs.getString("nomeAttività"),
+    					rs.getDate("inizio"),
+    					rs.getDate("fine"),
+    					rs.getString("CF_Coltivatore"),
+    					rs.getInt("idColtura"),
+   						rs.getTime("TempoLavorato"),
+   						rs.getString("stato")
                     );
                     lista.add(a);
                 }
@@ -174,34 +170,30 @@ public class ColtivatoreDAO extends UtenteDAO{
     
     /* ****************************** */
  
-    public List<Attivita> getAttivitaPerColtivatoreELotto(int idLotto, String cfColtivatore, String nomecoltura) throws SQLException {
-        List<Attivita> risultati = new ArrayList<>();
-
-        String query = "SELECT * FROM attività NATURAL JOIN lavora_in NATURAL JOIN lotto NATURAL JOIN coltura WHERE lotto.idlotto = ? "
-        		+ "AND lavora_in.cf_coltivatore = ? "
-        		+ "AND coltura.nomecoltura = ? ";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, idLotto);
-            stmt.setString(2, cfColtivatore);
-            stmt.setString(3, nomecoltura);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Attivita a = new Attivita(
-                        rs.getInt("idAttività"),
-                        rs.getString("nomeattività"),
-                        rs.getDate("inizio"),
-                        rs.getDate("fine"),
-                        rs.getString("cf_coltivatore"),
-                        rs.getTime("tempolavorato"),
-                        rs.getString("stato")
-                    );
-                    risultati.add(a);
-                }
-            }
-        }
-
-        return risultati;
+    public List<Attivita> GetAttivitaOfColtivatoreOnColtura(String cfColtivatore, int idC) throws SQLException {
+        String sql = "SELECT * FROM attività NATURAL JOIN coltura WHERE CF_coltivatore = ? AND idColtura = ?";
+		List<Attivita> attivitaList = new ArrayList<>();
+		
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, cfColtivatore);
+			stmt.setInt(2, idC);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					Attivita attivita = new Attivita(
+						rs.getInt("idAttività"),
+						rs.getString("nomeAttività"),
+						rs.getDate("inizio"),
+						rs.getDate("fine"),
+						rs.getString("CF_Coltivatore"),
+						rs.getInt("idColtura"),
+						rs.getTime("TempoLavorato"),
+						rs.getString("stato")
+					);
+					attivitaList.add(attivita);
+				}
+			}
+		}
+		return attivitaList;
     }
 
     /* ****************************** */

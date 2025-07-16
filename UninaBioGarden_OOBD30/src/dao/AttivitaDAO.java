@@ -34,13 +34,14 @@ public class AttivitaDAO extends DAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return new Attivita(
-                        rs.getInt("idAttività"),
-                        rs.getString("nomeAttività"),
-                        rs.getDate("inizio"),
-                        rs.getDate("fine"),
-                        rs.getString("cf_Coltivatore"),
-                        rs.getTime("tempoLavorato"),
-                        rs.getString("stato")
+                    	rs.getInt("idAttività"),
+    					rs.getString("nomeAttività"),
+    					rs.getDate("inizio"),
+    					rs.getDate("fine"),
+    					rs.getString("CF_Coltivatore"),
+    					rs.getInt("idColtura"),
+   						rs.getTime("TempoLavorato"),
+   						rs.getString("stato")
                     );
                 }
             }
@@ -69,13 +70,14 @@ public class AttivitaDAO extends DAO {
                 List<Attivita> attivitaList = new ArrayList<>();
                 while (rs.next()) {
                     attivitaList.add(new Attivita(
-                            rs.getInt("idAttività"),
-                            rs.getString("nomeAttività"),
-                            rs.getDate("inizio"),
-                            rs.getDate("fine"),
-                            rs.getString("cf_Coltivatore"),
-                            rs.getTime("tempoLavorato"),
-                            rs.getString("stato")
+                    		rs.getInt("idAttività"),
+    						rs.getString("nomeAttività"),
+    						rs.getDate("inizio"),
+    						rs.getDate("fine"),
+    						rs.getString("CF_Coltivatore"),
+    						rs.getInt("idColtura"),
+    						rs.getTime("TempoLavorato"),
+    						rs.getString("stato")
                         ));
                 }
                 return new ArrayList<>(attivitaList);
@@ -99,8 +101,9 @@ public class AttivitaDAO extends DAO {
 						rs.getString("nomeAttività"),
 						rs.getDate("inizio"),
 						rs.getDate("fine"),
-						rs.getString("CF_coltivatore"),
-						rs.getTime("tempoLavorato"),
+						rs.getString("CF_Coltivatore"),
+						rs.getInt("idColtura"),
+						rs.getTime("TempoLavorato"),							
 						rs.getString("stato")
 					);
 					lista.add(a);
@@ -125,8 +128,9 @@ public class AttivitaDAO extends DAO {
 						rs.getString("nomeAttività"),
 						rs.getDate("inizio"),
 						rs.getDate("fine"),
-						rs.getString("CF_coltivatore"),
-						rs.getTime("tempoLavorato"),
+						rs.getString("CF_Coltivatore"),
+						rs.getInt("idColtura"),
+						rs.getTime("TempoLavorato"),							
 						rs.getString("stato")
 					);
 					lista.add(a);
@@ -154,22 +158,15 @@ public class AttivitaDAO extends DAO {
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs   = stmt.executeQuery()) {
             while (rs.next()) {
-                int id       = rs.getInt("idAttività");
-                String nome  = rs.getString("nomeAttività");
-                Date inizio  = rs.getDate("inizio");
-                Date fine    = rs.getDate("fine");
-                Time t       = rs.getTime("TempoLavorato");
-                String cf    = rs.getString("CF_Coltivatore");
-                String stato = rs.getString("stato");
-
-                Attivita a = new Attivita(
-                    id,
-                    nome,
-                    inizio,
-                    fine,
-                    cf,
-                    t,
-                    stato
+            	Attivita a = new Attivita(
+                	rs.getInt("idAttività"),
+        			rs.getString("nomeAttività"),
+        			rs.getDate("inizio"),
+        			rs.getDate("fine"),
+       				rs.getString("CF_Coltivatore"),
+       				rs.getInt("idColtura"),
+       				rs.getTime("TempoLavorato"),
+       				rs.getString("stato")
                 );
 
                 attivitaList.add(a);
@@ -199,13 +196,14 @@ public class AttivitaDAO extends DAO {
                 List<Attivita> attivitaList = new ArrayList<>();
                 while (rs.next()) {
                     attivitaList.add(new Attivita(
-                            rs.getInt("idattività"),
-                            rs.getString("nomeattività"),
-                            rs.getDate("inizio"),
-                            rs.getDate("fine"),
-                            rs.getString("cf_coltivatore"),
-                            rs.getTime("tempolavorato"),
-                            rs.getString("stato")
+                    		rs.getInt("idAttività"),
+            				rs.getString("nomeAttività"),
+            				rs.getDate("inizio"),
+            				rs.getDate("fine"),
+            				rs.getString("CF_Coltivatore"),
+            				rs.getInt("idColtura"),
+            				rs.getTime("TempoLavorato"),
+            				rs.getString("stato")
                     
                     		));
                 }
@@ -218,19 +216,16 @@ public class AttivitaDAO extends DAO {
     /* INSERT ATTIVITA */
     
     public int InsertAttivita(Attivita a) throws SQLException {
-    	return InsertAttivita(a.getNomeAttivita(), a.getInizio(), a.getFine(), a.getCfColtivatore(), a.getTempoLavorato(), a.getStato());
+    	return InsertAttivita(a.getNomeAttivita(), a.getInizio(), a.getFine(), a.getCfColtivatore(), a.getIdColtura(), a.getTempoLavorato(), a.getStato());
     }
 
     /* ******************************* */
     
-    public int InsertAttivita(String nomeAtt, Date inizio, Date fine, String cf) throws SQLException {
-        if (nomeAtt == null || inizio == null || fine == null || cf == null) {
-            throw new IllegalArgumentException("Attività non valida");
+    public int InsertAttivita(String nomeAtt, Date inizio, Date fine, String cf, int idColt) throws SQLException {
+        if(!isInsertionOnAttivitaValid(nomeAtt, inizio, fine, cf, idColt)) {
+        	throw new IllegalStateException("Il metodo InsertAttivita non è stato implementato correttamente.");
         }
-        List<String> attivitaValide = List.of("Raccolto", "Irrigazione", "Semina", "Applica Pesticida");
-        if (!attivitaValide.contains(nomeAtt)) {
-            throw new IllegalArgumentException("Tipo attività non valido: " + nomeAtt);
-        }
+    	
 
         String sql = "INSERT INTO attività (nomeAttività, inizio, fine, cf_Coltivatore) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -255,13 +250,14 @@ public class AttivitaDAO extends DAO {
     }
 
     
-    /* ******************************* */
     
-    public int InsertAttivita(String nome, Date inizio, Date fine, String cfColtivatore, Time tempoLavorato, String stato) 
+
+	/* ******************************* */
+    
+    public int InsertAttivita(String nomeAtt, Date inizio, Date fine, String cf, int idColt,Time tempoLavorato, String stato) 
             throws SQLException {
-        if (nome == null || inizio == null || fine == null || cfColtivatore == null 
-            || tempoLavorato == null || stato == null) {
-            throw new IllegalArgumentException("Attività non valida");
+    	if(!isInsertionOnAttivitaValid(nomeAtt, inizio, fine, cf, idColt)) {
+        	throw new IllegalStateException("Il metodo InsertAttivita non è stato implementato correttamente.");
         }
 
         String sql = """
@@ -270,12 +266,12 @@ public class AttivitaDAO extends DAO {
             VALUES (?, ?, ?, ?::interval, ?, ?)
             """;
         try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, nome);
+            stmt.setString(1, nomeAtt);
             stmt.setDate(2, inizio);
             stmt.setDate(3, fine);
            
             stmt.setString(4, tempoLavorato.toLocalTime().toString());
-            stmt.setString(5, cfColtivatore);
+            stmt.setString(5, cf);
             stmt.setString(6, stato);
 
             int affected = stmt.executeUpdate();             
@@ -402,4 +398,51 @@ public class AttivitaDAO extends DAO {
     }
 
     /* ******************************* */
+    
+    private boolean isInsertionOnAttivitaValid(String nomeAtt, Date inizio, Date fine, String cf, int idColt) {
+		if (cf == null || cf.isEmpty()) {
+			return false;
+		}
+    	if (nomeAtt == null || inizio == null || fine == null || cf == null) {
+            return false;
+        }
+        if (inizio.after(fine)) {
+			return false;
+		}
+        List<String> attivitaValide = List.of("Raccolto", "Irrigazione", "Semina", "Applica Pesticida");
+        if (!attivitaValide.contains(nomeAtt)) {
+            return false;
+        }
+        if(!isIdColtValid(cf, idColt)) {
+        	System.out.println("Il Coltivatore non lavora nel lotto cui appartiene la coltura indicata, ID Coltura non valido: " + idColt);
+        	return false;
+        }
+		return true;
+	}
+    
+    /* ******************************* */
+
+    private boolean isIdColtValid(String cfColtivatore, int idColt) {
+        String sql = """
+            SELECT COUNT(*) 
+            FROM coltura c
+            JOIN lavora_in li
+              ON c.idlotto = li.idlotto
+            WHERE c.idcoltura = ?
+              AND li.cf_coltivatore = ?
+            """;
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idColt);
+            stmt.setString(2, cfColtivatore);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
