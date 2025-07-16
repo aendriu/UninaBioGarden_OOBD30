@@ -227,4 +227,18 @@ public class LottoDAO extends DAO {
 		return foundLotti;
 	}
 	
+	public int AggiungiProprietarioALotto (String Lottoname, String CFProprietario) throws SQLException {
+		if (Lottoname == null || CFProprietario == null || CFProprietario.isEmpty()) {
+			throw new IllegalArgumentException("ID Lotto o CF Proprietario non valido: " + Lottoname + ", " + CFProprietario);
+		}
+		String sql = "UPDATE lotto SET CF_Proprietario = ? WHERE nomelotto = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, CFProprietario);
+			stmt.setString(2, Lottoname);
+			return stmt.executeUpdate();
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return -99; // Indica un errore nel database
+		}
+	}
 }

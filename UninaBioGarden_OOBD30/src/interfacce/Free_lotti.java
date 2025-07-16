@@ -39,7 +39,7 @@ public class Free_lotti extends JFrame {
         setLocation(0, 0); // in alto a sinistra
 
         Free_lotti = new JPanel();
-        Free_lotti.setBorder(new EmptyBorder(10, 10, 10, 10));
+       
         setContentPane(Free_lotti);
 
         Free_lotti.setLayout(null);
@@ -48,7 +48,7 @@ public class Free_lotti extends JFrame {
         listModel = new DefaultListModel<>();
 
         // ottieni dati dal controller (corretto il punto e virgola)
-        List<Object[]> nomiColture = TheController.Riempi_tab_lotti_free(username);
+        List<Object[]> nomiColture = TheController.Riempi_tab_lotti_free();
 
         // riempi il modello
         for (Object[] nome : nomiColture) {
@@ -96,14 +96,16 @@ public class Free_lotti extends JFrame {
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		String selectedLotto=listLotti.getSelectedValue();
-        		int numlotti=10;
         		try {
 					if (selectedLotto== null) {
 						throw new Global_exceptions("Lotto", Global_exceptions.Tipo.empty_field);
-					}else if(numlotti==10) {
-						throw new Proprietario_addons_selection_exceptions(Tipo. lotti_maximum_number_reached, selectedLotto);
 					}
-				} catch (Global_exceptions | Proprietario_addons_selection_exceptions e1) {
+					int validat = TheController.AggiungiProprietarioALotto(selectedLotto, username);
+					if (validat==-99) {
+						throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+					}
+					JOptionPane.showMessageDialog(Free_lotti, selectedLotto+ " aggiunto con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+				} catch (Global_exceptions  e1) {
 					
 					JOptionPane.showMessageDialog(Free_lotti, e1.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
 				}

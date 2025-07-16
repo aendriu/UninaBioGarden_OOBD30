@@ -93,7 +93,7 @@ public class ColturaDAO extends DAO {
 	
 	
 	/* ************************* */
-	
+	//piglia le colture di un lotto specifico filtrate per nome della coltura
 	public ArrayList<Coltura> GetColturaOfLottoByNomeColtura(String nomeColt, int idLotto) throws SQLException {
 		String sql = "SELECT * FROM coltura WHERE nomeColtura = ? AND idLotto = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
