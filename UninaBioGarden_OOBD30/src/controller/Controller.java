@@ -466,7 +466,7 @@ public class Controller {
     		                String nomeColtura = colturaObj.getNomeColtura();
 
     		                // Ottieni attività filtrate per lotto, coltivatore e coltura
-    		                List<Attivita> attivitaFiltrate = coltivatoreDAO.getAttivitaPerColtivatoreELotto(lottoID, CF, nomeColtura);
+    		                List<Attivita> attivitaFiltrate = coltivatoreDAO.GetAttivitaOfColtivatoreOnColtura(CF, colturaObj.getIdColtura());
 
     		                for (Attivita att : attivitaFiltrate) {
     		                    if (!attivitaViste.add(att.getIdAttivita())) {

@@ -50,13 +50,13 @@ public class TESTING {
 	// TESTING
 	
 	public void InitTests() throws SQLException {
-		//InitTestPropDAO();
-		//InitTestColtDAO();
-		//InitTestLottoDAO();
+		InitTestPropDAO();
+		InitTestColtDAO();
+		InitTestLottoDAO();
 		InitTestAttDAO();
-		//InitTestRacDAO();
-		//InitTestColturaDAO();
-		//InitTestProgettoDAO();
+		InitTestRacDAO();
+		InitTestColturaDAO();
+		InitTestProgettoDAO();
 		return;
 	}
 	
@@ -166,14 +166,14 @@ public class TESTING {
 		// *****
 		
 		System.out.println("TESTING InsertAttività...");
-		Attivita att2 = new Attivita("Applica Pesticida", Date.valueOf(LocalDate.of(2025, 10, 1)), Date.valueOf(LocalDate.of(2025, 10, 15)), "DLSNMN04E14F839Q");
+		Attivita att2 = new Attivita("Applica Pesticida", Date.valueOf(LocalDate.of(2025, 10, 1)), Date.valueOf(LocalDate.of(2025, 10, 15)), "DLSNMN04E14F839Q", 81);
 		System.out.println(att2.getTempoLavorato());
 		att2.setIdAttivita(attDAO.InsertAttivita(att2)); 
 		System.out.println( att2.getIdAttivita() >= 0
 	            ? "Attività inserita con successo: " + att2.getNomeAttivita() + " con ID " + att2.getIdAttivita()
 	            : "Errore nell'inserimento dell'attività " + att2.getNomeAttivita()
 	        );
-	    
+//	    
 		System.out.println(
 			attDAO.RemoveAttivita(att2)
 			? att2.getNomeAttivita() + " Has been removed"

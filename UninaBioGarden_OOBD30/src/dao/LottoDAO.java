@@ -103,6 +103,9 @@ public class LottoDAO extends DAO {
 		return c.raccoltoDAO.GetRaccoltiLotto(idL);
 	}
 	
+	/* *************** */
+
+	
 	/* INSERT FUNCTIONS */
 	
 	public boolean AddRaccoltoToLotto(Raccolto r) throws SQLException {
