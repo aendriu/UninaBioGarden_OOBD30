@@ -12,6 +12,7 @@ public abstract class Utente extends Entita{
 	public Utente(String CF) {
 		this.CF = CF;
 	}
+	
 	public Utente(String nome, String cognome, String CF, String username, String password) {
 		this.nome = nome;
 		this.cognome = cognome;

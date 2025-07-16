@@ -388,6 +388,8 @@ public class AttivitaDAO extends DAO {
         }
     }
     
+    /* ******************************* */
+
     public boolean WouldExceedMaxTime(Attivita a, Time nuovoTempo) {
         long max = a.getFine().getTime() - a.getInizio().getTime();
 
@@ -403,7 +405,7 @@ public class AttivitaDAO extends DAO {
 		if (cf == null || cf.isEmpty()) {
 			return false;
 		}
-    	if (nomeAtt == null || inizio == null || fine == null || cf == null) {
+    	if (nomeAtt == null || inizio == null || fine == null) {
             return false;
         }
         if (inizio.after(fine)) {
