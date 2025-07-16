@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import controller.Controller;
 import entità.Coltivatore;
@@ -46,7 +45,6 @@ public class LottoDAO extends DAO {
 	    return null;
 	}
 	
-
 	/* *************** */
 	
 	public Lotto FindSpecificLotto(Lotto l) throws SQLException {

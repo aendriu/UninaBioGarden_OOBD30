@@ -107,11 +107,125 @@ public class Controller {
    
   
     	
+    	 public List<Object[]> Riempi_tab_Proprietario_free_colture(String username_colt, String Lottoname) { //METTERE PURE LOTTO NAME QUANDO HO LE DAO
+    	        List<Object[]> lista = new ArrayList<>();
+    	        Random rnd = new Random();
+    	        String[] colture = {
+    				"Pomodoro", "Lattuga", "Carota", "Zucchina",
+    				"Peperone", "Melanzana", "Cetriolo", "Spinaci",
+    				 "Riso", "Mais", "Grano", "Orzo", " Fagiolo", "Pisello", "Soia", "Avena"
+    				 , "Cipolla", "Aglio", "Porro", "Barbabietola", "Ravanello", "Sedano", "Cavolo", "Broccoli"
+    			};
+    	        for (int i = 0; i < 50; i++) {  // genero 50 righe di esempio
+    	            String coltura = colture[rnd.nextInt(colture.length)];
+    	            Object[] riga = { 
+    	                coltura, 
+    	            };
+    	            lista.add(riga);
+    	        }
+    	        return lista;
+    	    }
     	 
+    	
+    	 public List<Object[]> Riempi_tab_lotti_free(String username_colt) {
+    	        List<Object[]> lista = new ArrayList<>();
+    	        Random rnd = new Random();
+
+    	        String[] nomiLotti = {
+    	            "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
+    	            "Vigneto Sud", "Frutteto Ovest", "Pista Agraria", "Bosco Urbano",
+    	            "Prato Fiorito", "Collina Blu", "Campo di Grano", "Orto delle Erbe", "Serra Tropicale"
+    	            , "Giardino delle Rose", "Frutteto dei Sogni", "Campo di Mais", "Orto delle Radici"
+    	            , "Serra delle Spezie", "Giardino dei Fiori", "Frutteto delle Meraviglie"
+    	            , "Campo di Ortaggi", "Orto delle Bontà", "Serra dei Sogni", "Giardino delle Delizie"
+    	            , "Frutteto delle Stelle", "Campo di Legumi", "Orto delle Aromatiche"
+    	        };
+
+    	        for (int i = 0; i < 50; i++) {
+    	            // Prendi un nome casuale dalla lista esistente (con ripetizioni)
+    	            String nome = nomiLotti[rnd.nextInt(nomiLotti.length)];
+    	            int numeroColture = 1 + rnd.nextInt(10); // da 1 a 10
+    	            int attivitaInCorso = rnd.nextInt(4);    // da 0 a 3
+    	            Object[] riga = { nome, numeroColture, attivitaInCorso };
+    	            lista.add(riga);
+    	        }
+    	        	
+    	        return lista;
+    	    }
+    	 public List<Object[]> Riempi_tab_attività_vista_proprietario(String username_colt) {
+    		    List<Object[]> lista = new ArrayList<>();
+    		    Random rnd = new Random();
+
+    		    String[] nomiAttività = {
+    		        "Irrigazione", "Potatura", "Raccolta", "Semina",
+    		        "Concimazione", "Controllo Parassiti", "Monitoraggio Clima"
+    		    };
+
+    		    String[] nomiLotti = {
+    		        "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
+    		        "Vigneto Sud", "Frutteto Ovest", "Prato Fiorito", "Collina Blu"
+    		    };
+
+    		    String[] colture = {
+    		        "Pomodoro", "Lattuga", "Carota", "Zucchina",
+    		        "Peperone", "Melanzana", "Cetriolo", "Spinaci"
+    		    };
+
+    		    String[] statiPossibili = {  // non usato più, ma puoi tenere
+    		        "In corso", "Completata", "Pianificata"
+    		    };
+
+    		    String[] nomiColtivatori = {
+    		        "Mario", "Luca", "Giulia", "Anna",
+    		        "Marco", "Sara", "Francesco", "Elena",
+    		        "Alessandro", "Chiara", "Giovanni", "Martina",
+    		        "Stefano", "Laura", "Davide", "Federica",
+    		        "Simone", "Valentina", "Giorgio", "Claudia",
+    		        "Roberto", "Silvia", "Antonio", "Francesca"
+    		    };
+
+    		    String[] cognomiColtivatori = {
+    		        "Rossi", "Bianchi", "Verdi", "Neri",
+    		        "Gialli", "Blu", "Arancio", "Viola",
+    		        "Grigi", "Marroni", "Rossi", "Neri",
+    		        "Bianchi", "Verdi", "Gialli", "Blu",
+    		        "Arancio", "Viola"
+    		    };
+
+    		    for (int i = 0; i < 30; i++) {
+    		        String nomeAttivita = nomiAttività[rnd.nextInt(nomiAttività.length)];
+    		        String nomeLotto = nomiLotti[rnd.nextInt(nomiLotti.length)];
+    		        String coltura = colture[rnd.nextInt(colture.length)];
+    		        String nomeColtivatore = nomiColtivatori[rnd.nextInt(nomiColtivatori.length)];
+    		        String cognomeColtivatore = cognomiColtivatori[rnd.nextInt(cognomiColtivatori.length)];
+
+    		        String stato = "";
+    		        int percentuale = rnd.nextInt(101); // 0..100
+    		        if (percentuale == 0) {
+    		            stato = "Pianificata";
+    		        } else if (percentuale < 100) {
+    		            stato = "In corso";
+    		        } else {
+    		            stato = "Completata";
+    		        }
+
+    		        // Modifico qui l’ordine
+    		        Object[] riga = {
+    		            nomeLotto,           
+    		            nomeColtivatore,     
+    		            cognomeColtivatore,  
+    		            nomeAttivita,        
+    		            coltura,             
+    		            stato,               
+    		            percentuale          
+    		        };
+
+    		        lista.add(riga);
+    		    }
+
+    		    return lista;
+    		}
     	 
-    	
-    	
-    	
 
     	 public String[] getData1(String username_Prop) {
     		    String[] possibiliNomi = {
@@ -455,8 +569,7 @@ public class Controller {
     		        ArrayList<Lotto> lotti = coltivatoreDAO.GetLottiColtivatore(CF);
     		        if (lotti.isEmpty()) return righe;
 
-    		        // Uso HashSet per controllo duplicati più efficiente
-    		        Set<Integer> attivitaViste = new HashSet<>();
+    		        Set<Integer> attivitaViste = new HashSet<>(); // Moved fuori dal ciclo lotti per evitare duplicati
 
     		        for (Lotto lotto : lotti) {
     		            String nomeLotto = lotto.getNomeLotto();
@@ -467,19 +580,25 @@ public class Controller {
     		            for (Coltura colturaObj : colturePerLotto) {
     		                String nomeColtura = colturaObj.getNomeColtura();
 
+    		                // Ottieni attività filtrate per lotto, coltivatore e coltura
     		                List<Attivita> attivitaFiltrate = coltivatoreDAO.getAttivitaPerColtivatoreELotto(lottoID, CF, nomeColtura);
 
     		                for (Attivita att : attivitaFiltrate) {
     		                    if (!attivitaViste.add(att.getIdAttivita())) {
-    		                        continue; // già vista, salto duplicati
+    		                        // Salta attività già viste per evitare duplicati
+    		                        continue;
     		                    }
 
+    		                    int idAttività= att.getIdAttivita();
+    		                    String nomeAttività = att.getNomeAttivita();
+    		                    String stato = att.getStato();
     		                    Date dataInizio = att.getInizio();
     		                    Date dataFine = att.getFine();
     		                    Time tempo = att.getTempoLavorato();
 
     		                    long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
 
+    		                    // Calcolo millisecondi tempo lavorato
     		                    LocalTime localTime = tempo.toLocalTime();
     		                    int ore = localTime.getHour();
     		                    int minuti = localTime.getMinute();
@@ -489,16 +608,15 @@ public class Controller {
     		                    int percentuale = (durataTotaleMillis <= 0) ? 0 :
     		                        (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
 
-    		                    righe.add(new Object[] {nomeLotto, att.getNomeAttivita(), nomeColtura, att.getStato(), percentuale});
+    		                    righe.add(new Object[] {nomeLotto, nomeAttività, nomeColtura, stato, percentuale});
     		                }
     		            }
     		        }
     		    } catch (SQLException e) {
-    		        righe.clear(); // In caso di errore, ritorna lista vuota
+    		        e.printStackTrace();
     		    }
     		    return righe;
     		}
-
 
 
     	  public boolean aggiorna_tempo_lavorato(String username, String lottoname, String nomeattività, Time tempoLavorato) {
@@ -563,40 +681,36 @@ public class Controller {
     		            }
     		        }
     		    } catch (SQLException e) {
-    		       return new ArrayList<>(); // In caso di errore, ritorna lista vuota
+    		        // Puoi loggare e/o gestire l'eccezione qui se vuoi
+    		        // Ritorna comunque la lista vuota in caso di errore
     		    }
     		    return righe;
     		}
 
     	  
     	  public List<Object[]> Riempi_tab_Proprietario_nome_coltura(String username, String lottoName) {
-    		    Set<Integer> idColtureSet = new HashSet<>();
-    		    List<Object[]> righe = new ArrayList<>();
-
+    		    Set<Object[]> righeSet = new LinkedHashSet<>(); // Set per evitare duplicati mantenendo ordine
     		    try {
     		        List<Lotto> lotti = propDAO.GetLottiProprietario(Convert_UsernameToCF(username));
-    		        if (lotti.isEmpty()) return righe;
-
+    		        if (lotti.isEmpty()) return new ArrayList<>(); // Lista vuota se niente lotti
+    		        
     		        for (Lotto lotto : lotti) {
     		            if (lotto.getNomeLotto().equals(lottoName)) {
     		                List<Coltura> colture = coltureDAO.GetColtureOfLotto(lotto.getIdLotto());
     		                for (Coltura coltura : colture) {
-    		                    int idcoltura = coltura.getIdColtura();
-    		                    if (!idColtureSet.contains(idcoltura)) {
-    		                        idColtureSet.add(idcoltura);
-    		                        righe.add(new Object[]{coltura.getNomeColtura(), idcoltura});
-    		                    }
+    		                    String nomeColtura = coltura.getNomeColtura();
+    		                    righeSet.add(new Object[]{nomeColtura});
     		                }
     		                break;
     		            }
     		        }
     		    } catch (SQLException e) {
-    		        righe.clear();
+    		        righeSet.clear(); // In caso di errore, pulisco il set
+    		        
     		    }
-
-    		    return righe;
+    		    // Converto Set in List e la ritorno
+    		    return new ArrayList<>(righeSet);
     		}
-
 
     	  public List<Object[]> Riempi_tab_Proprietario_nome_coltivatore_free(String username, String lottoName) {
     		    List<Object[]> righe = new ArrayList<>();
@@ -606,7 +720,7 @@ public class Controller {
     		        for (Coltivatore coltivatore : coltivatoriLiberi) {
     		            String nome = coltivatore.getNome();
     		            String cognome = coltivatore.getCognome();
-    		            String CF = coltivatore.getCF();
+    		            String cf = coltivatore.getCF();
     		            righe.add(new Object[]{nome, cognome, CF});
     		        }
 
@@ -636,122 +750,8 @@ public class Controller {
     		    return true;
     		}
 
-    	  public int AddColturaToLotto(String username, String lottoname, String coltname) {
-    		    List<Lotto> lotti = new ArrayList<>();
-    		    try {
-    		        lotti = propDAO.GetLottiProprietario(Convert_UsernameToCF(username));
-    		        for (Lotto lotto : lotti) {
-    		            if (lotto.getNomeLotto().equals(lottoname)) {
-    		                int id_lotto = lotto.getIdLotto();
-    		                int validat= coltureDAO.InsertColtura(coltname, id_lotto);
-    		                if(validat==-1) {
-    		                	return -1;
-    		                }
-    		                	return 1; // Successo
-    		            }
-    		        }
-    		    } catch (SQLException e) {
-    		        return -99; // Errore durante l'inserimento
-    		    }
-    		    return -99; // Nessun lotto corrispondente trovato
-    		}
-
-    			
-    	  public int RemoveColturaFromLotto(int idcoltura) {
-  		    try {
-  		           coltureDAO.RemoveColtura(idcoltura);
-  		            return 1; // Successo
-  		        
-  		    } catch (SQLException e) {
-  		        return -99; // Errore durante l'inserimento
-  		    }
-  		}  
-    	  
-    	  public List<Object[]> Riempi_tab_attività_vista_proprietario(String username) {
-    		    List<Object[]> righe = new ArrayList<>();
-    		    try {
-    		        String CFproprietario = Convert_UsernameToCF(username);
-    		        List<Lotto> lotti_proprietario = propDAO.GetLottiProprietario(CFproprietario);
-    		        if (lotti_proprietario.isEmpty()) return righe;
-
-    		        Set<Integer> attivitaViste = new HashSet<>();
-
-    		        for (Lotto lotto : lotti_proprietario) {
-    		            int idlotto = lotto.getIdLotto();
-    		            String nomelotto = lotto.getNomeLotto();
-
-    		            List<Coltivatore> coltivatori_in_lotto = lottoDAO.GetColtivatoriOfLotto(idlotto);
-    		            for (Coltivatore coltivatore : coltivatori_in_lotto) {
-    		                String nomecoltivatore = coltivatore.getNome();
-    		                String cognomecoltivatore = coltivatore.getCognome();
-    		                String CFcoltivatore = coltivatore.getCF();
-
-    		                List<Coltura> colture = coltureDAO.GetColtureOfLotto(idlotto);
-
-    		                for (Coltura coltura : colture) {
-    		                    String nomecoltura = coltura.getNomeColtura();
-
-    		                    List<Attivita> attività = coltivatoreDAO.getAttivitaPerColtivatoreELotto(idlotto, CFcoltivatore, nomecoltura);
-
-    		                    for (Attivita att : attività) {
-    		                        if (!attivitaViste.add(att.getIdAttivita())) {
-    		                            continue; // evita duplicati
-    		                        }
-
-    		                        String nomeattività = att.getNomeAttivita();
-    		                        String stato = att.getStato();
-    		                        Date dataInizio = att.getInizio();
-    		                        Date dataFine = att.getFine();
-    		                        Time tempo = att.getTempoLavorato();
-
-    		                        long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
-
-    		                        LocalTime localTime = tempo.toLocalTime();
-    		                        int ore = localTime.getHour();
-    		                        int minuti = localTime.getMinute();
-    		                        int secondi = localTime.getSecond();
-    		                        long tempoLavoratoEffettivoMillis = (ore * 3600 + minuti * 60 + secondi) * 1000;
-
-    		                        int percentuale = (durataTotaleMillis <= 0) ? 0 :
-    		                            (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
-
-    		                        righe.add(new Object[] {
-    		                            nomelotto,
-    		                            nomecoltivatore,
-    		                            cognomecoltivatore,
-    		                            nomeattività,
-    		                            nomecoltura,
-    		                            stato,
-    		                            percentuale
-    		                        });
-    		                    }
-    		                }
-    		            }
-    		        }
-    		    } catch (SQLException e) {
-    		        righe.clear(); // In caso di errore, ritorna lista vuota
-    		    }
-    		    return righe;
-    		}
-
-    	  public List<Object[]> Riempi_tab_lotti_free() {
-    		    List<Object[]> righe = new ArrayList<>();
-    		    List<Lotto> lotti_free = new ArrayList<>();
-    		    try {
-    		        lotti_free = lottoDAO.GetLottiSenzaProprietario();
-    		        for (Lotto lotto : lotti_free) {
-    		            String nome = lotto.getNomeLotto();
-    		            righe.add(new Object[]{nome});
-    		        }
-    		    } catch (SQLException e) {
-    		        e.printStackTrace();
-    		        righe.clear(); // In caso di errore, ritorna lista vuota
-    		    }
-    		    return righe;
-    		}
-
-    			 
-    		 
+    		  
+    		  
     		  
     		  
     	  // Metodi specifici che creano il frame desiderato e usano il metodo generico

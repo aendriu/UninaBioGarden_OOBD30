@@ -28,6 +28,7 @@ public class Free_lotti extends JFrame {
         
         // Imposta le proprietà della finestra
         setResizable(false);
+        setTitle("Lista Colture Libere");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Prendi la dimensione dello schermo esatta
@@ -47,12 +48,12 @@ public class Free_lotti extends JFrame {
         listModel = new DefaultListModel<>();
 
         // ottieni dati dal controller (corretto il punto e virgola)
-        List<Object[]> nomiLotti = TheController.Riempi_tab_lotti_free();
+        List<Object[]> nomiColture = TheController.Riempi_tab_lotti_free(username);
 
         // riempi il modello
-        for (Object[] nome : nomiLotti) {
-            String nomeLotto = (String) nome[0];
-            listModel.addElement(nomeLotto);
+        for (Object[] nome : nomiColture) {
+            String nomeColtura = (String) nome[0];
+            listModel.addElement(nomeColtura);
         }
 
         // crea la lista

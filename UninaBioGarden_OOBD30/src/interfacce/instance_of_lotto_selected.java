@@ -29,7 +29,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import interfacce.Exceptions.Global_exceptions;
-
 public class instance_of_lotto_selected extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -40,8 +39,7 @@ public class instance_of_lotto_selected extends JFrame {
     private JTable table_colture;
     private JTable table_coltivatori;
     private JTable table;
-    int decisor_defaulted = 0;
-
+    int decisor_defaulted=0;
     public instance_of_lotto_selected(String username_proprietario, Controller TheController, String lottoname) {
         this.lottoName = lottoname;
         this.TheController = TheController;
@@ -90,12 +88,12 @@ public class instance_of_lotto_selected extends JFrame {
         setContentPane(pageProprietario);
 
         // === Tabella colture ===
-        // Modello tabella con due colonne: "Nome coltura" e "Categoria"
+        // Creo modello tabella con una colonna "Nome coltura"
         DefaultTableModel model = new DefaultTableModel(
             new Object[][] {},
-            new String[] { "Nome coltura", "idcoltura hidden" }
+            new String[] { "Nome coltura" }
         ) {
-            Class[] columnTypes = new Class[] { String.class, String.class };
+            Class[] columnTypes = new Class[] { String.class };
             public Class getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
             }
@@ -107,33 +105,25 @@ public class instance_of_lotto_selected extends JFrame {
 
         // Popolo modello con i dati ricevuti dal controller
         List<Object[]> nomi = TheController.Riempi_tab_Proprietario_nome_coltura(username_proprietario, lottoName);
-        try {
-            if (nomi == null) {
-                throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
-            } else if (nomi.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Non ci sono colture associate a questo lotto.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-        } catch (Global_exceptions e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
+       try {
+    	   if (nomi==null) {
+    		   throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+    	   }else if (nomi.isEmpty()) {
+			   JOptionPane.showMessageDialog(null, "Non ci sono colture associate a questo lotto.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+			   return;
+		   }
+	   } catch (Global_exceptions e) {
+		   JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+		   return;
+       }
         for (Object[] nome : nomi) {
-            // nome[0] = nome coltura, nome[1] = categoria (seconda colonna)
-            model.addRow(new Object[] { nome[0], nome[1] });
+            model.addRow(new Object[] { nome[0] });
         }
 
         // Creo la JTable usando il modello popolato
         table_colture = new JTable(model);
         table_colture.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         table_colture.setRowHeight(30);
-
-        // Nascondo la seconda colonna ("Categoria")
-        table_colture.getColumnModel().getColumn(1).setMinWidth(0);
-        table_colture.getColumnModel().getColumn(1).setMaxWidth(0);
-        table_colture.getColumnModel().getColumn(1).setWidth(0);
-        table_colture.getColumnModel().getColumn(1).setPreferredWidth(0);
 
         // Scroll pane per la tabella colture
         JScrollPane scrollPaneColture = new JScrollPane(table_colture);
@@ -145,19 +135,19 @@ public class instance_of_lotto_selected extends JFrame {
 
         List<Object[]> daticoltivatori = TheController.Riempi_tab_Proprietario_nome_coltivatore(username_proprietario, lottoName);
         try {
-            if (daticoltivatori.isEmpty()) {
-                throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+			if (daticoltivatori.isEmpty()) {
+				throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+				
+			}
+		} catch (Global_exceptions e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
-            }
-        } catch (Global_exceptions e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        if (daticoltivatori.size() == 0) {
-            JOptionPane.showMessageDialog(null, "Non ci sono coltivatori associati a questo lotto.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
+		if (daticoltivatori.size() == 0) {
+			JOptionPane.showMessageDialog(null, "Non ci sono coltivatori associati a questo lotto.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
         int n = daticoltivatori.size();
         Object[][] dati = new Object[n][2];
         for (int i = 0; i < n; i++) {
@@ -186,10 +176,10 @@ public class instance_of_lotto_selected extends JFrame {
         // === Tabella attività ===
         DefaultTableModel model2 = new DefaultTableModel(
             new Object[][] {
-                { "Raccolta" },
-                { "Semina" },
-                { "Irrigazione" },
-                { "Applica Pesticida" },
+                {"Raccolta"},
+                {"Semina"},
+                {"Irrigazione"},
+                {"Applica Pesticida"},
             },
             new String[] { "Nome attività" }
         ) {
@@ -216,7 +206,7 @@ public class instance_of_lotto_selected extends JFrame {
         aggiungi_coltura.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                TheController.OpenFreeColture_closeCaller(username_proprietario, lottoName, instance_of_lotto_selected.this);
+               TheController.OpenFreeColture_closeCaller(username_proprietario, lottoName, instance_of_lotto_selected.this);
             }
         });
         aggiungi_coltura.setToolTipText("aggiungi al tuo lotto una nuova coltura");
@@ -228,7 +218,7 @@ public class instance_of_lotto_selected extends JFrame {
         aggiungi_coltivatore.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                TheController.OpenFreeColtivatori_closeCaller(username_proprietario, lottoName, instance_of_lotto_selected.this);
+              TheController.OpenFreeColtivatori_closeCaller(username_proprietario, lottoName, instance_of_lotto_selected.this);
             }
         });
         aggiungi_coltivatore.setToolTipText("visualizza i coltivatori liberi al momento e aggiungine uno");
@@ -261,14 +251,8 @@ public class instance_of_lotto_selected extends JFrame {
                         throw new Global_exceptions("coltura da rimuovere", Global_exceptions.Tipo.empty_field);
                     } else {
                         DefaultTableModel model = (DefaultTableModel) table_colture.getModel();
-                        // Prendo il nome dalla colonna 0
                         String nomeColtura = (String) model.getValueAt(selectedRow, 0);
-                        int idColtura = (int) model.getValueAt(selectedRow, 1); // idColtura hidden
-                        int validat = TheController.RemoveColturaFromLotto(idColtura);
-                        if (validat== -99) {
-							throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
-						}
-                        JOptionPane.showMessageDialog(null, "la coltura '" + nomeColtura + "' è stata rimossa con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "la coltura '"+ nomeColtura + "' è stata rimossa con successo!", "Successo", JOptionPane.INFORMATION_MESSAGE);
                         model.removeRow(selectedRow);
                     }
                 } catch (Global_exceptions e1) {
@@ -281,5 +265,4 @@ public class instance_of_lotto_selected extends JFrame {
         tolgi_coltura.setBounds(499, 564, 483, 70);
         pageProprietario.add(tolgi_coltura);
     }
-
 }

@@ -3,7 +3,7 @@ package interfacce.Exceptions.Specific_exceptions;
 public class Proprietario_addons_selection_exceptions extends Exception {
 
     public enum Tipo {
-        Culture_maximum_number_reached,
+        Culture_arleady_in_the_lotto,
         lotti_maximum_number_reached,
         No_one_selected,
         Date_of_completion_precede_starting_date,
@@ -24,8 +24,8 @@ public class Proprietario_addons_selection_exceptions extends Exception {
     @Override
     public String getMessage() {
         switch (tipo) {
-            case Culture_maximum_number_reached:
-                return "impossiblie procedere con l'inserimento, il lotto ha superato il numero massimo di colture.";
+            case Culture_arleady_in_the_lotto:
+                return "impossiblie procedere con l'inserimento, la coltura attualmente selezionata è già presente nel lotto.";
             case  lotti_maximum_number_reached:
             	return "Impossibile aggiungere '" + nomeLotto + "'. " + "Numero massimo di lotti raggiunto.";
             case No_one_selected:

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Attivita extends Entita {
@@ -21,8 +19,7 @@ public class Attivita extends Entita {
     private java.sql.Time tempoLavorato;     
     private String cfColtivatore;
     private String stato;
-
-
+    
     /* CONSTRUCTORS */
    
     public Attivita(String nomeAttivita, String cfColtivatore) {
@@ -205,7 +202,6 @@ public class Attivita extends Entita {
 		String nomeAtt = nomeAttivita.toLowerCase().trim();
 		return validNomeAttivita.contains(nomeAtt);
 	}
-
 	
     /* ***** */
 
