@@ -335,6 +335,7 @@ public class AttivitaDAO extends DAO {
 			int rowsAffected = stmt.executeUpdate();
 			return rowsAffected > 0;
 		}
+			
 	}
 
     
