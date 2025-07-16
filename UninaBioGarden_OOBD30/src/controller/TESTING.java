@@ -198,7 +198,13 @@ public class TESTING {
 	    System.out.println("AFTER");
 	    System.out.println(att1);
 	    
-	    	
+	    // *****
+	    
+	    System.out.println("TESTING GetAttivitaOfColtivatoreOnColtura...");
+	    ArrayList<Attivita> attColtOnColtura = attDAO.GetAttivitaOfColtivatoreOnColtura("DLSNMN04E14F839Q", 81);
+	    for(Attivita a : attColtOnColtura) {
+	    	System.out.println(a);
+	    }
 	}
 	
 	/* ******************** */
@@ -245,7 +251,7 @@ public class TESTING {
 		
 		System.out.println("Testing RemoveRaccolto...");
 		System.out.println(
-				racDAO.RemoveRaccolto(rac2)
+				racDAO.RemoveRaccolto(idRaccolto)
 				? rac2.getNomeRaccolto() + " Has been removed"
 				: rac2.getNomeRaccolto() + " Has NOT been removed" 
 			);

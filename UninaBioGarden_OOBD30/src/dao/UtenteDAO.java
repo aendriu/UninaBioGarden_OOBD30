@@ -148,9 +148,8 @@ public class UtenteDAO extends DAO {
 	    }
 	}
 	
-	/* ***** */
+	// REMOVE FUNCTIONS
 	
-	// REMOVE FUNCIONS
 	public boolean RemoveUser(Utente u) {
 	    String tabName = u.GetTableName();
 	    String cfColumn = tabName.equals("coltivatore") ? "cf_coltivatore" : "cf_proprietario";

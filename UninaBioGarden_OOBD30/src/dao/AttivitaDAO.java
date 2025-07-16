@@ -84,6 +84,59 @@ public class AttivitaDAO extends DAO {
     }
     
     /* ******************************* */
+
+    public ArrayList<Attivita> GetAttivitaOfColtivatoreOnColtura(String CF, int idC) throws SQLException {
+    	String sql = "SELECT * FROM attività NATURAL JOIN lavora_in NATURAL JOIN coltura WHERE CF_Coltivatore = ? AND idColtura = ?";
+		ArrayList<Attivita> lista = new ArrayList<>();
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, CF);
+			stmt.setInt(2, idC);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					
+					Attivita a = new Attivita(
+						rs.getInt("idAttività"),
+						rs.getString("nomeAttività"),
+						rs.getDate("inizio"),
+						rs.getDate("fine"),
+						rs.getString("CF_coltivatore"),
+						rs.getTime("tempoLavorato"),
+						rs.getString("stato")
+					);
+					lista.add(a);
+				}
+			}
+		}
+		return new ArrayList<>(lista);
+    }
+    
+    /* ******************************* */
+
+    public ArrayList<Attivita> GetAttivitaColtivatoreOnLotto(String CF, int idL) throws SQLException {
+		String sql = "SELECT * FROM attività NATURAL JOIN lavora_in WHERE CF_Coltivatore = ? AND idLotto = ?";
+		ArrayList<Attivita> lista = new ArrayList<>();
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			stmt.setString(1, CF);
+			stmt.setInt(2, idL);
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					Attivita a = new Attivita(
+						rs.getInt("idAttività"),
+						rs.getString("nomeAttività"),
+						rs.getDate("inizio"),
+						rs.getDate("fine"),
+						rs.getString("CF_coltivatore"),
+						rs.getTime("tempoLavorato"),
+						rs.getString("stato")
+					);
+					lista.add(a);
+				}
+			}
+		}
+		return new ArrayList<>(lista);
+	}
+    
+    /* ******************************* */
     
     public ArrayList<Attivita> GetAttivitaColtivatore(Coltivatore coltivatore) throws SQLException {
 		if (coltivatore == null || coltivatore.getCF() == null || coltivatore.getCF().isEmpty()) {
@@ -220,12 +273,12 @@ public class AttivitaDAO extends DAO {
             stmt.setString(1, nome);
             stmt.setDate(2, inizio);
             stmt.setDate(3, fine);
-            // intervallo: formato ISO o "HH:MM:SS"
+           
             stmt.setString(4, tempoLavorato.toLocalTime().toString());
             stmt.setString(5, cfColtivatore);
             stmt.setString(6, stato);
 
-            int affected = stmt.executeUpdate();              // ← **aggiunto**
+            int affected = stmt.executeUpdate();             
             if (affected == 0) {
                 throw new SQLException("Nessuna riga inserita.");
             }
