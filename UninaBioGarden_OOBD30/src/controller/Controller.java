@@ -5,10 +5,12 @@ import java.util.*;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.nio.file.Path;
 import java.awt.EventQueue;
-
+import java.sql.Date;
 import dao.*;
 import entità.*;
 
@@ -112,92 +114,7 @@ public class Controller {
     	
     	
     	 
-    	 public String[] getData1(String username_Prop) {
-    		    String[] possibiliNomi = {
-    		        "Campo San Marco", "Vigna Vecchia", "Orto di Giulia", "Terreno Verde",
-    		        "Campo Grande", "Podere Aurora", "Prato Fiorito", "Orto del Sole",
-    		        "Valle Serena", "Podere delle Rose", "Orto Primavera", "Campo Alto",
-    		        "Prato dei Fiori", "Giardino Segreto", "Campo dei Miracoli",
-    		        "Vigna del Borgo", "Campo Serena", "Poderetto", "Orto Felice", "Vigneto Nuovo"
-    		    };
-    		    Random rand = new Random();
-    		    int n = rand.nextInt(20) + 1; // da 1 a 20 nomi
-    		    String[] dati = new String[n];
-    		    for (int i = 0; i < n; i++) {
-    		        dati[i] = possibiliNomi[rand.nextInt(possibiliNomi.length)];
-    		    }
-    		    return dati;
-    		}
-
-
-    	 public String[] getData2(String username_Prop) {
-    	     // Attività: attività agricole random (esempi)
-    	     String[] activities = {
-    	         "Irrigazione", "Semina", "Concimazione", "Raccolta", "Potatura",
-    	         "Diserbo", "Trapianto", "Sarchiatura", "Controllo parassiti",
-    	         "Aratura", "Fertilizzazione", "Monitoraggio", "Impianto", "Pacciamatura",
-    	         "Rincalzatura", "Sfoltimento", "Pulizia campo", "Concimazione fogliare",
-    	         "Irrigazione localizzata", "Scerbatura"
-    	     };
-    	     Random rand = new Random();
-    	     int n = rand.nextInt(20) + 1;
-    	     String[] dati = new String[n];
-    	     for (int i = 0; i < n; i++) {
-    	         dati[i] = activities[i];
-    	     }
-    	     return dati;
-    	 }
-
-    	 public String[] getData3(String username_Prop) {
-    	     // Coltura: nomi di colture tipiche
-    	     String[] cultures = {
-    	         "Pomodoro", "Mais", "Grano", "Orzo", "Frumento",
-    	         "Patata", "Lattuga", "Zucchina", "Carota", "Peperone",
-    	         "Melanzana", "Fagiolo", "Pisello", "Cipolla", "Cavolo",
-    	         "Fragola", "Aglio", "Cetriolo", "Spinacio", "Ravanello"
-    	     };
-    	     Random rand = new Random();
-    	     int n = rand.nextInt(20) + 1;
-    	     String[] dati = new String[n];
-    	     for (int i = 0; i < n; i++) {
-    	         dati[i] = cultures[i];
-    	     }
-    	     return dati;
-    	 }
-
-    	 public String[] getData4(String username_Prop) {
-    	     // Nome_colt: nomi di persona comuni
-    	     String[] names = {
-    	         "Marco", "Luca", "Giulia", "Francesca", "Matteo",
-    	         "Sara", "Andrea", "Alessandro", "Chiara", "Davide",
-    	         "Federica", "Stefano", "Elena", "Simone", "Valentina",
-    	         "Riccardo", "Laura", "Paolo", "Marta", "Giorgio"
-    	     };
-    	     Random rand = new Random();
-    	     int n = rand.nextInt(20) + 1;
-    	     String[] dati = new String[n];
-    	     for (int i = 0; i < n; i++) {
-    	         dati[i] = names[i];
-    	     }
-    	     return dati;
-    	 }
-
-    	 public String[] getData5(String username_Prop) {
-    	     // Cognome: cognomi italiani comuni
-    	     String[] surnames = {
-    	         "Rossi", "Russo", "Ferrari", "Esposito", "Bianchi",
-    	         "Romano", "Colombo", "Ricci", "Marino", "Greco",
-    	         "Bruno", "Gallo", "Conti", "De Luca", "Mancini",
-    	         "Costa", "Giordano", "Rizzo", "Lombardi", "Moretti"
-    	     };
-    	     Random rand = new Random();
-    	     int n = rand.nextInt(20) + 1;
-    	     String[] dati = new String[n];
-    	     for (int i = 0; i < n; i++) {
-    	         dati[i] = surnames[i];
-    	     }
-    	     return dati;
-    	 }
+    	
     	 
     	 public Object[] getNomiProgettiELotti(String username) {
     		    String[] nomiProgettiPossibili = {
@@ -642,13 +559,13 @@ public class Controller {
 
     		                for (Coltura coltura : colture) {
     		                    String nomecoltura = coltura.getNomeColtura();
+    		                    int idcoltura = coltura.getIdColtura();
 
-    		                    List<Attivita> attività = coltivatoreDAO.getAttivitaPerColtivatoreELotto(idlotto, CFcoltivatore, nomecoltura);
+    		                    // FIX chiamata corretta con cf_coltivatore e id_coltura
+    		                    List<Attivita> attività = coltivatoreDAO.GetAttivitaOfColtivatoreOnColtura(CFcoltivatore, idcoltura);
 
     		                    for (Attivita att : attività) {
-    		                        if (!attivitaViste.add(att.getIdAttivita())) {
-    		                            continue; // evita duplicati
-    		                        }
+    		                        if (!attivitaViste.add(att.getIdAttivita())) continue; // evita duplicati
 
     		                        String nomeattività = att.getNomeAttivita();
     		                        String stato = att.getStato();
@@ -657,15 +574,11 @@ public class Controller {
     		                        Time tempo = att.getTempoLavorato();
 
     		                        long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
-
     		                        LocalTime localTime = tempo.toLocalTime();
-    		                        int ore = localTime.getHour();
-    		                        int minuti = localTime.getMinute();
-    		                        int secondi = localTime.getSecond();
-    		                        long tempoLavoratoEffettivoMillis = (ore * 3600 + minuti * 60 + secondi) * 1000;
+    		                        long tempoLavoratoMillis = (localTime.getHour() * 3600 + localTime.getMinute() * 60 + localTime.getSecond()) * 1000;
 
     		                        int percentuale = (durataTotaleMillis <= 0) ? 0 :
-    		                            (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
+    		                                (int) Math.min(100, (tempoLavoratoMillis * 100.0) / durataTotaleMillis);
 
     		                        righe.add(new Object[] {
     		                            nomelotto,
@@ -685,6 +598,7 @@ public class Controller {
     		    }
     		    return righe;
     		}
+
 
     	  
     	  public boolean Aggiungi_coltivatore(String username, String Lottoname, String CF) {
@@ -778,8 +692,92 @@ public class Controller {
 				  return -99; // Errore durante l'inserimento
 			  }
     	  }
-			 
-    		  
+    	  public String[] getLottiPerProprietario(String username) {
+    		    List<String> righe = new ArrayList<>();
+    		    try {
+    		        String CF = Convert_UsernameToCF(username);
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+    		        if (lotti.isEmpty()) return new String[0]; // Ritorna array vuoto se non ci sono lotti
+    		        for (Lotto lotto : lotti) {
+    		            String nome = lotto.getNomeLotto();
+    		            righe.add(nome);
+    		        }
+    		    } catch (SQLException e) {
+    		        righe.clear(); // In caso di errore, ritorna lista vuota
+    		    }
+    		    return righe.toArray(new String[0]);  // converte la lista in array di stringhe
+    		}
+
+    	  public String[][] getColtivatoriConCF(String lottoname, String username) {
+    		    List<String[]> righe = new ArrayList<>();
+    		    try {
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(Convert_UsernameToCF(username));
+    		        if (lotti.isEmpty()) return new String[0][0]; // array vuoto 2D
+    		        for (Lotto lotto : lotti) {
+    		            if (lotto.getNomeLotto().equals(lottoname)) {
+    		                List<Coltivatore> coltivatori = lottoDAO.GetColtivatoriOfLotto(lotto.getIdLotto());
+    		                for (Coltivatore coltivatore : coltivatori) {
+    		                    String cf = coltivatore.getCF();
+    		                    String nomeCognome = coltivatore.getNome() + " " + coltivatore.getCognome();
+    		                    righe.add(new String[] { cf, nomeCognome });
+    		                }
+    		                break; // trovato lotto, esco
+    		            }
+    		        }
+    		    } catch (SQLException e) {
+    		        righe.clear();
+    		    }
+    		    return righe.toArray(new String[0][0]);
+    		}
+
+    	  
+    		public String[][] getColture(String lottoname, String username) {
+    		    List<String[]> righe = new ArrayList<>();
+    		    try {
+    		        String CF = Convert_UsernameToCF(username);
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+    		        if (lotti.isEmpty()) return new String[0][0]; 
+
+    		        for (Lotto lotto : lotti) {
+    		            if (lotto.getNomeLotto().equals(lottoname)) {
+    		                List<Coltura> colture = coltureDAO.GetColtureOfLotto(lotto.getIdLotto());
+    		                for (Coltura coltura : colture) {
+    		                    String nomeColtura = coltura.getNomeColtura();
+    		                    int idColtura = coltura.getIdColtura();
+    		                    righe.add(new String[]{nomeColtura, String.valueOf(idColtura)});
+    		                }
+    		                break;
+    		            }
+    		        }
+    		    } catch (Exception e) {
+    		        e.printStackTrace(); // Per debug
+    		        righe.clear(); 
+    		    }
+    		    return righe.toArray(new String[0][0]); 
+    		}
+    		
+    		public int Organizza_Attività(String username, String[] dati_selected) {
+    			try {
+    				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    				String coltivatoreCF = dati_selected[1];
+    				String nomeAttività = dati_selected[2];
+    				int coltura = Integer.parseInt(dati_selected[4]);
+    				LocalDate Inizio = LocalDate.parse(dati_selected[5], formatter);
+    				LocalDate Fine = LocalDate.parse(dati_selected[6], formatter);
+    				Date dataInizio = Date.valueOf(Inizio);
+    				Date dataFine = Date.valueOf(Fine);
+    				Time tempoLavorato = Time.valueOf("00:00:00");
+    				String stato = "Pianificata";
+    				attivitaDAO.InsertAttivita(nomeAttività, dataInizio, dataFine, coltivatoreCF, coltura, tempoLavorato, stato);
+    				return 1; // Successo}
+    			}
+    			catch (SQLException e) {
+					e.printStackTrace();
+					return -99; 
+				}
+    		}
+    		
+    		
     	  // Metodi specifici che creano il frame desiderato e usano il metodo generico
 
     	// LOGIN

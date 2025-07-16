@@ -6,6 +6,7 @@ public class Proprietario_addons_selection_exceptions extends Exception {
        Culture_maximum_number_reached,
         No_one_selected,
         Date_of_completion_precede_starting_date,
+        Select_lotto_first
     }
 
     private Tipo tipo;
@@ -29,6 +30,8 @@ public class Proprietario_addons_selection_exceptions extends Exception {
 				return "Nessun coltivatore è stato selezionato, impossibile procedere con l'inserimento.";
             case Date_of_completion_precede_starting_date:
 				return "La data di completamento non può precedere la data di inizio per l'attività legata alla coltura selezionata.";
+            case Select_lotto_first:
+            					return "Selezionare prima un lotto per procedere con l'inserimento.";
             default:
                 return "Errore generico con la coltura '" + nomeLotto + "'.";
         }
