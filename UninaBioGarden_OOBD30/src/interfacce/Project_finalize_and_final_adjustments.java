@@ -195,6 +195,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
         		if (modelTabella.getRowCount() == 0) {
 					throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.project_was_wiped_out_by_user);
 				}
+        		
         		JOptionPane.showMessageDialog(
 						null,
 						"Il progetto è stato finalizzato con successo.",

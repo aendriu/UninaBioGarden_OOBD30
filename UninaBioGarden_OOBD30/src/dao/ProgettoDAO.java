@@ -33,12 +33,14 @@ public class ProgettoDAO extends DAO {
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
 					return new Progetto(
+						rs.getString("nomeProgetto"),
 						rs.getInt("idprogetto"),
 						rs.getInt("annoprogetto"),
 						c.propDAO.FindSpecificProprietario(rs.getString("cf_proprietario")),
 						c.lottoDAO.FindSpecificLotto(rs.getInt("idlotto")),
 						GetColtivatoriProgetto(idProgetto),
 						GetAttivitaProgetto(idProgetto)
+						
 					);
 				}
 			}
@@ -106,7 +108,23 @@ public class ProgettoDAO extends DAO {
 	}
 	
 	/* ************************* */
-
+	//TODO NUOVA QUERY
+	public ArrayList<Lotto> GetLottiWithProgetto() throws SQLException {
+		String sql = "SELECT * FROM lotto WHERE idprogetto IS NOT NULL";
+		ArrayList<Lotto> lottiList = new ArrayList<>();
+		
+		try (PreparedStatement stmt = connection.prepareStatement(sql);
+			 ResultSet rs = stmt.executeQuery()) {
+			while (rs.next()) {
+				Lotto lotto = c.lottoDAO.FindSpecificLotto(rs.getInt("idLotto"));
+				if (lotto != null) {
+					lottiList.add(lotto);
+				}
+			}
+		}
+		return new ArrayList<>(lottiList);
+	}
+	
 	public Lotto GetLottoProgetto(int idProgetto) throws SQLException {
 		String sql = "SELECT idLotto FROM progetto WHERE idProgetto = ?";
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -157,7 +175,7 @@ public class ProgettoDAO extends DAO {
 
 	
 	/* ************************* */
-
+//TODO metti nome progetto come parametro
 	public int InsertProgetto(int annoProg, String CF_prop, int idLotto) throws SQLException {
 	    if (annoProg <= 0 || CF_prop == null || CF_prop.isEmpty() || idLotto <= 0) {
 	        throw new IllegalArgumentException(

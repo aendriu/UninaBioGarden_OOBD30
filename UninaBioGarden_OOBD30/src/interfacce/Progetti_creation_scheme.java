@@ -98,8 +98,7 @@ public class Progetti_creation_scheme extends JFrame {
         // tabella attività
         DefaultTableModel modelActivities = new DefaultTableModel(
                 new Object[][]{
-                    {"Raccolta"}, {"Semina"}, {"Irrigazione"}, {"Concimazione"},
-                    {"Controllo parassiti"}, {"Potatura"}, {"Vendita"}, {"Monitoraggio crescita"}
+                    {"Raccolta"}, {"Semina"}, {"Irrigazione"}, {"Applica Pesticida"}
                 },
                 new String[]{"Nome attività"}) {
             @Override
@@ -117,23 +116,23 @@ public class Progetti_creation_scheme extends JFrame {
 
         textFieldDurata = new JTextField();
         textFieldDurata.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        textFieldDurata.setBounds(499, 467, 483, 37);
+        textFieldDurata.setBounds(499, 539, 483, 37);
         page.add(textFieldDurata);
 
         JLabel lblDurata = new JLabel("Inserisci durata attività (in giorni e solo numeri)", SwingConstants.CENTER);
         lblDurata.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        lblDurata.setBounds(499, 435, 466, 37);
+        lblDurata.setBounds(509, 509, 466, 37);
         page.add(lblDurata);
 
         textFieldQuantita = new JTextField();
         textFieldQuantita.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        textFieldQuantita.setBounds(499, 539, 483, 37);
+        textFieldQuantita.setBounds(499, 467, 483, 37);
         textFieldQuantita.setVisible(false);
         page.add(textFieldQuantita);
 
         lblQuantita = new JLabel("Inserisci quantità da raccogliere", SwingConstants.CENTER);
         lblQuantita.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        lblQuantita.setBounds(499, 514, 466, 30);
+        lblQuantita.setBounds(499, 435, 466, 30);
         lblQuantita.setVisible(false);
         page.add(lblQuantita);
 
@@ -217,7 +216,9 @@ public class Progetti_creation_scheme extends JFrame {
                     }
                     entry.add(quantita);
                 }
-
+                if (!attività.equalsIgnoreCase("Raccolta")) {
+					entry.add("Non possibile"); // Placeholder for quantity in non-harvest activities
+				}
                 if (attivitàSelezionate.contains(entry)) {
                     throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.adding_same_activity_twice);
                 }

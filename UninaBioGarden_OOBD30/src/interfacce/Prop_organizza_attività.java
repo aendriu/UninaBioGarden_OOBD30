@@ -407,12 +407,28 @@ public class Prop_organizza_attività extends JFrame {
                     for (int i = 0; i < dati_selected.length; i++) {
                         dati_selected[i] = null;
                     }
+                    int raccolto_forse=0;
                     dati_selected[0] = Lotto.getText();
                     dati_selected[1] = selectedColtivatoreCF;
                     dati_selected[2] = Attività.getText();
                     dati_selected[3] = colturaNome.getText();
                     dati_selected[4] = colturaCodice.getText(); // codice nascosto
-
+                    if (dati_selected [2].equals("Raccolta")) {
+                    	String quantità= JOptionPane.showInputDialog(null, "Inserisci il numero da raccogliere", "Raccolta", JOptionPane.QUESTION_MESSAGE);
+                    	if (quantità == null || quantità.isEmpty()) {
+							throw new Global_exceptions("Quantità", Global_exceptions.Tipo.empty_field);
+                    	}else if (!quantità.matches("^[0-9]+$")) {
+                    		throw new Global_exceptions("Quantità", Global_exceptions.Tipo.format_mismatch);
+                    	}
+                    	int quantitaInt= Integer.parseInt(quantità);
+                    	if (quantitaInt < 0) {
+							throw new Global_exceptions("Quantità", Global_exceptions.Tipo.Type_mismatch);
+						}else if (quantitaInt==0) {
+							JOptionPane.showMessageDialog(null, "Non puoi raccogliere 0 unità", "Attenzione", JOptionPane.WARNING_MESSAGE);
+						}
+                    	raccolto_forse=quantitaInt;
+                    }
+                    
                     if (dati_selected[0].isEmpty()) {
                         Lotto.setBackground(Color.RED);
                         throw new Global_exceptions("Lotto", Global_exceptions.Tipo.empty_field);
@@ -449,12 +465,14 @@ public class Prop_organizza_attività extends JFrame {
 
                     dati_selected[5] = data_inizio.getText();
                     dati_selected[6] = data_fine.getText();
-
-                    int validat=TheController.Organizza_Attività(username, dati_selected);
+                    
+                    int validat=TheController.Organizza_Attività(username, dati_selected, raccolto_forse);
                     if (validat==-99) {
                     	throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
                     }
-
+                  
+						
+					
                 } catch (DateTimeParseException dtpe) {
                     JOptionPane.showMessageDialog(null, "Formato data non valido! Usa dd/MM/yyyy", "Errore data", JOptionPane.ERROR_MESSAGE);
                 } catch (Global_exceptions | Proprietario_addons_selection_exceptions ge) {

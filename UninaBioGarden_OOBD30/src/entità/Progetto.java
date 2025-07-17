@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Progetto extends Entita{
 	private int idProgetto;
 	private int annoProgetto;
+	private String nomeProgetto;
 	private ProprietarioDiLotto proprietario;
 	private Lotto lotto;
 	private ArrayList<Coltivatore> coltProgetto;
@@ -18,9 +19,10 @@ public class Progetto extends Entita{
 	
 	/* ***** */
 	
-	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto) {
+	public Progetto( String nomeProgetto, int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto) {
 		this.annoProgetto = annoProgetto;
 		this.proprietario = proprietario;
+		this.nomeProgetto= nomeProgetto;
 		this.lotto = lotto;
 		this.coltProgetto = new ArrayList<>();
 		this.attivitaProgetto = new ArrayList<>();
@@ -28,11 +30,12 @@ public class Progetto extends Entita{
 	
 	/* ***** */
 	
-	public Progetto(int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
+	public Progetto( String nomeProgetto, int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
 			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
 		this.annoProgetto = annoProgetto;
 		this.proprietario = proprietario;
 		this.lotto = lotto;
+		this.nomeProgetto = nomeProgetto;
 		this.coltProgetto = coltProgetto;
 		this.attivitaProgetto = attivitaProgetto;
 
@@ -40,12 +43,13 @@ public class Progetto extends Entita{
 	
 	/* ***** */
 	
-	public Progetto(int idProgetto, int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
+	public Progetto( String nomeProgetto, int idProgetto, int annoProgetto, ProprietarioDiLotto proprietario, Lotto lotto, 
 			ArrayList<Coltivatore> coltProgetto, ArrayList<Attivita> attivitaProgetto) {
 		this.idProgetto = idProgetto;
 		this.annoProgetto = annoProgetto;
 		this.proprietario = proprietario;
 		this.lotto = lotto;
+		this.nomeProgetto = nomeProgetto;
 		this.coltProgetto = coltProgetto;
 		this.attivitaProgetto = attivitaProgetto;
 	}
@@ -126,6 +130,12 @@ public class Progetto extends Entita{
 	
 	/* ***** */
 
+	public String getNomeProgetto() {
+		return nomeProgetto;
+	}
+	public void setNomeProgetto(String nomeProgetto) {
+		this.nomeProgetto = nomeProgetto;
+	}
 	@Override
 	public String toString() {
 		return "Progetto [idProgetto=" + idProgetto + ", annoProgetto=" + annoProgetto + ", proprietario="

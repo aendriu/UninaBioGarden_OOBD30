@@ -116,100 +116,8 @@ public class Controller {
     	 
     	
     	 
-    	 public Object[] getNomiProgettiELotti(String username) {
-    		    String[] nomiProgettiPossibili = {
-    		        "Progetto Orto Urbano", "Vigna del Sole", "Frutteto Sostenibile",
-    		        "Serra Innovativa", "Campo di Grano Antico", "Orto delle Erbe Aromatiche",
-    		        "Giardino dei Fiori Rari", "Progetto Biodiversità", "Orto Verticale",
-    		        "Frutteto Familiare"
-    		    };
-
-    		    String[] nomiLottiPossibili = {
-    		        "Orto Centrale", "Campo Est", "Serra Moderna", "Giardino Nord",
-    		        "Vigneto Sud", "Frutteto Ovest", "Pista Agraria", "Bosco Urbano",
-    		        "Prato Fiorito", "Collina Blu"
-    		    };
-
-    		    Random rnd = new Random();
-    		    int n = rnd.nextInt(20) + 1; // da 1 a 20 elementi
-
-    		    String[] nomiProgetti = new String[n];
-    		    String[] nomiLotti = new String[n];
-
-    		    for (int i = 0; i < n; i++) {
-    		        nomiProgetti[i] = nomiProgettiPossibili[rnd.nextInt(nomiProgettiPossibili.length)];
-    		        nomiLotti[i] = nomiLottiPossibili[rnd.nextInt(nomiLottiPossibili.length)];
-    		    }
-
-    		    return new Object[] { nomiProgetti, nomiLotti };
-    		}
-
-    	 public List<Object[]> Riempi_tab_progetti_vista_proprietario(String username_colt) {
- 		    List<Object[]> lista = new ArrayList<>();
- 		    Random rnd = new Random();
-
- 		    String[] nomiAttività = {
- 		        "Irrigazione", "Potatura", "Raccolta", "Semina",
- 		        "Concimazione", "Controllo Parassiti", "Monitoraggio Clima"
- 		    };
-
- 		    String[] colture = {
- 		        "Pomodoro", "Lattuga", "Carota", "Zucchina",
- 		        "Peperone", "Melanzana", "Cetriolo", "Spinaci"
- 		    };
-
- 		    String[] statiPossibili = {  // non usato più, ma puoi tenere
- 		        "In corso", "Completata", "Pianificata"
- 		    };
-
- 		    String[] nomiColtivatori = {
- 		        "Mario", "Luca", "Giulia", "Anna",
- 		        "Marco", "Sara", "Francesco", "Elena",
- 		        "Alessandro", "Chiara", "Giovanni", "Martina",
- 		        "Stefano", "Laura", "Davide", "Federica",
- 		        "Simone", "Valentina", "Giorgio", "Claudia",
- 		        "Roberto", "Silvia", "Antonio", "Francesca"
- 		    };
-
- 		    String[] cognomiColtivatori = {
- 		        "Rossi", "Bianchi", "Verdi", "Neri",
- 		        "Gialli", "Blu", "Arancio", "Viola",
- 		        "Grigi", "Marroni", "Rossi", "Neri",
- 		        "Bianchi", "Verdi", "Gialli", "Blu",
- 		        "Arancio", "Viola"
- 		    };
-
- 		    for (int i = 0; i < 30; i++) {
- 		        String nomeAttivita = nomiAttività[rnd.nextInt(nomiAttività.length)];
- 		        String coltura = colture[rnd.nextInt(colture.length)];
- 		        String nomeColtivatore = nomiColtivatori[rnd.nextInt(nomiColtivatori.length)];
- 		        String cognomeColtivatore = cognomiColtivatori[rnd.nextInt(cognomiColtivatori.length)];
-
- 		        String stato = "";
- 		        int percentuale = rnd.nextInt(101); // 0..100
- 		        if (percentuale == 0) {
- 		            stato = "Pianificata";
- 		        } else if (percentuale < 100) {
- 		            stato = "In corso";
- 		        } else {
- 		            stato = "Completata";
- 		        }
-
- 		        // Modifico qui l’ordine
- 		        Object[] riga = {          
- 		            nomeColtivatore,     
- 		            cognomeColtivatore,  
- 		            nomeAttivita,        
- 		            coltura,             
- 		            stato,
- 		            percentuale,
- 		        };
-
- 		        lista.add(riga);
- 		    }
-
- 		    return lista;
- 		}
+    	
+    	
     	 
     	  public List<Map<String, Object>> getDatiRaccoltaPerLotto(String username, String nomeLotto) {
     		    List<Map<String, Object>> raccolte = new ArrayList<>();
@@ -568,6 +476,7 @@ public class Controller {
     		                        if (!attivitaViste.add(att.getIdAttivita())) continue; // evita duplicati
 
     		                        String nomeattività = att.getNomeAttivita();
+    		                        
     		                        String stato = att.getStato();
     		                        Date dataInizio = att.getInizio();
     		                        Date dataFine = att.getFine();
@@ -756,7 +665,8 @@ public class Controller {
     		    return righe.toArray(new String[0][0]); 
     		}
     		
-    		public int Organizza_Attività(String username, String[] dati_selected) {
+    		public int Organizza_Attività(String username, String[] dati_selected, int raccolto_forse) {
+    			int validat = 0;
     			try {
     				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     				String coltivatoreCF = dati_selected[1];
@@ -768,6 +678,14 @@ public class Controller {
     				Date dataFine = Date.valueOf(Fine);
     				Time tempoLavorato = Time.valueOf("00:00:00");
     				String stato = "Pianificata";
+    				if (raccolto_forse != 0) {
+						Coltura colturaObj = coltureDAO.FindSpecificColtura(coltura);
+						String nomeColtura = colturaObj.getNomeColtura();
+    					 validat=InserisciInRaccolto(nomeColtura, raccolto_forse, Integer.parseInt(dati_selected[0]));
+					}
+    				if (validat == -99) {
+						return -99; // Errore durante l'inserimento del raccolto
+					}
     				attivitaDAO.InsertAttivita(nomeAttività, dataInizio, dataFine, coltivatoreCF, coltura, tempoLavorato, stato);
     				return 1; // Successo}
     			}
@@ -777,8 +695,101 @@ public class Controller {
 				}
     		}
     		
+    		public Object[] getNomiProgettiELotti(String username) {
+    		    List<String> nomiProgetti = new ArrayList<>();
+    		    List<String> nomiLotti = new ArrayList<>();
+    		    String CF = Convert_UsernameToCF(username);
+    		    
+    		    try {
+    		        List<Lotto> lotti_candidati = progettoDAO.GetLottiWithProgetto();
+    		        for (Lotto l : lotti_candidati) {
+    		            if (l.getProprietario().getCF().equals(CF)) {  // usa .equals per confrontare stringhe!
+    		                nomiLotti.add(l.getNomeLotto());
+    		                nomiProgetti.add(l.getMyProgetto().getNomeProgetto());
+    		            }
+    		        }
+    		    } catch (SQLException e) {
+    		        e.printStackTrace();
+    		        return new Object[]{new ArrayList<>(), new ArrayList<>()};  // liste vuote in caso di errore
+    		    }
+
+    		    return new Object[]{nomiProgetti, nomiLotti};
+    		}
+
+    		public List<Object[]> Riempi_tab_progetti_vista_proprietario(String username_prop,String nome_lotto, int decisor){
+    			List<Object[]> righe = new ArrayList<>();
+			    try {
+			        String CF = Convert_UsernameToCF(username_prop);
+			        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+			        if (lotti.isEmpty()) return righe; // Se non ci sono lotti, ritorna lista vuota
+			        for (Lotto lotto : lotti) {
+			            if (lotto.getNomeLotto().equals(nome_lotto)) {
+			                Progetto progetto = lotto.getMyProgetto(); 
+			                int idprogetto= progetto.getIdProgetto();
+			                    List<Attivita> attivita = progettoDAO.GetAttivitaProgetto(idprogetto);
+			                    for (Attivita att : attivita) {
+			                           String CF_coltivatore_responsabile = att.getCfColtivatore();
+			                           Coltivatore coltivatore = coltivatoreDAO.FindSpecificColtivatore(CF_coltivatore_responsabile);
+			                           String nomeColtivatore = coltivatore.getNome();
+			                           String cognomeColtivatore = coltivatore.getCognome();
+			                           int idColtura = att.getIdColtura();
+			                           Coltura coltura = coltureDAO.FindSpecificColtura(idColtura);
+			                           String nomeColtura = coltura.getNomeColtura();
+			                    		String nomeAttività = att.getNomeAttivita();
+			                           String stato = att.getStato();
+			                           Date dataInizio = att.getInizio();
+			                           Date dataFine = att.getFine();
+			                           Time tempo = att.getTempoLavorato();
+			                           
+			                           long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
+
+			                           LocalTime localTime = tempo.toLocalTime();
+			                           int ore = localTime.getHour();
+			                           int minuti = localTime.getMinute();
+			                           int secondi = localTime.getSecond();
+			                           long tempoLavoratoEffettivoMillis = (ore * 3600 + minuti * 60 + secondi) * 1000;
+
+			                           int percentuale = (durataTotaleMillis <= 0) ? 0 :
+			                               (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
+			                           if (decisor ==1) {
+			                        	  int idattività= att.getIdAttivita();
+			                        	  righe.add(new Object[] { nomeColtivatore, cognomeColtivatore, nomeAttività, nomeColtura , stato, percentuale, idattività,}); 
+			                           }
+			                          righe.add(new Object[] {nomeColtivatore, cognomeColtivatore, nomeAttività, nomeColtura , stato, percentuale}); 
+			                    }
+			                    }
+			            break;            
+			        }
+			                        // Trovato il lotto, esci dal ciclo perché nome lotto è unico
+			            
+			        
+			    } catch (SQLException e) {
+			        return new ArrayList<>(); // In caso di errore, ritorna lista vuota
+			    }
+			    return righe;
+    		}
+    	  
+    		public int InserisciInRaccolto (String nomeColt, int amount, int idLotto) {
+			    try {
+			        raccoltoDAO.InsertRaccolto(nomeColt, amount, idLotto);
+			        return 1; // Successo
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			        return -99; // Errore durante l'inserimento
+			    }
+			}
     		
-    	  // Metodi specifici che creano il frame desiderato e usano il metodo generico
+    		public boolean AggiornaAttività (int idattività, String new_state) {
+    			try {
+					attivitaDAO.UpdateStatoAttivita(idattività, new_state);
+					return true; // Aggiornamento riuscito
+				} catch (SQLException e) {
+					return false; // Aggiornamento fallito
+    		}
+    		}
+    		
+    		
+    		// Metodi specifici che creano il frame desiderato e usano il metodo generico
 
     	// LOGIN
     	  public void OpenLogin_closeCaller(JFrame caller) {
@@ -877,8 +888,8 @@ public class Controller {
     	  }
 
     	  // ISTANZA DI PROGETTO SELEZIONATO
-    	  public void OpenInstanceOfProgettoSelected_closeCaller(String CF, JFrame caller, String nomeProgetto) {
-    	      Progetto_select_frame = new Instance_of_progetto_selected(CF, this, nomeProgetto);
+    	  public void OpenInstanceOfProgettoSelected_closeCaller(String CF, JFrame caller, String nomeProgetto, String lottoname) {
+    	      Progetto_select_frame = new Instance_of_progetto_selected(CF, this, nomeProgetto, lottoname);
     	      openFrameAndCloseCaller(Progetto_select_frame, caller);
     	  }
 

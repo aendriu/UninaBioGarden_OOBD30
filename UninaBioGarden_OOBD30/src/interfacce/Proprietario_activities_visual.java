@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controller.Controller;
+import interfacce.Exceptions.Global_exceptions;
 
 import java.awt.Font;
 import javax.swing.JScrollPane;
@@ -88,6 +89,19 @@ public class Proprietario_activities_visual extends JFrame {
 
      // prendo i dati
      List<Object[]> righe = TheController.Riempi_tab_attività_vista_proprietario(username_prop);
+     try {
+		if (righe.isEmpty()) {
+			 throw new Global_exceptions("Non ci sono attività da visualizzare al momento.");
+		 }
+	} catch (Global_exceptions e) {
+		JOptionPane.showMessageDialog(
+				this, 
+				e.getMessage(), 
+				"Errore", 
+				JOptionPane.ERROR_MESSAGE
+		);
+		TheController.OpenProprietarioLoggedIn_closeCaller(username_prop, Proprietario_activities_visual.this);
+	}
      righe.sort((a, b) -> ((String) a[0]).compareToIgnoreCase((String) b[0]));
 
      String[] colonne = {

@@ -39,13 +39,15 @@ public class Instance_of_progetto_selected extends JFrame {
     private String username_prop;                 
     private Controller TheController;              
     private String nome_progetto;                  
+    private String nome_lotto;
     private JTable Project_overall;  
 
-    public Instance_of_progetto_selected(String username_prop, Controller TheController, String nome_progetto) {
+    public Instance_of_progetto_selected(String username_prop, Controller TheController, String nome_progetto, String nome_lotto) {
         setResizable(false);
         this.username_prop = username_prop;
         this.TheController = TheController;
         this.nome_progetto = nome_progetto;
+        this.nome_lotto = nome_lotto;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Dimensione schermo e fullscreen
@@ -94,74 +96,95 @@ public class Instance_of_progetto_selected extends JFrame {
         Project_overall = new JTable();
 
         // Prendo i dati
-        List<Object[]> righe = TheController.Riempi_tab_progetti_vista_proprietario(username_prop);
+        List<Object[]> righe = TheController.Riempi_tab_progetti_vista_proprietario(username_prop, nome_lotto, 1);
+        try {
+			if (righe == null || righe.isEmpty()) {
+				throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+			}
+		} catch (Global_exceptions e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+			TheController.OpenPropProgettiVisualScheme_closeCaller(username_prop, Instance_of_progetto_selected.this);
+			return;
+		}
+
+		// Ordino le righe per nome coltivatore
+		if (righe.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Nessuna attività trovata per il progetto selezionato.", "Informazione", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
         righe.sort((a, b) -> ((String) a[0]).compareToIgnoreCase((String) b[0]));
 
         // Colonne da visualizzare
         String[] colonne = {
-            "Nome Coltivatore", "Cognome Coltivatore",
-            "Nome Attività", "Coltura", "Stato", "Percentuale Completamento"
-        };
+        	    "Nome Coltivatore", "Cognome Coltivatore",
+        	    "Nome Attività", "Coltura", "Stato",
+        	    "Percentuale Completamento", "Hidden Data"
+        	};
 
-        // Popolo la matrice dati
-        Object[][] dati = new Object[righe.size()][colonne.length];
-        for (int i = 0; i < righe.size(); i++) {
-            Object[] row = righe.get(i);
-            Object[] formattedRow = new Object[colonne.length];
+        	// Popolo la matrice dati con 7 colonne
+        	Object[][] dati = new Object[righe.size()][colonne.length];
+        	for (int i = 0; i < righe.size(); i++) {
+        	    Object[] row = righe.get(i);
+        	    Object[] formattedRow = new Object[colonne.length];
 
-            formattedRow[0] = row[0]; // Nome Coltivatore
-            formattedRow[1] = row[1]; // Cognome Coltivatore
-            formattedRow[2] = row[2]; // Nome Attività
-            formattedRow[3] = row[3]; // Coltura
-            formattedRow[4] = row[4]; // Stato
-            // Percentuale in intero (0-100)
-            formattedRow[5] = Integer.parseInt(row[5].toString());
+        	    formattedRow[0] = row[0]; // Nome Coltivatore
+        	    formattedRow[1] = row[1]; // Cognome Coltivatore
+        	    formattedRow[2] = row[2]; // Nome Attività
+        	    formattedRow[3] = row[3]; // Coltura
+        	    formattedRow[4] = row[4]; // Stato
+        	    formattedRow[5] = Integer.parseInt(row[5].toString()); // Percentuale
+        	    formattedRow[6] = (row.length > 6) ? row[6] : ""; // Hidden field (opzionale)
 
-            dati[i] = formattedRow;
-        }
+        	    dati[i] = formattedRow;
+        	}
 
-        DefaultTableModel model = new DefaultTableModel(
-            dati, colonne
-        ) {
-            Class[] columnTypes = new Class[] {
-                String.class, String.class, String.class,
-                String.class, String.class, Integer.class // <- sesta colonna Integer
-            };
+        	DefaultTableModel model = new DefaultTableModel(dati, colonne) {
+        	    Class[] columnTypes = new Class[] {
+        	        String.class, String.class, String.class,
+        	        String.class, String.class, Integer.class, Object.class
+        	    };
 
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                return columnTypes[columnIndex];
-            }
+        	    @Override
+        	    public Class<?> getColumnClass(int columnIndex) {
+        	        return columnTypes[columnIndex];
+        	    }
 
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        	    @Override
+        	    public boolean isCellEditable(int row, int column) {
+        	        return false;
+        	    }
+        	};
 
-        Project_overall.setModel(model);
+        	Project_overall.setModel(model);
 
-        // Imposto renderer progressbar sulla sesta colonna
-        TableCellRenderer progressRenderer = new TableCellRenderer() {
-            private final JProgressBar progressBar = new JProgressBar(0, 100);
+        	// Renderer per la progress bar nella colonna 5
+        	TableCellRenderer progressRenderer = new TableCellRenderer() {
+        	    private final JProgressBar progressBar = new JProgressBar(0, 100);
 
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                int percent = 0;
-                if (value instanceof Integer) {
-                    percent = (Integer) value;
-                }
-                progressBar.setValue(percent);
-                progressBar.setStringPainted(true);
-                if (isSelected) {
-                    progressBar.setBackground(table.getSelectionBackground());
-                } else {
-                    progressBar.setBackground(UIManager.getColor("ProgressBar.background"));
-                }
-                return progressBar;
-            }
-        };
+        	    @Override
+        	    public Component getTableCellRendererComponent(JTable table, Object value,
+        	            boolean isSelected, boolean hasFocus, int row, int column) {
+        	        int percent = 0;
+        	        if (value instanceof Integer) {
+        	            percent = (Integer) value;
+        	        }
+        	        progressBar.setValue(percent);
+        	        progressBar.setStringPainted(true);
+        	        if (isSelected) {
+        	            progressBar.setBackground(table.getSelectionBackground());
+        	        } else {
+        	            progressBar.setBackground(UIManager.getColor("ProgressBar.background"));
+        	        }
+        	        return progressBar;
+        	    }
+        	};
+        	Project_overall.getColumnModel().getColumn(5).setCellRenderer(progressRenderer);
+
+        	// Nascondo la colonna 6 ("Hidden Data") visivamente ma NON la rimuovo dal modello
+        	Project_overall.getColumnModel().getColumn(6).setMinWidth(0);
+        	Project_overall.getColumnModel().getColumn(6).setMaxWidth(0);
+        	Project_overall.getColumnModel().getColumn(6).setWidth(0);
+        	Project_overall.getColumnModel().getColumn(6).setResizable(false);
         Project_overall.getColumnModel().getColumn(5).setCellRenderer(progressRenderer);
 
         // Configurazione tabella
@@ -174,9 +197,9 @@ public class Instance_of_progetto_selected extends JFrame {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 int selectedRow = Project_overall.getSelectedRow();
-                Object stato_attuale = Project_overall.getValueAt(selectedRow, 4);
-                Object nome_attivita = Project_overall.getValueAt(selectedRow, 2);
-
+                String stato_attuale = (String) Project_overall.getValueAt(selectedRow, 4);
+                String nome_attivita = (String) Project_overall.getValueAt(selectedRow, 2);
+                int id_attività = (int) Project_overall.getValueAt(selectedRow, 6); // Assuming this is the hidden ID
                 String input = JOptionPane.showInputDialog(null,
                         "Riportare il nuovo stato dell'attività: " + nome_attivita + ".");
 
@@ -197,8 +220,11 @@ public class Instance_of_progetto_selected extends JFrame {
                     }
 
                     input = capitalizeFirstLetter(input);
+                    boolean validat= TheController.AggiornaAttività(id_attività, input);
+                    if (!validat) {
+						throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+					}
                     Project_overall.getModel().setValueAt(input, selectedRow, 4);
-
                     JOptionPane.showMessageDialog(null,
                             "Stato dell'attività aggiornato con successo.",
                             "Successo",
@@ -210,6 +236,7 @@ public class Instance_of_progetto_selected extends JFrame {
 					} else if (input.equalsIgnoreCase("pianificata")) {
 						Project_overall.getModel().setValueAt(0, selectedRow, 5);
 					}
+                    
                 } catch (Global_exceptions | Prop_Project_exceptions e) {
                     if (e instanceof Prop_Project_exceptions) {
                         Prop_Project_exceptions ppe = (Prop_Project_exceptions) e;
