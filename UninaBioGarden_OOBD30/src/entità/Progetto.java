@@ -138,7 +138,7 @@ public class Progetto extends Entita{
 	}
 	@Override
 	public String toString() {
-		return "Progetto [idProgetto=" + idProgetto + ", annoProgetto=" + annoProgetto + ", proprietario="
+		return "Progetto [idProgetto=" + idProgetto + " nome progetto: "+ nomeProgetto +", annoProgetto=" + annoProgetto + ", proprietario="
 				+ proprietario + ", lotto=" + lotto + ", coltProgetto=" + coltProgetto + ", attivitaProgetto="
 				+ attivitaProgetto + "]";
 	}
