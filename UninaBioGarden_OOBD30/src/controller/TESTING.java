@@ -114,13 +114,13 @@ public class TESTING {
 		// *****
 		
 		System.out.println("TESTING InsertProgetto...");
-		int idProgetto = progettoDAO.InsertProgetto(2025, "LMBMTT85D20F205F", 21);
-		System.out.println(
-				idProgetto >= 0
-				? "Progetto inserito con successo "
-				: "Errore nell'inserimento del progetto " 
-			);
-		
+		//int idProgetto = progettoDAO.InsertProgetto(2025, "LMBMTT85D20F205F", 21);
+//		System.out.println(
+//				idProgetto >= 0
+//				? "Progetto inserito con successo "
+//				: "Errore nell'inserimento del progetto " 
+//			);
+//		
 		// *****
 		
 		System.out.println("TESTING RemoveProgetto...");

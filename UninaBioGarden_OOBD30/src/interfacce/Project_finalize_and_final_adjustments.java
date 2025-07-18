@@ -10,6 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import controller.Controller;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import interfacce.Exceptions.Global_exceptions;
 import interfacce.Exceptions.Specific_exceptions.Prop_Project_exceptions;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -76,23 +78,25 @@ public class Project_finalize_and_final_adjustments extends JFrame {
         String[] colonne = { "Coltivatore", "Coltura", "Attività", "Durata (giorni)", "Quantità" };
 
         // Prepara dati per la tabella
+     // Prepara dati per la tabella
         Object[][] datiTabella = new Object[Project_layout.size()][5];
         int rigaIndex = 0;
         for (List<String> riga : Project_layout) {
-            // riga normalmente ha 4 elementi: nome completo, coltura, attività, durata
-            // se attività == "Raccolta" c'è un 5° elemento: quantità
+            // Ora riga ha almeno 6 elementi: nome completo, cf, coltura, colturaId, attività, durata
             datiTabella[rigaIndex][0] = riga.get(0); // Coltivatore (nome e cognome)
-            datiTabella[rigaIndex][1] = riga.get(1); // Coltura
-            datiTabella[rigaIndex][2] = riga.get(2); // Attività
-            datiTabella[rigaIndex][3] = riga.get(3); // Durata
+            datiTabella[rigaIndex][1] = riga.get(2); // Coltura
+            datiTabella[rigaIndex][2] = riga.get(4); // Attività
+            datiTabella[rigaIndex][3] = riga.get(5); // Durata
 
-            if (riga.size() == 5 && riga.get(2).equalsIgnoreCase("Raccolta")) {
-                datiTabella[rigaIndex][4] = riga.get(4); // Quantità
+            // Quantità solo se attività = "Raccolta" e presente
+            if (riga.size() > 6 && riga.get(4).equalsIgnoreCase("Raccolta")) {
+                datiTabella[rigaIndex][4] = riga.get(6); // Quantità
             } else {
-                datiTabella[rigaIndex][4] = "non possibile"; // Vuoto se non raccolta
+                datiTabella[rigaIndex][4] = "non possibile";
             }
             rigaIndex++;
         }
+
 
         modelTabella = new DefaultTableModel(datiTabella, colonne) {
             @Override
@@ -195,7 +199,10 @@ public class Project_finalize_and_final_adjustments extends JFrame {
         		if (modelTabella.getRowCount() == 0) {
 					throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.project_was_wiped_out_by_user);
 				}
-        		
+        		int validat=TheController.FinalizeAndInsertProgetto(username, projectName, lottoname, Project_layout);
+        		if (validat==-99) {
+        			throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+        		}
         		JOptionPane.showMessageDialog(
 						null,
 						"Il progetto è stato finalizzato con successo.",
@@ -203,7 +210,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE
 					);
         		TheController.OpenProprietarioLoggedIn_closeCaller(username, Project_finalize_and_final_adjustments.this); 
-        	}catch(Prop_Project_exceptions ex) {
+        	}catch(Prop_Project_exceptions | Global_exceptions ex) {
 					JOptionPane.showMessageDialog(
 							null,
 							ex.getMessage(),
@@ -212,6 +219,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
 						);
 					 TheController.OpenPropProgettiVisualScheme_closeCaller(username, Project_finalize_and_final_adjustments.this);
 				}
+        		
         	}
         });
         concludi.setFont(new Font("Times New Roman", Font.PLAIN, 20));

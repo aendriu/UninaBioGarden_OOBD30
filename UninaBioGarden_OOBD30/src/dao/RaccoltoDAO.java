@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import controller.Controller;
 import entità.Raccolto;
@@ -104,6 +107,36 @@ public class RaccoltoDAO extends DAO {
 	}
 	
 	/* *************** */
+	//TODO nuova query Potente per report
+	public List<Map<String, Object>> getStatisticheRaccoltaPerLotto(int idLotto) throws SQLException {
+	    String sql = "SELECT nomecolturaraccolta AS coltura, " +
+	                 "AVG(QuantitàRaccolta) AS media, " +
+	                 "MIN(QuantitàRaccolta) AS min, " +
+	                 "MAX(QuantitàRaccolta) AS max, " +
+	                 "COUNT(*) AS numeroRaccolte " +
+	                 "FROM raccolto " +
+	                 "WHERE idLotto = ? " +
+	                 "GROUP BY nomecolturaraccolta";
+	                 
+	    List<Map<String, Object>> result = new ArrayList<>();
+	    
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setInt(1, idLotto);
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                Map<String, Object> stats = new HashMap<>();
+	                stats.put("coltura", rs.getString("coltura"));
+	                stats.put("media", rs.getDouble("media"));
+	                stats.put("min", rs.getDouble("min"));
+	                stats.put("max", rs.getDouble("max"));
+	                stats.put("numeroRaccolte", rs.getInt("numeroRaccolte"));
+	                result.add(stats);
+	            }
+	        }
+	    }
+	    return result;
+	}
+
 	
 	/* INSERT FUNCTIONS */
 	public int InsertRaccolto(Raccolto r) throws SQLException {

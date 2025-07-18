@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
@@ -14,12 +15,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import controller.Controller;
+import interfacce.Exceptions.Specific_exceptions.Prop_Project_exceptions;
+
 import javax.swing.AbstractListModel;
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -86,13 +90,28 @@ public class Prop_lotti_visual_scheme extends JFrame {
         });
         list.addListSelectionListener(e -> {
 			// Azione da eseguire quando si seleziona un lotto
-			String selectedLotto = list.getSelectedValue();
+			try {
+        	String selectedLotto = list.getSelectedValue();
 			if (selectedIndex==0) {
 				TheController.OpenIstanceOfLottoSelected_closeCaller(username, Prop_lotti_visual_scheme.this, selectedLotto);
 			}else if (SelectedIndex==1) {
-				TheController.OpenProgettoCreationScheme_closeCaller(username, Prop_lotti_visual_scheme.this, selectedLotto);
-			}
-		});
+				Object[] risultato = (Object[]) TheController.getNomiProgettiELotti(username);
+				List<String> nomiProgetti = (List<String>) risultato[0];
+				List<String> nomiLotti = (List<String>) risultato[1];
+					for (int i = 0; i < nomiProgetti.size(); i++) {
+						if (nomiProgetti.get(i).equals(selectedLotto)) {
+							selectedLotto = nomiLotti.get(i);
+							throw new Prop_Project_exceptions(Prop_Project_exceptions.Tipo.project_arleady_exixts_4_that_lotto, selectedLotto, nomiProgetti.get(i));
+						}
+					}
+				}
+			TheController.OpenProgettoCreationScheme_closeCaller(username, Prop_lotti_visual_scheme.this, selectedLotto);
+			}catch (Prop_Project_exceptions e1) {
+					JOptionPane.showMessageDialog(Prop_lotti_visual_scheme.this, e1.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			
+			});
         // scroll pane per renderla scrollabile
         JScrollPane scrollPane = new JScrollPane(list);
         scrollPane.setBounds(0, 0, 1522, 775);

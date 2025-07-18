@@ -119,32 +119,6 @@ public class Controller {
     	
     	
     	 
-    	  public List<Map<String, Object>> getDatiRaccoltaPerLotto(String username, String nomeLotto) {
-    		    List<Map<String, Object>> raccolte = new ArrayList<>();
-    		    Random rnd = new Random();
-
-    		    String[] colturePossibili = {
-    		        "Pomodoro", "Lattuga", "Carota", "Zucchina",
-    		        "Peperone", "Melanzana", "Cetriolo", "Spinaci"
-    		        , "Riso", "Mais", "Grano", "Orzo", "Fagiolo", "Pisello", "Soia", "Avena"
-    		        , "Cipolla", "Aglio", "Porro", "Barbabietola", "Ravanello", "Sedano", "Cavolo", "Broccoli"
-    		    };
-
-    		    for (String coltura : colturePossibili) {
-    		        Map<String, Object> info = new HashMap<>();
-    		        info.put("coltura", coltura);
-    		        info.put("media",  10 + rnd.nextDouble() * 80);
-    		        info.put("min",    5  + rnd.nextDouble() * 40);
-    		        info.put("max",    30 + rnd.nextDouble() * 90);
-    		        info.put("numeroRaccolte", 1 + rnd.nextInt(15));  // da 1 a 15 raccolte
-    		        raccolte.add(info);
-    		    
-
-    		    }
-
-    		    return raccolte;
-    		}
-    	   
     	  //DAO INTERACTIONS
     	  public String Convert_UsernameToCF(String username) {
     		  try {
@@ -788,6 +762,77 @@ public class Controller {
     		}
     		}
     		
+    		public int FinalizeAndInsertProgetto (String username, String lottoname, String nomeprogetto, Set<List<String>> projectLayout) {
+    			String CF_prop = Convert_UsernameToCF(username);
+    			int anno = LocalDate.now().getYear();
+    			int idProgetto = 0;
+    			List<Integer> AttivitàIds = new ArrayList<>();
+    			List<String> CF_coltivatori = new ArrayList<>();
+    			try {
+					int id_lotto = 0;
+					List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+					for (Lotto lotto : lotti) {
+						if (lotto.getNomeLotto().equals(lottoname)) {
+							id_lotto = lotto.getIdLotto();
+							break; // Trovato il lotto, esci dal ciclo perché nome lotto è unico
+						}
+					}
+					if (id_lotto == 0)
+						return -99; // Nessun lotto trovato con quel nome
+					idProgetto=progettoDAO.InsertProgetto(anno, CF_prop, id_lotto, nomeprogetto);
+					for (List<String> attività : projectLayout) {
+					    String nomeColtivatore = attività.get(0);
+					    String cfColtivatore = attività.get(1);
+					    String coltura = attività.get(2);
+					    int idColtura = Integer.parseInt(attività.get(3));
+					    String nomeAttività = attività.get(4);
+					    int durata = Integer.parseInt(attività.get(5));
+					    Time tempoLavorato = Time.valueOf("00:00:00"); // Tempo inizialmente impostato a 0
+					    // Quantità corretta
+					    int quantita;
+					    if (nomeAttività.equalsIgnoreCase("Raccolta")) {
+					        quantita = Integer.parseInt(attività.get(6));
+					    } else {
+					        quantita = 0;
+					    }
+					    String dataInizioStr = attività.get(7);
+					    LocalDate dataInizio = LocalDate.parse(dataInizioStr);
+					    LocalDate dataFine = dataInizio.plusDays(durata);
+					    Date sqlDataInizio = Date.valueOf(dataInizio);
+					    Date sqlDataFine = Date.valueOf(dataFine);
+					    attivitaDAO.InsertAttivita(nomeAttività, sqlDataInizio, sqlDataFine, cfColtivatore, idColtura, tempoLavorato, "Pianificata");
+					    if (quantita > 0) {
+					        raccoltoDAO.InsertRaccolto(coltura, quantita, id_lotto);
+					    }
+					CF_coltivatori.add(cfColtivatore);
+					AttivitàIds.add(idColtura);
+					}
+					progettoDAO.InsertColtivatoriInProgetto(idProgetto, CF_coltivatori);
+					progettoDAO.InsertAttivitàInProgetto(idProgetto, AttivitàIds);
+					return 1; // Successo
+				} catch (SQLException e) {
+					return -99; // Errore durante l'inserimento
+    			
+    		}
+    		}
+    		
+    		public List<Map<String, Object>> getDatiRaccoltaPerLotto(String nomelotto, String username) {
+    		    int idLotto = 0;
+    			try {
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(Convert_UsernameToCF(username));
+    		        for (Lotto lotto : lotti) {
+			            if (lotto.getNomeLotto().equals(nomelotto)) {
+			                idLotto = lotto.getIdLotto();
+			                break; // Trovato il lotto, esci dal ciclo perché nome lotto è unico
+			            }
+			        }
+    		    	return raccoltoDAO.getStatisticheRaccoltaPerLotto(idLotto);
+    		    } catch (SQLException e) {
+    		        e.printStackTrace();
+    		        return new ArrayList<>();
+    		    }
+    		}
+
     		
     		// Metodi specifici che creano il frame desiderato e usano il metodo generico
 

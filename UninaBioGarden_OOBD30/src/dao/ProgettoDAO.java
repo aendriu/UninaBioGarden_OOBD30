@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
+
 import controller.Controller;
 import entità.Attivita;
 import entità.Coltivatore;
@@ -146,9 +148,9 @@ public class ProgettoDAO extends DAO {
 	}
 	
 	/* ************************* */
-	
+	//TODO modifcata
 	public ArrayList<Attivita> GetAllAttivitaProgetto(int idP) throws SQLException {
-		String sql = "SELECT * FROM attività NATURAL JOIN progetto_coltivatori WHERE idProgetto = ?";
+		String sql = "SELECT * FROM progetto_attività WHERE idProgetto = ?";
 		ArrayList<Attivita> attivitaList = new ArrayList<>();
 		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 			stmt.setInt(1, idP);
@@ -176,21 +178,23 @@ public class ProgettoDAO extends DAO {
 	
 	/* ************************* */
 //TODO metti nome progetto come parametro
-	public int InsertProgetto(int annoProg, String CF_prop, int idLotto) throws SQLException {
+	public int InsertProgetto(int annoProg, String CF_prop, int idLotto, String nomeprogetto) throws SQLException {
 	    if (annoProg <= 0 || CF_prop == null || CF_prop.isEmpty() || idLotto <= 0) {
 	        throw new IllegalArgumentException(
 	            "Dati progetto non validi: annoProg=" + annoProg +
 	            ", CF_prop=" + CF_prop +
-	            ", idLotto=" + idLotto
+	            ", idLotto=" + idLotto +
+	            ", nomeprogetto=" + nomeprogetto
 	        );
 	    }
 
-	    String sql = "INSERT INTO progetto (annoprogetto, cf_proprietario, idlotto) VALUES (?, ?, ?)";
+	    String sql = "INSERT INTO progetto (annoprogetto, cf_proprietario, idlotto, nomeprogetto) VALUES (?, ?, ?, ?)";
 
 	    try (PreparedStatement stmt = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
 	    	stmt.setInt(1, annoProg);
 	        stmt.setString(2, CF_prop);
 	        stmt.setInt(3, idLotto);
+	        stmt.setString(4, nomeprogetto);
 
 	        int affectedRows = stmt.executeUpdate();
 	        if (affectedRows == 0) {
@@ -215,11 +219,54 @@ public class ProgettoDAO extends DAO {
 		if (p == null || p.getAnnoProgetto() <= 0 || p.getProprietario().getCF() == null || p.getLotto().getIdLotto() <= 0) {
 			throw new IllegalArgumentException("Progetto non valido: " + p);
 		}
-		return InsertProgetto(p.getAnnoProgetto(), p.getProprietario().getCF(), p.getLotto().getIdLotto());
+		return InsertProgetto(p.getAnnoProgetto(), p.getProprietario().getCF(), p.getLotto().getIdLotto(), p.getNomeProgetto());
 	}
 	
 	/* ************************* */
-
+	//TODO nuova query
+	public boolean InsertColtivatoriInProgetto(int idProgetto, List<String> coltivatoriCF) {
+		String sql = "INSERT INTO progetto_coltivatori (idprogetto, CF_coltivatore) VALUES (?, ?)";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			for (String cf : coltivatoriCF) {
+				stmt.setInt(1, idProgetto);
+				stmt.setString(2, cf);
+				stmt.addBatch();
+			}
+			int[] affectedRows = stmt.executeBatch();
+			for (int rows : affectedRows) {
+				if (rows == 0) {
+					return false; // Se almeno una riga non è stata inserita, ritorna false
+				}
+			}
+			return true; // Tutte le righe sono state inserite con successo
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false; // In caso di errore, ritorna false
+		}
+	}
+	
+	//TODO nuova query
+	public boolean InsertAttivitàInProgetto(int idprogetto, List<Integer> idattività) {
+		String sql = "INSERT INTO progetto_attività (idProgetto, idAttività) VALUES (?, ?)";
+		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+			for (int idAttività : idattività) {
+				stmt.setInt(1, idprogetto);
+				stmt.setInt(2, idAttività);
+				stmt.addBatch();
+			}
+			int[] affectedRows = stmt.executeBatch();
+			for (int rows : affectedRows) {
+				if (rows == 0) {
+					return false; // Se almeno una riga non è stata inserita, ritorna false
+				}
+			}
+			return true; // Tutte le righe sono state inserite con successo
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false; // In caso di errore, ritorna false
+		}
+	}
+	
 	public boolean RemoveProgettoUsingIdLotto(int idLotto) throws SQLException {
 	    if (idLotto <= 0) {
 	        throw new IllegalArgumentException("IdL non valido: " + idLotto);

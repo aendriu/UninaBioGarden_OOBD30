@@ -57,7 +57,8 @@ public class Report_frame extends JFrame {
         };
         pageProp.setLayout(new BorderLayout());
         setContentPane(pageProp);
-
+        String ToPrint=TheController.get_Info_From_Username(username, 1);
+       
         // icona e sfondo
         URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
         if (imageUrl != null) {
@@ -67,7 +68,7 @@ public class Report_frame extends JFrame {
             System.out.println("Immagine non trovata!");
         }
 
-        title_reports = new JLabel("Report per i lotti di " + username, SwingConstants.CENTER);
+        title_reports = new JLabel("Report per i lotti di " + ToPrint, SwingConstants.CENTER);
         title_reports.setPreferredSize(new Dimension(getWidth(), 40));
         title_reports.setFont(new Font("Times New Roman", Font.BOLD, 20));
         pageProp.add(title_reports, BorderLayout.NORTH);
@@ -102,23 +103,23 @@ public class Report_frame extends JFrame {
                 int idx = lottoList.getSelectedIndex();
                 if (idx >= 0) {
                     String nomeLotto = listModel.get(idx);
-                    List<Map<String, Object>> raccolte = TheController.getDatiRaccoltaPerLotto(username, nomeLotto);
+                    List<Map<String, Object>> raccolte = TheController.getDatiRaccoltaPerLotto( nomeLotto, username);
                     mostraGrafico(nomeLotto, raccolte);
                 }
             }
         });
     }
 
-//    private void loadLotti() {
-//        listModel.clear();
-//        //List<String> nomiLotti = TheController.getNomiLotti(username);
-//        for (String nome : nomiLotti) {
-//            listModel.addElement(nome);
-//        }
-//        if (!nomiLotti.isEmpty()) {
-//            lottoList.setSelectedIndex(0);
-//        }
-//    }
+    private void loadLotti() {
+        listModel.clear();
+        String[] nomiLotti = TheController.getNomiLotti(username);
+        for (String nome : nomiLotti) {
+            listModel.addElement(nome);
+        }
+        if (!(nomiLotti.length == 0)) {
+            lottoList.setSelectedIndex(0);
+        }
+    }
 
     private void mostraGrafico(String nomeLotto, List<Map<String, Object>> raccolte) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();

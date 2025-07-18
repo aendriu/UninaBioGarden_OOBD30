@@ -12,10 +12,17 @@ public class Prop_Project_exceptions extends Exception {
     }
 
     private Tipo tipo; // specifica il tipo dell'attributo
-
-    public Prop_Project_exceptions(Tipo tipo) {
+    private String nomelotto; // nome del lotto associato al progetto
+    private String nomeprogetto; // nome del progetto associato al lotto
+    
+    public Prop_Project_exceptions (Tipo tipo) {
+    	this.tipo = tipo;
+    }
+    public Prop_Project_exceptions(Tipo tipo, String nomelotto, String nomeprogetto) {
         super("Errore: " + tipo.toString());
         this.tipo = tipo;
+        this.nomelotto = "";
+        this.nomeprogetto = "";
     }
     public String getMessage() {
 		switch (tipo) {
@@ -26,7 +33,7 @@ public class Prop_Project_exceptions extends Exception {
 			case adding_same_activity_twice:
 				return "la stessa attività con gli stessi setting è stata aggiunta una seconda volta, pertanto tale inseriento verrà ingnorato.";
 			case project_arleady_exixts_4_that_lotto:
-				return "il lotto selezionato ha già un progetto non completato associato, pertanto non è possibile crearne uno nuovo.";
+				return "il" + nomelotto +" selezionato è già associato al progetto"+ nomeprogetto + ", pertanto non è possibile crearne uno nuovo.";
 			case no_new_arguments_of_project_added:
 				return "il progetto è privo di attività pertanto è impossibile finalizzare, aggiungi almeno una attività per continuare.";
 			case project_was_wiped_out_by_user:

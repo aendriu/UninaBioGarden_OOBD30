@@ -60,40 +60,71 @@ public class Progetti_creation_scheme extends JFrame {
         page.add(lblTitolo);
 
         // tabella colture
-        table_colture = new JTable();
-        DefaultTableModel modelColture = new DefaultTableModel(new Object[][]{}, new String[]{"Nome"}) {
+     // 1. Definisci modello con 2 colonne: Nome (visibile), Idcoltura (nascosta)
+        DefaultTableModel modelColture = new DefaultTableModel(new Object[][]{}, new String[]{"Nome", "Idcoltura"}) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+
         table_colture.setModel(modelColture);
         table_colture.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table_colture.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         table_colture.setRowHeight(30);
+
+        // 2. Aggiungi righe con nome e id
         List<Object[]> nomi = TheController.Riempi_tab_Proprietario_nome_coltura(username_proprietario, lottoName);
-        for (Object[] nome : nomi) modelColture.addRow(new Object[]{nome[0]});
+        for (Object[] nome : nomi) {
+            // nome[0] = Nome coltura, nome[1] = Idcoltura
+            modelColture.addRow(new Object[]{nome[0], nome[1]});
+        }
+
+        // 3. Metti tabella in JScrollPane
         JScrollPane scrollColture = new JScrollPane(table_colture);
         scrollColture.setBounds(631, 175, 462, 226);
         page.add(scrollColture);
 
+        // 4. Nascondi colonna ID (seconda colonna)
+        table_colture.getColumnModel().getColumn(1).setMinWidth(0);
+        table_colture.getColumnModel().getColumn(1).setMaxWidth(0);
+        table_colture.getColumnModel().getColumn(1).setWidth(0);
+        table_colture.getColumnModel().getColumn(1).setPreferredWidth(0);
+
+
         // tabella coltivatori
         table_coltivatori = new JTable();
-        DefaultTableModel modelColtivatori = new DefaultTableModel(new Object[][]{}, new String[]{"Nome", "Cognome"}) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        table_coltivatori.setModel(modelColtivatori);
-        table_coltivatori.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table_coltivatori.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        table_coltivatori.setRowHeight(30);
-        List<Object[]> daticoltivatori = TheController.Riempi_tab_Proprietario_nome_coltivatore(username_proprietario, lottoName);
-        for (Object[] c : daticoltivatori) modelColtivatori.addRow(new Object[]{c[0], c[1]});
-        JScrollPane scrollColtivatori = new JScrollPane(table_coltivatori);
-        scrollColtivatori.setBounds(103, 175, 462, 226);
-        page.add(scrollColtivatori);
+
+     // Definisci modello con 3 colonne: Nome, Cognome (visibili), CF (nascosto)
+     DefaultTableModel modelColtivatori = new DefaultTableModel(new Object[][]{}, new String[]{"Nome", "Cognome", "CF"}) {
+         @Override
+         public boolean isCellEditable(int row, int column) {
+             return false;
+         }
+     };
+
+     table_coltivatori.setModel(modelColtivatori);
+     table_coltivatori.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+     table_coltivatori.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+     table_coltivatori.setRowHeight(30);
+
+     // Aggiungi righe con Nome, Cognome e CF (supponendo c[0]=Nome, c[1]=Cognome, c[2]=CF)
+     List<Object[]> daticoltivatori = TheController.Riempi_tab_Proprietario_nome_coltivatore(username_proprietario, lottoName);
+     for (Object[] c : daticoltivatori) {
+         modelColtivatori.addRow(new Object[]{c[0], c[1], c[2]});
+     }
+
+     // Metti la tabella in JScrollPane
+     JScrollPane scrollColtivatori = new JScrollPane(table_coltivatori);
+     scrollColtivatori.setBounds(103, 175, 462, 226);
+     page.add(scrollColtivatori);
+
+     // Nascondi colonna CF (terza colonna)
+     table_coltivatori.getColumnModel().getColumn(2).setMinWidth(0);
+     table_coltivatori.getColumnModel().getColumn(2).setMaxWidth(0);
+     table_coltivatori.getColumnModel().getColumn(2).setWidth(0);
+     table_coltivatori.getColumnModel().getColumn(2).setPreferredWidth(0);
+
 
         // tabella attività
         DefaultTableModel modelActivities = new DefaultTableModel(
@@ -189,14 +220,17 @@ public class Progetti_creation_scheme extends JFrame {
 
                 String nome = table_coltivatori.getValueAt(rColtivatore, 0).toString();
                 String cognome = table_coltivatori.getValueAt(rColtivatore, 1).toString();
+                String cf = table_coltivatori.getValueAt(rColtivatore, 2).toString(); // qui prendi anche la colonna nascosta
                 String coltura = table_colture.getValueAt(rColtura, 0).toString();
                 String attività = table_activities.getValueAt(rAttività, 0).toString();
-
+                String colturaId = table_colture.getValueAt(rColtura, 1).toString(); // qui prendi anche la colonna nascosta
                 entry.add(nome + " " + cognome);
+                entry.add(cf); // Aggiungi CF come primo elemento
                 entry.add(coltura);
+                entry.add(colturaId);
                 entry.add(attività);
                 entry.add(durata);
-
+                
                 if (attività.equalsIgnoreCase("Raccolta")) {
                     String quantita = textFieldQuantita.getText();
                     if (quantita == null || quantita.trim().isEmpty()) {
