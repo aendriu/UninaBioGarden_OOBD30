@@ -94,7 +94,7 @@ public class AttivitaDAO extends DAO {
 			stmt.setString(1, CF);
 			stmt.setInt(2, idC);
 			try (ResultSet rs = stmt.executeQuery()) {
-				while (rs.next()) {
+				while (rs.next()) {f
 					
 					Attivita a = new Attivita(
 						rs.getInt("idAttività"),
@@ -357,10 +357,10 @@ public class AttivitaDAO extends DAO {
     /* ******************************* */
 
     private boolean isNewStateValid(String nuovoStato) {
-        String ns = nuovoStato.toLowerCase();
     	if(nuovoStato == null || nuovoStato.isEmpty()) {
             return false;
         }
+        String ns = nuovoStato.toLowerCase();
         if(ns.equals("completata") || ns.equals("in corso") || ns.equals("pianificata")) {
             return true;
         } else {
