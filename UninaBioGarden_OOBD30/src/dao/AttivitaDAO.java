@@ -94,7 +94,7 @@ public class AttivitaDAO extends DAO {
 			stmt.setString(1, CF);
 			stmt.setInt(2, idC);
 			try (ResultSet rs = stmt.executeQuery()) {
-				while (rs.next()) {f
+				while (rs.next()) {
 					
 					Attivita a = new Attivita(
 						rs.getInt("idAttività"),
