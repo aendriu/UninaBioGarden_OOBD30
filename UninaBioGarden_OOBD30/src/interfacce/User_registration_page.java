@@ -168,15 +168,15 @@ public class User_registration_page extends JFrame {
 						password_Registrazione.setBackground(Color.RED);
 						throw new Global_exceptions("password",Global_exceptions.Tipo.empty_field);
 					}
-					if (!nome.matches("[A-Za-z]")) {
+					if (!nome.matches("^[A-Za-z]{2,}$")) {
 						Nome_txt.setBackground(Color.RED);
 						throw new Global_exceptions("nome", Global_exceptions.Tipo.Type_mismatch);
 					}
-					if (!cognome.matches("[A-Za-z]")) {
+					if (!cognome.matches("^[A-Za-z]{2,}$")) {
 						Cognome_txt.setBackground(Color.RED);
 						throw new Global_exceptions("cognome", Global_exceptions.Tipo.Type_mismatch);
 					}
-					if (!cf.matches("[A-Z0-9]")) {
+					if (!cf.matches("^[A-Z0-9]{16}$")) {
 						CF_txt.setBackground(Color.RED);
 						throw new Global_exceptions("codice fiscale", Global_exceptions.Tipo.Type_mismatch);
 					}
@@ -202,7 +202,7 @@ public class User_registration_page extends JFrame {
 					    username_txt.setBackground(Color.RED);
 						throw new Global_exceptions("username", Global_exceptions.Tipo.format_mismatch);
 					}
-					if (password.length() < 4||!password.matches(".*[A-Z-0-9].*")) {
+					if (password.length() < 4||!password.matches("^(?=.*[A-Za-z])[A-Za-z0-9]{2,}$")) {
 						password_Registrazione.setBackground(Color.RED);
 						throw new Global_exceptions("password", Global_exceptions.Tipo.format_mismatch);
 					}
