@@ -5,6 +5,7 @@ import java.util.*;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -104,19 +105,6 @@ public class Controller {
 		return colt;
 	}
 	
-
-   
-   
-  
-    	
-    
-    	 
-    	
-    	
-    	 
-    	
-    	 
-    	
     	
     	 
     	  //DAO INTERACTIONS
@@ -253,7 +241,7 @@ public class Controller {
     		        ArrayList<Lotto> lotti = coltivatoreDAO.GetLottiColtivatore(CF);
     		        if (lotti.isEmpty()) return righe;
 
-    		        Set<Integer> attivitaViste = new HashSet<>(); // Moved fuori dal ciclo lotti per evitare duplicati
+    		        Set<Integer> attivitaViste = new HashSet<>();
 
     		        for (Lotto lotto : lotti) {
     		            String nomeLotto = lotto.getNomeLotto();
@@ -264,35 +252,34 @@ public class Controller {
     		            for (Coltura colturaObj : colturePerLotto) {
     		                String nomeColtura = colturaObj.getNomeColtura();
 
-    		                // Ottieni attività filtrate per lotto, coltivatore e coltura
-    		                List<Attivita> attivitaFiltrate = coltivatoreDAO.GetAttivitaOfColtivatoreOnColtura(CF, colturaObj.getIdColtura());
+    		                List<Attivita> attivitaFiltrate =
+    		                    coltivatoreDAO.GetAttivitaOfColtivatoreOnColtura(CF, colturaObj.getIdColtura());
 
     		                for (Attivita att : attivitaFiltrate) {
-    		                    if (!attivitaViste.add(att.getIdAttivita())) {
-    		                        // Salta attività già viste per evitare duplicati
-    		                        continue;
-    		                    }
-
-    		                    
+    		                    if (!attivitaViste.add(att.getIdAttivita())) continue;
+    		                    	
+    		                    int idAttivita = att.getIdAttivita();
     		                    String nomeAttività = att.getNomeAttivita();
-    		                    String stato = att.getStato();
-    		                    Date dataInizio = att.getInizio();
-    		                    Date dataFine = att.getFine();
-    		                    Time tempo = att.getTempoLavorato();
+    		                    String stato        = att.getStato();
+    		                    Date dataInizio     = att.getInizio();
+    		                    Date dataFine       = att.getFine();
+    		                    Duration tempo      = att.getTempoLavorato();
 
-    		                    long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
+    		                    long durataTotaleMillis      = dataFine.getTime() - dataInizio.getTime();
+    		                    long tempoLavoratoMillis     = tempo.toMillis();
 
-    		                    // Calcolo millisecondi tempo lavorato
-    		                    LocalTime localTime = tempo.toLocalTime();
-    		                    int ore = localTime.getHour();
-    		                    int minuti = localTime.getMinute();
-    		                    int secondi = localTime.getSecond();
-    		                    long tempoLavoratoEffettivoMillis = (ore * 3600 + minuti * 60 + secondi) * 1000;
+    		                    int percentuale = (durataTotaleMillis <= 0)
+    		                        ? 0
+    		                        : (int) Math.min(100, (tempoLavoratoMillis * 100.0) / durataTotaleMillis);
 
-    		                    int percentuale = (durataTotaleMillis <= 0) ? 0 :
-    		                        (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
-
-    		                    righe.add(new Object[] {nomeLotto, nomeAttività, nomeColtura, stato, percentuale});
+    		                    righe.add(new Object[]{ 
+    		                    	idAttivita,
+    		                        nomeLotto, 
+    		                        nomeAttività, 
+    		                        nomeColtura, 
+    		                        stato, 
+    		                        percentuale 
+    		                    });
     		                }
     		            }
     		        }
@@ -303,7 +290,8 @@ public class Controller {
     		}
 
 
-    	  public boolean aggiorna_tempo_lavorato(String username, String lottoname, String nomeattività, Time tempoLavorato) {
+/* 
+    	  public boolean aggiorna_tempo_lavorato(String username, String lottoname, String nomeattività, Duration tempoLavorato) {
 			 try {
 				 int lotto_id=0;
 				 String CF = utenteDAO.ConvertUsernameToCF(username);
@@ -319,7 +307,7 @@ public class Controller {
 							attivitaDAO.UpdateTempoLavoratoAttivita(a.getIdAttivita(), tempoLavorato);
 							return true; // Aggiornamento riuscito
 						 }
-				 }
+					 }
 				 }
 				
 				 
@@ -329,6 +317,21 @@ public class Controller {
 			 }
 			return false; // Aggiornamento fallito 
     	  }
+*/
+    	  
+    	  public boolean aggiorna_tempo_lavorato(int idAttivita, Duration toAdd) {
+    		  try {
+				  Attivita attivita = attivitaDAO.FindSpecificAttivita(idAttivita);
+				  if (attivita != null) {
+					  attivitaDAO.UpdateTempoLavoratoAttivita(idAttivita, toAdd);
+					  return true; // Aggiornamento riuscito
+				  }
+			  } catch (SQLException e) {
+				  e.printStackTrace();
+			  }
+    		  return false; // Aggiornamento fallito
+    	  }
+    	  
     	  
     	  public String[] getNomiLotti(String username) {
     		  List<Lotto> Lotti = new ArrayList<>();
@@ -428,45 +431,43 @@ public class Controller {
     		        Set<Integer> attivitaViste = new HashSet<>();
 
     		        for (Lotto lotto : lotti_proprietario) {
-    		            int idlotto = lotto.getIdLotto();
+    		            int idlotto     = lotto.getIdLotto();
     		            String nomelotto = lotto.getNomeLotto();
 
-    		            List<Coltivatore> coltivatori_in_lotto = lottoDAO.GetColtivatoriOfLotto(idlotto);
-    		            for (Coltivatore coltivatore : coltivatori_in_lotto) {
-    		                String nomecoltivatore = coltivatore.getNome();
-    		                String cognomecoltivatore = coltivatore.getCognome();
-    		                String CFcoltivatore = coltivatore.getCF();
+    		            List<Coltivatore> coltivatori = lottoDAO.GetColtivatoriOfLotto(idlotto);
+    		            for (Coltivatore colt : coltivatori) {
+    		                String nomecolt = colt.getNome();
+    		                String cognome  = colt.getCognome();
+    		                String CFcolt   = colt.getCF();
 
     		                List<Coltura> colture = coltureDAO.GetColtureOfLotto(idlotto);
-
     		                for (Coltura coltura : colture) {
     		                    String nomecoltura = coltura.getNomeColtura();
-    		                    int idcoltura = coltura.getIdColtura();
+    		                    int idcoltura      = coltura.getIdColtura();
 
-    		                    // FIX chiamata corretta con cf_coltivatore e id_coltura
-    		                    List<Attivita> attività = coltivatoreDAO.GetAttivitaOfColtivatoreOnColtura(CFcoltivatore, idcoltura);
+    		                    List<Attivita> attività = 
+    		                        coltivatoreDAO.GetAttivitaOfColtivatoreOnColtura(CFcolt, idcoltura);
 
     		                    for (Attivita att : attività) {
-    		                        if (!attivitaViste.add(att.getIdAttivita())) continue; // evita duplicati
+    		                        if (!attivitaViste.add(att.getIdAttivita())) continue;
 
     		                        String nomeattività = att.getNomeAttivita();
-    		                        
-    		                        String stato = att.getStato();
-    		                        Date dataInizio = att.getInizio();
-    		                        Date dataFine = att.getFine();
-    		                        Time tempo = att.getTempoLavorato();
+    		                        String stato        = att.getStato();
+    		                        Date dataInizio     = att.getInizio();
+    		                        Date dataFine       = att.getFine();
+    		                        Duration tempo      = att.getTempoLavorato();
 
-    		                        long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
-    		                        LocalTime localTime = tempo.toLocalTime();
-    		                        long tempoLavoratoMillis = (localTime.getHour() * 3600 + localTime.getMinute() * 60 + localTime.getSecond()) * 1000;
+    		                        long durataTotaleMillis  = dataFine.getTime() - dataInizio.getTime();
+    		                        long lavoratoMillis      = tempo.toMillis();
 
-    		                        int percentuale = (durataTotaleMillis <= 0) ? 0 :
-    		                                (int) Math.min(100, (tempoLavoratoMillis * 100.0) / durataTotaleMillis);
+    		                        int percentuale = (durataTotaleMillis <= 0)
+    		                            ? 0
+    		                            : (int) Math.min(100, (lavoratoMillis * 100.0) / durataTotaleMillis);
 
-    		                        righe.add(new Object[] {
+    		                        righe.add(new Object[]{
     		                            nomelotto,
-    		                            nomecoltivatore,
-    		                            cognomecoltivatore,
+    		                            nomecolt,
+    		                            cognome,
     		                            nomeattività,
     		                            nomecoltura,
     		                            stato,
@@ -481,6 +482,7 @@ public class Controller {
     		    }
     		    return righe;
     		}
+
 
 
     	  
@@ -650,7 +652,7 @@ public class Controller {
     				LocalDate Fine = LocalDate.parse(dati_selected[6], formatter);
     				Date dataInizio = Date.valueOf(Inizio);
     				Date dataFine = Date.valueOf(Fine);
-    				Time tempoLavorato = Time.valueOf("00:00:00");
+    				Duration tempoLavorato = Duration.ZERO;
     				String stato = "Pianificata";
     				if (raccolto_forse != 0) {
 						Coltura colturaObj = coltureDAO.FindSpecificColtura(coltura);
@@ -702,46 +704,42 @@ public class Controller {
 			                int idprogetto= progetto.getIdProgetto();
 			                    List<Attivita> attivita = progettoDAO.GetAttivitaProgetto(idprogetto);
 			                    for (Attivita att : attivita) {
-			                           String CF_coltivatore_responsabile = att.getCfColtivatore();
-			                           Coltivatore coltivatore = coltivatoreDAO.FindSpecificColtivatore(CF_coltivatore_responsabile);
-			                           String nomeColtivatore = coltivatore.getNome();
-			                           String cognomeColtivatore = coltivatore.getCognome();
-			                           int idColtura = att.getIdColtura();
-			                           Coltura coltura = coltureDAO.FindSpecificColtura(idColtura);
-			                           String nomeColtura = coltura.getNomeColtura();
-			                    		String nomeAttività = att.getNomeAttivita();
-			                           String stato = att.getStato();
-			                           Date dataInizio = att.getInizio();
-			                           Date dataFine = att.getFine();
-			                           Time tempo = att.getTempoLavorato();
+			                    	String CF_coltivatore_responsabile = att.getCfColtivatore();
+			                        Coltivatore coltivatore = coltivatoreDAO.FindSpecificColtivatore(CF_coltivatore_responsabile);
+			                        String nomeColtivatore = coltivatore.getNome();
+			                        String cognomeColtivatore = coltivatore.getCognome();
+			                        int idColtura = att.getIdColtura();
+			                        Coltura coltura = coltureDAO.FindSpecificColtura(idColtura);
+			                        String nomeColtura = coltura.getNomeColtura();
+			                    	String nomeAttività = att.getNomeAttivita();
+			                        String stato = att.getStato();
+			                        Date dataInizio = att.getInizio();
+			                        Date dataFine = att.getFine();
+			                        Duration tempo = att.getTempoLavorato();
 			                           
-			                           long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
+			                        long durataTotaleMillis = dataFine.getTime() - dataInizio.getTime();
+			                        long tempoLavoratoEffettivo = tempo.toMillis();
 
-			                           LocalTime localTime = tempo.toLocalTime();
-			                           int ore = localTime.getHour();
-			                           int minuti = localTime.getMinute();
-			                           int secondi = localTime.getSecond();
-			                           long tempoLavoratoEffettivoMillis = (ore * 3600 + minuti * 60 + secondi) * 1000;
 
-			                           int percentuale = (durataTotaleMillis <= 0) ? 0 :
-			                               (int) Math.min(100, (tempoLavoratoEffettivoMillis * 100.0) / durataTotaleMillis);
-			                           if (decisor ==1) {
-			                        	  int idattività= att.getIdAttivita();
-			                        	  righe.add(new Object[] { nomeColtivatore, cognomeColtivatore, nomeAttività, nomeColtura , stato, percentuale, idattività,}); 
-			                           }
-			                          righe.add(new Object[] {nomeColtivatore, cognomeColtivatore, nomeAttività, nomeColtura , stato, percentuale}); 
-			                    }
-			                    }
-			            break;            
+			                        int percentuale = (durataTotaleMillis <= 0) ? 0 :
+			                        	(int) Math.min(100, (tempoLavoratoEffettivo * 100.0) / durataTotaleMillis);
+			                        if (decisor ==1) {
+			                        	int idattività= att.getIdAttivita();
+			                        	righe.add(new Object[] { nomeColtivatore, cognomeColtivatore, nomeAttività, nomeColtura , stato, percentuale, idattività,}); 
+			                        } else {
+			                            righe.add(new Object[] {nomeColtivatore, cognomeColtivatore, nomeAttività, nomeColtura , stato, percentuale}); 
+			                        }
+			              }
+			            break;    
+			            }        
 			        }
 			                        // Trovato il lotto, esci dal ciclo perché nome lotto è unico
-			            
-			        
-			    } catch (SQLException e) {
+			        } catch (SQLException e) {
 			        return new ArrayList<>(); // In caso di errore, ritorna lista vuota
 			    }
 			    return righe;
     		}
+
     	  
     		public int InserisciInRaccolto (String nomeColt, int amount, int idLotto) {
 			    try {
@@ -787,7 +785,7 @@ public class Controller {
 					    int idColtura = Integer.parseInt(attività.get(3));
 					    String nomeAttività = attività.get(4);
 					    int durata = Integer.parseInt(attività.get(5));
-					    Time tempoLavorato = Time.valueOf("00:00:00"); // Tempo inizialmente impostato a 0
+					    Duration tempoLavorato = Duration.ZERO;// Tempo inizialmente impostato a 0
 					    // Quantità corretta
 					    int quantita;
 					    if (nomeAttività.equalsIgnoreCase("Raccolta")) {
@@ -887,7 +885,7 @@ public class Controller {
     		    try {
     		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
     		        for (Lotto lotto : lotti) {
-    		            List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto.getIdLotto(), CF);
+    		            List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto.getIdLotto());
     		            for (Attivita att : attività) {
     		                if (att.getNomeAttivita().equalsIgnoreCase("Raccolto")) {
     		                    return 1; // Ha almeno un raccolto

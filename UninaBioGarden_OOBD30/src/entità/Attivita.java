@@ -2,6 +2,7 @@ package entità;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public class Attivita extends Entita {
 	private String nomeAttivita;
     private java.sql.Date inizio;
     private java.sql.Date fine;  
-    private java.sql.Time tempoLavorato;     
+    private Duration tempoLavorato;
     private String cfColtivatore;
     private int idColtura;
     private String stato;
@@ -32,7 +33,7 @@ public class Attivita extends Entita {
     	this.cfColtivatore = cfColtivatore;
 		this.inizio = new Date(System.currentTimeMillis());
 		this.fine = new Date(System.currentTimeMillis() + HowMuchTime(nomeAttivita.trim().toLowerCase()));
-		this.tempoLavorato = Time.valueOf("00:00:00"); 
+		this.tempoLavorato = Duration.ZERO;
 		this.stato = "Pianificata";
 		this.idColtura = idColtura;
 		this.tableName = "Attività";
@@ -44,7 +45,7 @@ public class Attivita extends Entita {
     	this.nomeAttivita = nomeAttivita;
     	this.inizio = inizio;
     	this.fine = fine;
-        this.tempoLavorato = Time.valueOf("00:00:00"); 
+        this.tempoLavorato = Duration.ZERO; 
     	this.cfColtivatore = cfColtivatore;
     	this.stato = "Pianificata";
     	this.idColtura = idColtura;
@@ -53,7 +54,7 @@ public class Attivita extends Entita {
     
     /* *************** */
     
-    public Attivita(String nomeAttivita, Date inizio, Date fine, String cfColtivatore, int idColtura, Time tempoLavorato, String stato) {
+    public Attivita(String nomeAttivita, Date inizio, Date fine, String cfColtivatore, int idColtura, Duration tempoLavorato, String stato) {
         this.nomeAttivita = nomeAttivita;
         this.inizio = inizio;
         this.fine = fine;
@@ -67,7 +68,7 @@ public class Attivita extends Entita {
     /* *************** */
     
   
-    public Attivita(int idAttivita, String nomeAttivita, Date inizio, Date fine, String cfColtivatore, int idColtura, Time tempoLavorato, String stato) {
+    public Attivita(int idAttivita, String nomeAttivita, Date inizio, Date fine, String cfColtivatore, int idColtura, Duration tempoLavorato, String stato) {
     	this.idAttivita = idAttivita;
         this.nomeAttivita = nomeAttivita;
         this.inizio = inizio;
@@ -81,20 +82,10 @@ public class Attivita extends Entita {
 
     /* ************************************************** */
     
-    public void AddTempoLavorato(Time tl) {
-        if (tl != null) {
-         
-            LocalTime current = this.tempoLavorato.toLocalTime();
-            LocalTime added   = tl.toLocalTime();
-
-            LocalTime sum = current
-                .plusHours(added.getHour())
-                .plusMinutes(added.getMinute())
-                .plusSeconds(added.getSecond());
-
-     
-            this.tempoLavorato = Time.valueOf(sum);
-        }
+    public void AddTempoLavorato(Duration d) {
+    	if (d != null) {
+    		this.tempoLavorato = this.tempoLavorato.plus(d);
+    	}
     }
 
     
@@ -118,8 +109,8 @@ public class Attivita extends Entita {
     
     /* ***** */
 
-	public Time getTempoLavorato() { return tempoLavorato; }
-	public void setTempoLavorato(Time tempoLavorato) { this.tempoLavorato = tempoLavorato; }
+	public Duration getTempoLavorato() { return tempoLavorato; }
+	public void setTempoLavorato(Duration tempoLavorato) { this.tempoLavorato = tempoLavorato; }
 	
 	/* ***** */
 	

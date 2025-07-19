@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +69,7 @@ public class ProgettoDAO extends DAO {
 			stmt.setInt(1, idProgetto);
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) {
+					Duration tempolavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
 					Attivita attivita = new Attivita(
 							rs.getInt("idAttività"),
 			                rs.getString("nomeAttività"),
@@ -75,7 +77,7 @@ public class ProgettoDAO extends DAO {
 			                rs.getDate("fine"),
 			                rs.getString("CF_Coltivatore"),
 			                rs.getInt("idColtura"),
-			                rs.getTime("TempoLavorato"),
+			                tempolavorato,
 			                rs.getString("stato")
 					);
 					attivitaList.add(attivita);
@@ -156,6 +158,7 @@ public class ProgettoDAO extends DAO {
 			stmt.setInt(1, idP);
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) {
+					Duration tempoLavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
 					Attivita attivita = new Attivita(
 						rs.getInt("idAttività"),
 						rs.getString("nomeAttività"),
@@ -163,7 +166,7 @@ public class ProgettoDAO extends DAO {
 						rs.getDate("fine"),
 						rs.getString("CF_Coltivatore"),
 						rs.getInt("idColtura"),
-						rs.getTime("TempoLavorato"),
+	                    tempoLavorato,
 						rs.getString("stato")
 					);
 					attivitaList.add(attivita);

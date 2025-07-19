@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -50,13 +51,13 @@ public class TESTING {
 	// TESTING
 	
 	public void InitTests() throws SQLException {
-		InitTestPropDAO();
-		InitTestColtDAO();
-		InitTestLottoDAO();
+		//InitTestPropDAO();
+		//InitTestColtDAO();
+		//InitTestLottoDAO();
 		InitTestAttDAO();
-		InitTestRacDAO();
-		InitTestColturaDAO();
-		InitTestProgettoDAO();
+		//InitTestRacDAO();
+		//InitTestColturaDAO();
+		//InitTestProgettoDAO();
 		return;
 	}
 	
@@ -180,6 +181,7 @@ public class TESTING {
 			: att2.getNomeAttivita() + " Has NOT been removed" 
 		);
 		
+
 		
 		/*
 		System.out.println(
@@ -190,13 +192,15 @@ public class TESTING {
 		*/
 	    // *****
 
-	    System.out.println("TESTING UpdateTempoTrascorsoAttività...");
-	    System.out.println("BEFORE");
-	    System.out.println(att1);
-	    att1.AddTempoLavorato(java.sql.Time.valueOf("05:00:00"));
-	    attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), Time.valueOf("05:00:00"));
-	    System.out.println("AFTER");
-	    System.out.println(att1);
+		System.out.println("TESTING UpdateTempoTrascorsoAttività...");
+		System.out.println("BEFORE");
+		System.out.println(att1);
+		// 5 ore
+		Duration delta = Duration.ofHours(5);
+		att1.AddTempoLavorato(delta);
+		attDAO.UpdateTempoLavoratoAttivita(att1.getIdAttivita(), delta);
+		System.out.println("AFTER");
+		System.out.println(att1);
 	    
 	    // *****
 	    
@@ -205,6 +209,22 @@ public class TESTING {
 	    for(Attivita a : attColtOnColtura) {
 	    	System.out.println(a);
 	    }
+	    // *****
+	    	
+	    System.out.println("TESTING CompletaAttivita...");
+	    System.out.println(
+	    	attDAO.CompletaAttivita(att1.getIdAttivita())
+	    	? "Attività " + att1.getNomeAttivita() + " has been completed"
+	    	: "Attività " + att1.getNomeAttivita() + " has NOT been completed"
+	    );
+	   
+	    System.out.println("the activity with id 128 is" + attDAO.FindSpecificAttivita(128).getStato());
+	    
+	    // *****
+	    
+	    System.out.println("TESTING GetAttivitaOfLotto...");
+	    ArrayList<Attivita> attLotto = attDAO.GetAttivitaOfLotto(32);
+	    
 	}
 	
 	/* ******************** */

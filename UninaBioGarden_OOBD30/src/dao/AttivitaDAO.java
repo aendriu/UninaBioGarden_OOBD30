@@ -1,5 +1,6 @@
 package dao;
 
+
 import java.sql.Statement;
 import java.io.IOException;
 import java.sql.Date;
@@ -10,9 +11,12 @@ import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.postgresql.util.PGInterval;
 
 import controller.Controller;
 import entità.Attivita;
@@ -33,6 +37,8 @@ public class AttivitaDAO extends DAO {
             stmt.setInt(1, idAttivita);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
+                	// Recupera il tempoLavorato come Duration
+                	Duration tempoLavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(idAttivita));
                     return new Attivita(
                     	rs.getInt("idAttività"),
     					rs.getString("nomeAttività"),
@@ -40,7 +46,7 @@ public class AttivitaDAO extends DAO {
     					rs.getDate("fine"),
     					rs.getString("CF_Coltivatore"),
     					rs.getInt("idColtura"),
-   						rs.getTime("TempoLavorato"),
+   						tempoLavorato,
    						rs.getString("stato")
                     );
                 }
@@ -69,14 +75,15 @@ public class AttivitaDAO extends DAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 List<Attivita> attivitaList = new ArrayList<>();
                 while (rs.next()) {
-                    attivitaList.add(new Attivita(
+                	Duration tempoLavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
+                	attivitaList.add(new Attivita(
                     		rs.getInt("idAttività"),
     						rs.getString("nomeAttività"),
     						rs.getDate("inizio"),
     						rs.getDate("fine"),
     						rs.getString("CF_Coltivatore"),
     						rs.getInt("idColtura"),
-    						rs.getTime("TempoLavorato"),
+    						tempoLavorato,
     						rs.getString("stato")
                         ));
                 }
@@ -95,7 +102,7 @@ public class AttivitaDAO extends DAO {
 			stmt.setInt(2, idC);
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) {
-					
+					Duration tempoLavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
 					Attivita a = new Attivita(
 						rs.getInt("idAttività"),
 						rs.getString("nomeAttività"),
@@ -103,7 +110,7 @@ public class AttivitaDAO extends DAO {
 						rs.getDate("fine"),
 						rs.getString("CF_Coltivatore"),
 						rs.getInt("idColtura"),
-						rs.getTime("TempoLavorato"),							
+						tempoLavorato,
 						rs.getString("stato")
 					);
 					lista.add(a);
@@ -123,6 +130,7 @@ public class AttivitaDAO extends DAO {
 			stmt.setInt(2, idL);
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) {
+					Duration tempoLavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
 					Attivita a = new Attivita(
 						rs.getInt("idAttività"),
 						rs.getString("nomeAttività"),
@@ -130,7 +138,7 @@ public class AttivitaDAO extends DAO {
 						rs.getDate("fine"),
 						rs.getString("CF_Coltivatore"),
 						rs.getInt("idColtura"),
-						rs.getTime("TempoLavorato"),							
+						tempoLavorato,
 						rs.getString("stato")
 					);
 					lista.add(a);
@@ -158,6 +166,7 @@ public class AttivitaDAO extends DAO {
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs   = stmt.executeQuery()) {
             while (rs.next()) {
+            	Duration tempoLavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
             	Attivita a = new Attivita(
                 	rs.getInt("idAttività"),
         			rs.getString("nomeAttività"),
@@ -165,7 +174,7 @@ public class AttivitaDAO extends DAO {
         			rs.getDate("fine"),
        				rs.getString("CF_Coltivatore"),
        				rs.getInt("idColtura"),
-       				rs.getTime("TempoLavorato"),
+       				tempoLavorato,
        				rs.getString("stato")
                 );
 
@@ -177,24 +186,19 @@ public class AttivitaDAO extends DAO {
     
     /* ******************************* */
 
-    public ArrayList<Attivita> GetAttivitaOfLotto(int idLotto, String CF) throws SQLException {
+    public ArrayList<Attivita> GetAttivitaOfLotto(int idLotto) throws SQLException {
         String sql = """
             SELECT a.*
-            FROM attività a
-            WHERE a.cf_coltivatore = ?
-              AND EXISTS (
-                  SELECT 1
-                  FROM lavora_in li
-                  WHERE li.cf_coltivatore = a.cf_coltivatore
-                    AND li.idlotto = ?
-              )
-            """;
+        		FROM attività a
+        		JOIN lavora_in li ON a.cf_coltivatore = li.cf_coltivatore
+        		WHERE li.idlotto = ?
+			""";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, CF);
-            stmt.setInt(2, idLotto);
+            stmt.setInt(1, idLotto);
             try (ResultSet rs = stmt.executeQuery()) {
                 List<Attivita> attivitaList = new ArrayList<>();
                 while (rs.next()) {
+                	Duration tempoLavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
                     attivitaList.add(new Attivita(
                     		rs.getInt("idAttività"),
             				rs.getString("nomeAttività"),
@@ -202,7 +206,7 @@ public class AttivitaDAO extends DAO {
             				rs.getDate("fine"),
             				rs.getString("CF_Coltivatore"),
             				rs.getInt("idColtura"),
-            				rs.getTime("TempoLavorato"),
+            				tempoLavorato,
             				rs.getString("stato")
                     
                     		));
@@ -254,7 +258,7 @@ public class AttivitaDAO extends DAO {
 
 	/* ******************************* */
     
-    public int InsertAttivita(String nomeAtt, Date inizio, Date fine, String cf, int idColt,Time tempoLavorato, String stato) 
+    public int InsertAttivita(String nomeAtt, Date inizio, Date fine, String cf, int idColt, Duration tempoLavorato, String stato) 
             throws SQLException {
     	if(!isInsertionOnAttivitaValid(nomeAtt, inizio, fine, cf, idColt)) {
         	throw new IllegalStateException("Il metodo InsertAttivita non è stato implementato correttamente.");
@@ -270,7 +274,7 @@ public class AttivitaDAO extends DAO {
             stmt.setDate(2, inizio);
             stmt.setDate(3, fine);
            
-            stmt.setString(4, tempoLavorato.toLocalTime().toString());
+            stmt.setString(4, DurationToStringInterval(tempoLavorato));
             stmt.setString(5, cf);
             stmt.setString(6, stato);
 
@@ -354,6 +358,24 @@ public class AttivitaDAO extends DAO {
     }
     
     /* ******************************* */
+    
+    public boolean CompletaAttivita(int idAttivita) throws SQLException {
+        String sql = "UPDATE attività "
+                   + "SET stato = 'Completata', "
+                   + "    tempoLavorato = (fine - inizio) "
+                   + "WHERE idAttività = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idAttivita);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+
+
+    
+    /* ******************************* */
+
 
     private boolean isNewStateValid(String nuovoStato) {
     	if(nuovoStato == null || nuovoStato.isEmpty()) {
@@ -369,34 +391,31 @@ public class AttivitaDAO extends DAO {
         
     /* ******************************* */
 
-    public boolean UpdateTempoLavoratoAttivita(int idAttivita, Time nuovoTempo) throws SQLException {
-    	Attivita a = FindSpecificAttivita(idAttivita);
-    	if(WouldExceedMaxTime(a, nuovoTempo)) {
-    		UpdateStatoAttivita(idAttivita, "Completata");
-    		return true;
-    	}
+    public boolean UpdateTempoLavoratoAttivita(int idAttivita, Duration dur) throws SQLException {
+        Attivita a = FindSpecificAttivita(idAttivita);
+        if (WouldExceedMaxTime(a, dur)) {
+            CompletaAttivita(idAttivita);
+            return true;
+        }
+
         String sql = "UPDATE attività "
-                   + "SET tempoLavorato = (tempoLavorato + ?::interval) "
-        		
+                   + "SET tempoLavorato = tempoLavorato + CAST(? AS INTERVAL) "
                    + "WHERE idAttività = ?";
-                   
-        
+
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, nuovoTempo.toLocalTime().toString());
+            stmt.setString(1, DurationToStringInterval(dur));  
             stmt.setInt(2, idAttivita);
-            return stmt.executeUpdate() > 0;		
+            return stmt.executeUpdate() > 0;
         }
     }
     
     /* ******************************* */
 
-    public boolean WouldExceedMaxTime(Attivita a, Time nuovoTempo) {
-        long max = a.getFine().getTime() - a.getInizio().getTime();
-
-        long lavorato = a.getTempoLavorato().getTime();
-        long nuovo    = nuovoTempo.getTime();
-
-        return (lavorato + nuovo) >= max;
+    public boolean WouldExceedMaxTime(Attivita a, Duration dur) {
+        long millisMax = a.getFine().getTime() - a.getInizio().getTime();
+        Duration maxDur = Duration.ofMillis(millisMax);
+        Duration lavorato = a.getTempoLavorato();
+        return lavorato.plus(dur).compareTo(maxDur) >= 0;
     }
 
     /* ******************************* */
@@ -446,5 +465,11 @@ public class AttivitaDAO extends DAO {
         }
         return false;
     }
+    
+    /* ******************************* */
+    
+    
+
+    
 
 }

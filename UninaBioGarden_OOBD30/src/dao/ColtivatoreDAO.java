@@ -144,7 +144,7 @@ public class ColtivatoreDAO extends UtenteDAO{
             stmt.setString(1, CF);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                   
+                    Duration tempolavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
                     Attivita a = new Attivita(
                     	rs.getInt("idAttività"),
     					rs.getString("nomeAttività"),
@@ -152,8 +152,8 @@ public class ColtivatoreDAO extends UtenteDAO{
     					rs.getDate("fine"),
     					rs.getString("CF_Coltivatore"),
     					rs.getInt("idColtura"),
-   						rs.getTime("TempoLavorato"),
-   						rs.getString("stato")
+    					tempolavorato,
+    					rs.getString("stato")
                     );
                     lista.add(a);
                 }
@@ -179,6 +179,7 @@ public class ColtivatoreDAO extends UtenteDAO{
 			stmt.setInt(2, idC);
 			try (ResultSet rs = stmt.executeQuery()) {
 				while (rs.next()) {
+					Duration tempolavorato = TempoLavoratoDoubleToDuration(GetTempoLavoratoInOre(rs.getInt("idAttività")));
 					Attivita attivita = new Attivita(
 						rs.getInt("idAttività"),
 						rs.getString("nomeAttività"),
@@ -186,7 +187,7 @@ public class ColtivatoreDAO extends UtenteDAO{
 						rs.getDate("fine"),
 						rs.getString("CF_Coltivatore"),
 						rs.getInt("idColtura"),
-						rs.getTime("TempoLavorato"),
+						tempolavorato,
 						rs.getString("stato")
 					);
 					attivitaList.add(attivita);

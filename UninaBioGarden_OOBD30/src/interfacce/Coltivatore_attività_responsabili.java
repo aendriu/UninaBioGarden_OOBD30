@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 import javax.swing.*;
@@ -70,10 +71,11 @@ public class Coltivatore_attività_responsabili extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int selectedRow = activities_table.getSelectedRow();
                 int modelRow = activities_table.convertRowIndexToModel(selectedRow);
+                int idAttivita = (Integer) activities_table.getModel().getValueAt(modelRow, 0);
 
-                String lottoName = (String) activities_table.getModel().getValueAt(modelRow, 0);
-                String attivitaName = (String) activities_table.getModel().getValueAt(modelRow, 1);
-                String stato = (String) activities_table.getModel().getValueAt(modelRow, 3);
+                String lottoName = (String) activities_table.getModel().getValueAt(modelRow, 1);
+                String attivitaName = (String) activities_table.getModel().getValueAt(modelRow, 2);
+                String stato = (String) activities_table.getModel().getValueAt(modelRow, 4);
 
                 try {
                     if (stato.equalsIgnoreCase("completata")) {
@@ -98,9 +100,27 @@ public class Coltivatore_attività_responsabili extends JFrame {
                                 Coltivatore_attività_table_exceptions.Tipo.illegal_number_input
                             );
                         }
-                        LocalTime localTime = LocalTime.of(time_spent, 0, 0);
-                        Time time = Time.valueOf(localTime);
-                        boolean validat = TheController.aggiorna_tempo_lavorato(username_colt, lottoName, attivitaName, time);
+                        Duration time = Duration.ofHours(time_spent);
+                        
+                        
+                      //*****
+                        
+                        int selectedRowz = activities_table.getSelectedRow();
+                        if (selectedRowz != -1) {
+                            int modelRowz = activities_table.convertRowIndexToModel(selectedRow);
+                            TableModel model = activities_table.getModel();
+                            int columnCount = model.getColumnCount();
+
+                            for (int i = 0; i < columnCount; i++) {
+                                System.out.println("Colonna " + i + ": " + model.getValueAt(modelRow, i));
+                            }
+                        }
+                        //*****
+                        
+                        int idAtt = (Integer) activities_table.getModel().getValueAt(modelRow, 0);
+                        
+                        
+                        boolean validat = TheController.aggiorna_tempo_lavorato(idAtt , time);
                         if (validat) {
                             JOptionPane.showMessageDialog(
                                 null, "Tempo aggiornato con successo per l'attività " + attivitaName + " del lotto " + lottoName,
@@ -145,10 +165,10 @@ public class Coltivatore_attività_responsabili extends JFrame {
             return;
         }
 
-        righe.sort(Comparator.comparing(a -> ((String) a[0]))); // Ordina per nome lotto
+        righe.sort(Comparator.comparing(a -> (String) a[1]));
 
         String[] colonne = {
-            "Nome Lotto", "Nome Attività", "Coltura", "Stato", "Percentuale Completamento"
+            "ID", "Nome Lotto", "Nome Attività", "Coltura", "Stato", "Percentuale Completamento"
         };
 
         Object[][] dati = new Object[righe.size()][colonne.length];
@@ -158,17 +178,31 @@ public class Coltivatore_attività_responsabili extends JFrame {
 
         DefaultTableModel model = new DefaultTableModel(dati, colonne) {
             Class<?>[] columnTypes = new Class[]{
-                String.class, String.class, String.class, String.class, Integer.class, Integer.class, Integer.class
+                Integer.class,  // ID
+                String.class,   // Nome Lotto
+                String.class,   // Nome Attività
+                String.class,   // Coltura
+                String.class,   // Stato
+                Integer.class   // Percentuale
             };
-            public Class<?> getColumnClass(int columnIndex) {
-                return columnTypes[columnIndex];
+            @Override public Class<?> getColumnClass(int i) {
+                return columnTypes[i];
             }
-            public boolean isCellEditable(int row, int column) {
+            @Override public boolean isCellEditable(int r, int c) {
                 return false;
             }
         };
-
+        
+        
         activities_table.setModel(model);
+        // nascondo idAttività
+        TableColumn idCol = activities_table.getColumnModel().getColumn(0);
+        idCol.setMinWidth(0);
+        idCol.setMaxWidth(0);
+        idCol.setPreferredWidth(0);
+        idCol.setWidth(0);
+
+        
 
         if (columnModelBackup != null) {
             activities_table.setColumnModel(columnModelBackup);
@@ -177,7 +211,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
         }
 
         // Progress bar sulla colonna percentuale
-        activities_table.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
+        activities_table.getColumnModel().getColumn(5).setCellRenderer(new TableCellRenderer() {
             private final JProgressBar bar = new JProgressBar(0, 100);
             {
                 bar.setStringPainted(true);
