@@ -29,7 +29,7 @@ public class Coltivatore_lotti_in_cui_lavora extends JFrame {
     private static final long serialVersionUID = 1L;
     private Image coltivatoreImage;
     private String username_colt;
-    private JTable table;
+    private JTable lotti_table;
     private Controller TheController;
 
     public Coltivatore_lotti_in_cui_lavora(String username_colt, Controller TheController) {
@@ -44,7 +44,7 @@ public class Coltivatore_lotti_in_cui_lavora extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Coltivatore_lotti_in_cui_lavora.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Coltivatore_lotti_in_cui_lavora.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             coltivatoreImage = new ImageIcon(imageUrl).getImage();
@@ -102,31 +102,31 @@ public class Coltivatore_lotti_in_cui_lavora extends JFrame {
         }
 
         // Creo la tabella
-        table = new JTable(dati, colonne);
+        lotti_table = new JTable(dati, colonne);
 
         // AGGIUNGO ordinamento crescente sulla colonna 0
-        TableRowSorter sorter = new TableRowSorter(table.getModel());
-        table.setRowSorter(sorter);
+        TableRowSorter sorter = new TableRowSorter(lotti_table.getModel());
+        lotti_table.setRowSorter(sorter);
         sorter.toggleSortOrder(0);
 
         // Configurazioni grafiche
         Font tableFont = new Font("Times New Roman", Font.PLAIN, 22);
-        table.setFont(tableFont);
-        table.setRowHeight(30);
-        table.setFillsViewportHeight(true);
+        lotti_table.setFont(tableFont);
+        lotti_table.setRowHeight(30);
+        lotti_table.setFillsViewportHeight(true);
 
         // Disabilito selezioni
-        table.setRowSelectionAllowed(false);
-        table.setCellSelectionEnabled(false);
-        table.setColumnSelectionAllowed(false);
+        lotti_table.setRowSelectionAllowed(false);
+        lotti_table.setCellSelectionEnabled(false);
+        lotti_table.setColumnSelectionAllowed(false);
 
         // Aggiungo la tabella allo JScrollPane
-        scrollPane.setViewportView(table);
+        scrollPane.setViewportView(lotti_table);
 
         // Bottone torna indietro
         JButton Torna_Indietro = new JButton("Torna indietro");
         Torna_Indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Torna_Indietro.setBounds(645, screenSize.height - 80, 210, 43);
+        Torna_Indietro.setBounds(656, 784, 210, 43);
         Torna_Indietro.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

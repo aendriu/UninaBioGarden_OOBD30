@@ -28,7 +28,6 @@ public class Free_lotti extends JFrame {
         
         // Imposta le proprietà della finestra
         setResizable(false);
-        setTitle("Lista Colture Libere");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Prendi la dimensione dello schermo esatta

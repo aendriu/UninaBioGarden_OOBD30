@@ -42,7 +42,7 @@ public class Project_finalize_and_final_adjustments extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Caricamento immagine
-        URL imageUrl =  Project_finalize_and_final_adjustments.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl =  Project_finalize_and_final_adjustments.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -65,13 +65,13 @@ public class Project_finalize_and_final_adjustments extends JFrame {
         JLabel projectNameLabel = new JLabel(projectName, SwingConstants.CENTER);
         projectNameLabel.setFont(new Font("Times New Roman", Font.BOLD, 36));
         projectNameLabel.setForeground(Color.BLACK);
-        projectNameLabel.setBounds(200, 20, screenSize.width - 400, 60);
+        projectNameLabel.setBounds(193, 20, screenSize.width - 400, 60);
         page.add(projectNameLabel);
 
         JLabel lblCreatoPerIl = new JLabel("creato per il lotto: " + lottoname + ".", SwingConstants.CENTER);
         lblCreatoPerIl.setForeground(Color.BLACK);
         lblCreatoPerIl.setFont(new Font("Times New Roman", Font.BOLD, 36));
-        lblCreatoPerIl.setBounds(200, 87, screenSize.width - 400, 60);
+        lblCreatoPerIl.setBounds(193, 87, screenSize.width - 400, 60);
         page.add(lblCreatoPerIl);
 
         // Intestazioni 5 colonne, ultima "Quantità" vuota se non raccolta

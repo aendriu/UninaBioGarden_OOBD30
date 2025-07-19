@@ -54,7 +54,7 @@ public class Proprietario_activities_visual extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Proprietario_activities_visual.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Proprietario_activities_visual.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             proprietarioImage = new ImageIcon(imageUrl).getImage();

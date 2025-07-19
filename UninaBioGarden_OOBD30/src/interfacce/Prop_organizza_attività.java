@@ -87,7 +87,7 @@ public class Prop_organizza_attività extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Prop_organizza_attività.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Prop_organizza_attività.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();

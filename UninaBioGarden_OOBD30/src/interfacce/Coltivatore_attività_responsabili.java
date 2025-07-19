@@ -19,7 +19,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
     private Image coltivatoreImage;
     private String username_colt;
     private Controller TheController;
-    private JTable table;
+    private JTable activities_table;
     private TableColumnModel columnModelBackup;
 
     public Coltivatore_attività_responsabili(String username_colt, Controller TheController) {
@@ -33,7 +33,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Immagine
-        URL imageUrl = Coltivatore_attività_responsabili.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Coltivatore_attività_responsabili.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             coltivatoreImage = new ImageIcon(imageUrl).getImage();
@@ -62,18 +62,18 @@ public class Coltivatore_attività_responsabili extends JFrame {
         scrollPane.setBounds(0, 0, screenSize.width, screenSize.height - spazioBottoni);
         Attività_panel.add(scrollPane);
 
-        table = new JTable();
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setToolTipText("Clicca una riga per aggiornare la percentuale completamento");
+        activities_table = new JTable();
+        activities_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        activities_table.setToolTipText("Clicca una riga per aggiornare la percentuale completamento");
 
-        table.addMouseListener(new MouseAdapter() {
+        activities_table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                int selectedRow = table.getSelectedRow();
-                int modelRow = table.convertRowIndexToModel(selectedRow);
+                int selectedRow = activities_table.getSelectedRow();
+                int modelRow = activities_table.convertRowIndexToModel(selectedRow);
 
-                String lottoName = (String) table.getModel().getValueAt(modelRow, 0);
-                String attivitaName = (String) table.getModel().getValueAt(modelRow, 1);
-                String stato = (String) table.getModel().getValueAt(modelRow, 3);
+                String lottoName = (String) activities_table.getModel().getValueAt(modelRow, 0);
+                String attivitaName = (String) activities_table.getModel().getValueAt(modelRow, 1);
+                String stato = (String) activities_table.getModel().getValueAt(modelRow, 3);
 
                 try {
                     if (stato.equalsIgnoreCase("completata")) {
@@ -119,18 +119,18 @@ public class Coltivatore_attività_responsabili extends JFrame {
             }
         });
 
-        scrollPane.setViewportView(table);
+        scrollPane.setViewportView(activities_table);
         loadTableData();
 
-        table.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        table.setRowHeight(30);
+        activities_table.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+        activities_table.setRowHeight(30);
 
         JButton Torna_indietro = new JButton("Torna Indietro");
         Torna_indietro.addActionListener(e -> {
             TheController.OpenPageColtivatore_closeCaller(username_colt, Coltivatore_attività_responsabili.this);
         });
         Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Torna_indietro.setBounds(645, screenSize.height - 80, 210, 43);
+        Torna_indietro.setBounds(0, 774, 1522, 53);
         Attività_panel.add(Torna_indietro);
     }
 
@@ -168,16 +168,16 @@ public class Coltivatore_attività_responsabili extends JFrame {
             }
         };
 
-        table.setModel(model);
+        activities_table.setModel(model);
 
         if (columnModelBackup != null) {
-            table.setColumnModel(columnModelBackup);
+            activities_table.setColumnModel(columnModelBackup);
         } else {
-            columnModelBackup = table.getColumnModel();
+            columnModelBackup = activities_table.getColumnModel();
         }
 
         // Progress bar sulla colonna percentuale
-        table.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
+        activities_table.getColumnModel().getColumn(4).setCellRenderer(new TableCellRenderer() {
             private final JProgressBar bar = new JProgressBar(0, 100);
             {
                 bar.setStringPainted(true);

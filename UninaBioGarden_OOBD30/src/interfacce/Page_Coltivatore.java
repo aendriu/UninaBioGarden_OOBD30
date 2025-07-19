@@ -49,7 +49,7 @@ public class Page_Coltivatore extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Page_Coltivatore.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Page_Coltivatore.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             coltivatoreImage = new ImageIcon(imageUrl).getImage();
@@ -79,7 +79,7 @@ public class Page_Coltivatore extends JFrame {
         JLabel User_name_printer = new JLabel("Bentornato");
         User_name_printer.setHorizontalAlignment(SwingConstants.CENTER);
         User_name_printer.setFont(new Font("Times New Roman", Font.PLAIN, 40));
-        User_name_printer.setBounds(51, 10, 1461, 56);
+        User_name_printer.setBounds(30, 10, 1461, 56);
         pageColtivatorePanel.add(User_name_printer,TheController);
         
         // Qui mostri la stringa username passata
@@ -100,7 +100,7 @@ public class Page_Coltivatore extends JFrame {
         JLabel User_name_printer_actual = new JLabel(Print_details);
         User_name_printer_actual.setHorizontalAlignment(SwingConstants.CENTER);
         User_name_printer_actual.setFont(new Font("Times New Roman", Font.PLAIN, 40));
-        User_name_printer_actual.setBounds(51, 59, 1461, 56);
+        User_name_printer_actual.setBounds(30, 59, 1461, 56);
         pageColtivatorePanel.add(User_name_printer_actual);
         
         JButton Vedi_attività = new JButton("Le mie Attività");
@@ -115,7 +115,7 @@ public class Page_Coltivatore extends JFrame {
         	public void actionPerformed(ActionEvent e) {
         	}
         });
-        Vedi_attività.setBounds(694, 371, 199, 82);
+        Vedi_attività.setBounds(661, 371, 199, 82);
         pageColtivatorePanel.add(Vedi_attività);
         
         JButton Lotti_lavora = new JButton("Lotti in cui lavoro");
@@ -130,7 +130,7 @@ public class Page_Coltivatore extends JFrame {
         	}
         });
         Lotti_lavora.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Lotti_lavora.setBounds(694, 522, 199, 82);
+        Lotti_lavora.setBounds(661, 522, 199, 82);
         pageColtivatorePanel.add(Lotti_lavora);
         
         JButton Torna_alla_home = new JButton("Torna alla home");
@@ -146,7 +146,7 @@ public class Page_Coltivatore extends JFrame {
         	
         });
         Torna_alla_home.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Torna_alla_home.setBounds(694, 673, 199, 82);
+        Torna_alla_home.setBounds(661, 673, 199, 82);
         pageColtivatorePanel.add(Torna_alla_home);
     }
 }

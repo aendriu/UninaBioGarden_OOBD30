@@ -145,15 +145,8 @@ public class Progetti_visual_scheme extends JFrame {
                 }
             }
         });
-
-        URL imageUrl = Progetti_visual_scheme.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
-        if (imageUrl != null) {
-            setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
-            Prop_lotti_visual_scheme_image = new ImageIcon(imageUrl).getImage();
-        } else {
-            System.out.println("Immagine non trovata!");
-        }
     }
+     
 
     private void caricaTuttiDati() {
         tableModel.setRowCount(0);

@@ -132,7 +132,7 @@ public class Prop_lotti_visual_scheme extends JFrame {
         getContentPane().add(Torna_indietro);
 
         // Carico immagine icona
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl =  Prop_lotti_visual_scheme.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             Prop_lotti_visual_scheme_image = new ImageIcon(imageUrl).getImage();

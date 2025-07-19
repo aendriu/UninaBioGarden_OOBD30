@@ -60,7 +60,7 @@ public class Report_frame extends JFrame {
         String ToPrint=TheController.get_Info_From_Username(username, 1);
        
         // icona e sfondo
-        URL imageUrl = Login.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Login.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();

@@ -35,7 +35,7 @@ public class Progetti_creation_scheme extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0, 0, screenSize.width, screenSize.height);
 
-        URL imageUrl = Progetti_creation_scheme.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Progetti_creation_scheme.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -56,7 +56,7 @@ public class Progetti_creation_scheme extends JFrame {
 
         JLabel lblTitolo = new JLabel("Crea un nuovo progetto", SwingConstants.CENTER);
         lblTitolo.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        lblTitolo.setBounds(267, 10, 938, 81);
+        lblTitolo.setBounds(292, 10, 938, 81);
         page.add(lblTitolo);
 
         // tabella colture
@@ -147,23 +147,23 @@ public class Progetti_creation_scheme extends JFrame {
 
         textFieldDurata = new JTextField();
         textFieldDurata.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        textFieldDurata.setBounds(499, 539, 483, 37);
+        textFieldDurata.setBounds(519, 539, 483, 37);
         page.add(textFieldDurata);
 
         JLabel lblDurata = new JLabel("Inserisci durata attività (in giorni e solo numeri)", SwingConstants.CENTER);
         lblDurata.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        lblDurata.setBounds(509, 509, 466, 37);
+        lblDurata.setBounds(528, 509, 466, 37);
         page.add(lblDurata);
 
         textFieldQuantita = new JTextField();
         textFieldQuantita.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        textFieldQuantita.setBounds(499, 467, 483, 37);
+        textFieldQuantita.setBounds(519, 467, 483, 37);
         textFieldQuantita.setVisible(false);
         page.add(textFieldQuantita);
 
         lblQuantita = new JLabel("Inserisci quantità da raccogliere", SwingConstants.CENTER);
         lblQuantita.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        lblQuantita.setBounds(499, 435, 466, 30);
+        lblQuantita.setBounds(528, 435, 466, 30);
         lblQuantita.setVisible(false);
         page.add(lblQuantita);
 
@@ -183,7 +183,7 @@ public class Progetti_creation_scheme extends JFrame {
 
         JButton aggiungi = new JButton("aggiungi attività al progetto");
         aggiungi.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        aggiungi.setBounds(499, 581, 483, 60);
+        aggiungi.setBounds(519, 581, 483, 60);
         aggiungi.addActionListener(e -> {
             List<String> entry = new ArrayList<>();
             try {
@@ -288,7 +288,7 @@ public class Progetti_creation_scheme extends JFrame {
 
         JButton indietro = new JButton("Torna indietro");
         indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        indietro.setBounds(499, 721, 483, 60);
+        indietro.setBounds(519, 721, 483, 60);
         indietro.addActionListener(e -> {
             if (!attivitàSelezionate.isEmpty()) {
                 int scelta = JOptionPane.showConfirmDialog(
@@ -339,7 +339,7 @@ public class Progetti_creation_scheme extends JFrame {
             }
         });
         Finalize.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Finalize.setBounds(499, 651, 483, 60);
+        Finalize.setBounds(519, 651, 483, 60);
         page.add(Finalize);
 
         setContentPane(page);

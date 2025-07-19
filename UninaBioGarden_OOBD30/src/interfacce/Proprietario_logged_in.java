@@ -47,7 +47,7 @@ public class Proprietario_logged_in extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = Proprietario_logged_in.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = Proprietario_logged_in.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();

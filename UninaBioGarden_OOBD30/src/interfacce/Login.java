@@ -46,23 +46,12 @@ public class Login extends JFrame {
 	private JTextField username_txt;
 	private JPasswordField password_login;
 	private Login LoginFrame;
-	private JCheckBox Temporary_coltivator_access;
 	private Controller TheController;
-	private String username_converted_to_CF;
-	private boolean validat= true;
-	/**
-	 * Launch the application.
-	 */
 	
-
-	/**
-	 * Create the frame.
-	 */
 	public Login(Controller TheController) {
 		this.TheController = TheController;
 		setResizable(false);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    setTitle("Login");
 
 	    // Ottengo dimensione schermo
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -257,13 +246,6 @@ public class Login extends JFrame {
 		lblNewLabel.setFont(new Font("Times New Roman", Font.PLAIN, 80));
 		lblNewLabel.setBounds(564, 257, 471, 94);
 		Login.add(lblNewLabel);
-		
-		Temporary_coltivator_access = new JCheckBox("New check box");
-		Temporary_coltivator_access.addMouseListener(new MouseAdapter() {
-			
-		});
-		Temporary_coltivator_access.setBounds(1069, 588, 93, 21);
-		Login.add(Temporary_coltivator_access);
 	}
 	public String getUsername_txt() {
 		return username_txt.getText();

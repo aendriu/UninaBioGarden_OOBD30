@@ -53,7 +53,7 @@ public class instance_of_lotto_selected extends JFrame {
         setBounds(0, 0, screenSize.width, screenSize.height);
 
         // Carico immagine
-        URL imageUrl = instance_of_lotto_selected.class.getResource("Images/PLACEHOLDER_LOGO.jpg");
+        URL imageUrl = instance_of_lotto_selected.class.getResource("Images/image_progetto_logo.jpg");
         if (imageUrl != null) {
             setIconImage(Toolkit.getDefaultToolkit().getImage(imageUrl));
             PropImage = new ImageIcon(imageUrl).getImage();
@@ -235,7 +235,7 @@ public class instance_of_lotto_selected extends JFrame {
         });
         aggiungi_coltura.setToolTipText("aggiungi al tuo lotto una nuova coltura");
         aggiungi_coltura.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        aggiungi_coltura.setBounds(499, 484, 483, 70);
+        aggiungi_coltura.setBounds(519, 484, 483, 70);
         pageProprietario.add(aggiungi_coltura);
 
         JButton aggiungi_coltivatore = new JButton("Aggiungi coltivatore");
@@ -247,7 +247,7 @@ public class instance_of_lotto_selected extends JFrame {
         });
         aggiungi_coltivatore.setToolTipText("visualizza i coltivatori liberi al momento e aggiungine uno");
         aggiungi_coltivatore.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        aggiungi_coltivatore.setBounds(499, 644, 483, 70);
+        aggiungi_coltivatore.setBounds(519, 644, 483, 70);
         pageProprietario.add(aggiungi_coltivatore);
 
         JButton Torna_indietro = new JButton("Torna indietro");
@@ -263,7 +263,7 @@ public class instance_of_lotto_selected extends JFrame {
             }
         });
         Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Torna_indietro.setBounds(499, 724, 483, 70);
+        Torna_indietro.setBounds(519, 724, 483, 70);
         pageProprietario.add(Torna_indietro);
 
         JButton tolgi_coltura = new JButton("Rimuovi coltura");
@@ -292,7 +292,7 @@ public class instance_of_lotto_selected extends JFrame {
         });
         tolgi_coltura.setToolTipText("rimuovi una coltura dal tuo lotto");
         tolgi_coltura.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        tolgi_coltura.setBounds(499, 564, 483, 70);
+        tolgi_coltura.setBounds(519, 564, 483, 70);
         pageProprietario.add(tolgi_coltura);
     }
 }

@@ -30,7 +30,7 @@ public class Free_coltivatori extends JFrame {
         this.Lottoname = Lottoname;
 
         setResizable(false);
-        setTitle("Lista Coltivatori Liberi");
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

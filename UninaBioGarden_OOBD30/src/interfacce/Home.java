@@ -41,19 +41,11 @@ public class Home extends JFrame {
 	private Image HomeImage;
 	private JTextField txtUninabioGarden;
 	private Controller TheController;
-	/**
-	 * Launch the application.
-	 */
-	
 
-	/**
-	 * Create the frame.
-	 */
 	public Home(Controller controller) {
 	    this.TheController = controller;
 		setResizable(false);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    setTitle("Home");
 
 	    // Ottengo dimensione schermo
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -132,19 +124,8 @@ public class Home extends JFrame {
 	            
 	        }
 	    });
-	    Enter.setBounds(638, 395, 250, 60);
+	    Enter.setBounds(553, 478, 400, 100);
 	    Home.add(Enter);
-	    
-	    JButton Sudinoi = new JButton("Su di noi");
-	    Sudinoi.setVisible(false);
-	    Sudinoi.setBackground(new Color(0, 51, 255));
-	    Sudinoi.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-	    Sudinoi.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    	}
-	    });
-	    Sudinoi.setBounds(638, 483, 250, 60);
-	    Home.add(Sudinoi);
 	    boolean buttontime = false;
 	    // Timer fade-in
 	    Timer timer = new Timer(100, null);
@@ -170,7 +151,6 @@ public class Home extends JFrame {
 	                if (beta == 255) {
 	                    timer.stop();
 	                        Enter.setVisible(true);
-	                        Sudinoi.setVisible(true);
 	                        buttontime = true;
 	                    
 	                }
@@ -179,7 +159,6 @@ public class Home extends JFrame {
 	    });
 	    timer.start();
 	    Enter.setVisible(buttontime);
-	    Sudinoi.setVisible(buttontime);
 	        }
 	}
 
