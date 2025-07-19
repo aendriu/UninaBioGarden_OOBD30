@@ -72,9 +72,8 @@ public class Progetti_visual_scheme extends JFrame {
             JOptionPane.showMessageDialog(null, "Nessun progetto presente al momento");
             TheController.OpenProprietarioLoggedIn_closeCaller(username, Progetti_visual_scheme.this);
         }
-        nomiProgetti = (String[]) dati[0];
-        nomiLotti = (String[]) dati[1];
-
+        nomiProgetti = ((ArrayList<String>) dati[0]).toArray(new String[0]);
+        nomiLotti = ((ArrayList<String>) dati[1]).toArray(new String[0]);
         caricaTuttiDati();
 
         JButton Torna_indietro = new JButton("Torna indietro");

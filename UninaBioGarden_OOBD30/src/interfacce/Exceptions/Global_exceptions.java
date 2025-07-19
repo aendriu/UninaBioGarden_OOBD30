@@ -12,8 +12,10 @@ public class Global_exceptions extends Exception {
         empty_field,
         correct_username_but_wrong_password,
         DB_fault,
+        Doesnt_have_it,
     }
     private Tipo tipo;
+    
 
     public Global_exceptions(String message, Tipo tipo) {
         super(message);
@@ -25,6 +27,7 @@ public class Global_exceptions extends Exception {
         this.tipo =null;
     }
     
+	
     
     @Override
     public String getMessage() {
@@ -46,6 +49,8 @@ public class Global_exceptions extends Exception {
 				return "La password inserita per l'username " + super.getMessage() + " è errata";
             case DB_fault:
 				return "Si è verificato un errore durante l'accesso al database: " + super.getMessage();
+            case Doesnt_have_it:
+				return "non è stata trovata alcuna " + super.getMessage() + " associata a questo utente";
             default:
                 return super.getMessage();
         }

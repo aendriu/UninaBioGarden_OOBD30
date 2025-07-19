@@ -130,7 +130,7 @@ public class Coltivatore_attività_responsabili extends JFrame {
             TheController.OpenPageColtivatore_closeCaller(username_colt, Coltivatore_attività_responsabili.this);
         });
         Torna_indietro.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-        Torna_indietro.setBounds(0, 774, 1522, 53);
+        Torna_indietro.setBounds(591, 774, 329, 43);
         Attività_panel.add(Torna_indietro);
     }
 
@@ -200,6 +200,6 @@ public class Coltivatore_attività_responsabili extends JFrame {
     private void reloadTableData() {
         loadTableData();
     }
-
+    
     
 }

@@ -833,6 +833,92 @@ public class Controller {
     		    }
     		}
 
+    		public int ColtivatoreHaAttività(String username) {
+			    int access= 0;
+    			try {
+			        String CF = Convert_UsernameToCF(username);
+			        List<Attivita> attivitàInCorso = attivitaDAO.GetAttivitaColtivatore(CF);
+			         int number= attivitàInCorso.size();
+			         if (number > 0) {
+			        	 access = 1; // Coltivatore ha attività in corso
+			         } else {
+			        	 access = 0; // Coltivatore non ha attività in corso
+			         }
+			         return access;
+			    } catch (SQLException e) {
+			        e.printStackTrace();
+			        return -99; // Errore durante il recupero delle attività
+			    }
+			}
+    		
+    		public int ColtivatoreLavoraInLotto(String username) {
+    		        String CF = Convert_UsernameToCF(username);
+    		        List<Lotto> lotti = coltivatoreDAO.GetLottiColtivatore(CF);
+    		        int access = lotti.size();
+    		        if (access > 0) {
+    		            return 1; // Coltivatore lavora in almeno un lotto
+    		        } else {
+    		            return 0; // Coltivatore non lavora in nessun lotto
+    		        }
+    		}
+    		
+    		public int ProprietarioHaAttività(String username) {
+			        String CF = Convert_UsernameToCF(username);
+			        try {
+			        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+			        for (Lotto lotto : lotti) {
+			            List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto.getIdLotto(), CF);
+			            if (!attività.isEmpty()) {
+			                return 1; // Proprietario ha attività in corso
+			            }else {
+			                return 0; // Proprietario non ha attività in corso
+			            }
+			        }
+			
+			        } catch (SQLException e) {
+			            return -99; 
+			        }
+    		return -99;
+    		}
+    		 
+    		public int ProprietarioHaRaccolto(String username) {
+		        String CF = Convert_UsernameToCF(username);
+		        try {
+		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+		        for (Lotto lotto : lotti) {
+		            List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto.getIdLotto(), CF);
+		            if (!attività.isEmpty()) {
+		                for (Attivita att : attività) {
+		                    if (att.getNomeAttivita().equalsIgnoreCase("Raccolto")) {
+		                        return 1; // Proprietario ha raccolto qualcosa
+		                    }
+		                }
+		            	return 1; // Proprietario ha attività in corso
+		            }else {
+		                return 0; // Proprietario non ha attività in corso
+		            }
+		        }
+		
+		        } catch (SQLException e) {
+		            return -99; 
+		        }
+		return -99;
+		}
+    		public int ProprietarioHaProgetti(String username) {
+		        String CF = Convert_UsernameToCF(username);
+		        try {
+		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+		        for (Lotto lotto : lotti) {
+		            Progetto progetto = lotto.getMyProgetto();
+		            if (progetto != null) {
+		                return 1; // Proprietario ha progetti
+		            }
+		        }
+		        return 0; // Proprietario non ha progetti
+		        } catch (SQLException e) {
+		            return -99; 
+		        }
+    		}
     		
     		// Metodi specifici che creano il frame desiderato e usano il metodo generico
 

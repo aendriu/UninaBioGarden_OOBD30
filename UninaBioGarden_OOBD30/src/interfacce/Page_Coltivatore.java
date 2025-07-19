@@ -105,11 +105,27 @@ public class Page_Coltivatore extends JFrame {
         
         JButton Vedi_attività = new JButton("Le mie Attività");
         Vedi_attività.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent e) {
-        		TheController.OpenColtivatoreAttivitaResponsabili_closeCaller(username_colt, Page_Coltivatore.this);
-        	}
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int validat = TheController.ColtivatoreHaAttività(username_colt);
+            	try {
+                    if (validat == 0) {
+                        throw new Global_exceptions(" attività", Global_exceptions.Tipo.Doesnt_have_it);
+                    } else if (validat < 0) {
+                        throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+                    }
+                    TheController.OpenColtivatoreAttivitaResponsabili_closeCaller(username_colt, Page_Coltivatore.this);
+                } catch (Global_exceptions e1) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            e1.getMessage(),
+                            "Errore",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                }
+            }
         });
+
         Vedi_attività.setFont(new Font("Times New Roman", Font.PLAIN, 20));
         Vedi_attività.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -122,7 +138,22 @@ public class Page_Coltivatore extends JFrame {
         Lotti_lavora.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		TheController.OpenColtivatoreLottiInCuiLavora_closeCaller(username_colt, Page_Coltivatore.this);
+        		int validat = TheController.ColtivatoreLavoraInLotto(username_colt);
+        		try {
+        			if (validat == 0) {
+						throw new Global_exceptions(" lotti", Global_exceptions.Tipo.Doesnt_have_it);
+					} else if (validat < 0) {
+						throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+					}
+        			TheController.OpenColtivatoreLottiInCuiLavora_closeCaller(username_colt, Page_Coltivatore.this);
+        		} catch (Global_exceptions e1) {
+					JOptionPane.showMessageDialog(
+							null,
+							e1.getMessage(),
+							"Errore",
+							JOptionPane.ERROR_MESSAGE
+						);
+        		}
 			}
         });
         Lotti_lavora.addActionListener(new ActionListener() {

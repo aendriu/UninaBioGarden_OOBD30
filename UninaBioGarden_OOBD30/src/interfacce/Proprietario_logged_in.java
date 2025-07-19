@@ -133,12 +133,28 @@ public class Proprietario_logged_in extends JFrame {
         JPopupMenu popupMenu_4_attività = new JPopupMenu();
         JMenuItem voce1_attività = new JMenuItem("Le mie attività");
         voce1_attività.addActionListener(e -> {
-			TheController.OpenPropAttivitàVisualScheme_closeCaller(username, Proprietario_logged_in.this);
+			int validat= TheController.ProprietarioHaAttività(username);
+			try {
+				if (validat ==0) {
+					throw new Global_exceptions("attività", Global_exceptions.Tipo.Doesnt_have_it);
+				}else if (validat == -99) {
+					throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+				}
+				TheController.OpenPropAttivitàOrganizza_closeCaller(username, Proprietario_logged_in.this);	
+			} catch (Global_exceptions e1) {
+					JOptionPane.showMessageDialog(
+						null,
+						e1.getMessage(),
+						"Errore",
+						JOptionPane.ERROR_MESSAGE
+					);
+			}
+        	TheController.OpenPropAttivitàVisualScheme_closeCaller(username, Proprietario_logged_in.this);
 			// qui puoi richiamare il controller
 		});
         JMenuItem voce2_attività = new JMenuItem("organizza attività");
         voce2_attività.addActionListener(e -> {
-        	TheController.OpenPropAttivitàOrganizza_closeCaller(username, Proprietario_logged_in.this);
+        	
         });
         
         popupMenu_4_attività.add(voce1_attività);
@@ -157,7 +173,22 @@ public class Proprietario_logged_in extends JFrame {
         JPopupMenu popupMenu_4_progetti = new JPopupMenu();
         JMenuItem voce1_progetti = new JMenuItem("I miei progetti");
         voce1_progetti.addActionListener(e -> {
-        	TheController.OpenPropProgettiVisualScheme_closeCaller(username, Proprietario_logged_in.this);
+        	int validat= TheController.ProprietarioHaProgetti(username);
+        				try {
+        					if (validat ==0) {
+								throw new Global_exceptions("progetti", Global_exceptions.Tipo.Doesnt_have_it);
+        				}else if (validat == -99) {
+								throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+							}
+        					TheController.OpenPropProgettiVisualScheme_closeCaller(username, Proprietario_logged_in.this);
+        				} catch (Global_exceptions e1) {
+							JOptionPane.showMessageDialog(
+								null,
+								e1.getMessage(),
+								"Errore",
+								JOptionPane.ERROR_MESSAGE
+							);
+						}
         });
         JMenuItem voce2_progetti = new JMenuItem("crea nuovo progetto");
         voce2_progetti.addActionListener(e -> {
@@ -178,9 +209,23 @@ public class Proprietario_logged_in extends JFrame {
         Report_prop_button.setBounds(685, 589, 191, 70);
         pageProp.add(Report_prop_button);
         Report_prop_button.addActionListener(e -> {
-			TheController.OpenReportFrame_closeCaller(username, Proprietario_logged_in.this);
+			int validat = TheController.ProprietarioHaRaccolto(username);
+			try {
+				if (validat == 0) {
+					throw new Global_exceptions(" raccolti", Global_exceptions.Tipo.Doesnt_have_it);
+				} else if (validat < 0) {
+					throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
+				}
+				TheController.OpenReportFrame_closeCaller(username, Proprietario_logged_in.this);
+			} catch (Global_exceptions e1) {
+				JOptionPane.showMessageDialog(
+						null,
+						e1.getMessage(),
+						"Errore",
+						JOptionPane.ERROR_MESSAGE
+				);
+			}
 		});
-        
         JButton Torna_indietro = new JButton("Logout");
         Torna_indietro.addActionListener(e -> {
             JOptionPane.showMessageDialog(null, "Arrivederci " + Print_me + "!");
