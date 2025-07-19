@@ -338,7 +338,6 @@ public class AttivitaDAO extends DAO {
 			
 	}
 
-    
     /* UPDATE ATTIVITA */
     
     public boolean UpdateStatoAttivita(int idAttivita, String nuovoStato) throws SQLException {
