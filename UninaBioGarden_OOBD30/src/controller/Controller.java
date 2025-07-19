@@ -863,62 +863,60 @@ public class Controller {
     		}
     		
     		public int ProprietarioHaAttività(String username) {
-			        String CF = Convert_UsernameToCF(username);
-			        try {
-			        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
-			        for (Lotto lotto : lotti) {
-			            List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto.getIdLotto(), CF);
-			            if (!attività.isEmpty()) {
-			                return 1; // Proprietario ha attività in corso
-			            }else {
-			                return 0; // Proprietario non ha attività in corso
-			            }
-			        }
-			
-			        } catch (SQLException e) {
-			            return -99; 
-			        }
-    		return -99;
+    		    String CF = Convert_UsernameToCF(username);
+    		    try {
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+    		        for (Lotto lotto : lotti) {
+    		            List<Coltivatore> coltivatori = lottoDAO.GetColtivatoriOfLotto(lotto.getIdLotto());
+    		            for (Coltivatore coltivatore : coltivatori) {
+    		                List<Attivita> attività = attivitaDAO.GetAttivitaColtivatore(coltivatore.getCF());
+    		                if (!attività.isEmpty()) {
+    		                    return 1; // Almeno un lotto ha attività
+    		                }
+    		            }
+    		        }
+    		        return 0; // Nessun lotto ha attività
+    		    } catch (SQLException e) {
+    		        e.printStackTrace();
+    		        return -99; // Errore database
+    		    }
     		}
-    		 
+
     		public int ProprietarioHaRaccolto(String username) {
-		        String CF = Convert_UsernameToCF(username);
-		        try {
-		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
-		        for (Lotto lotto : lotti) {
-		            List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto.getIdLotto(), CF);
-		            if (!attività.isEmpty()) {
-		                for (Attivita att : attività) {
-		                    if (att.getNomeAttivita().equalsIgnoreCase("Raccolto")) {
-		                        return 1; // Proprietario ha raccolto qualcosa
-		                    }
-		                }
-		            	return 1; // Proprietario ha attività in corso
-		            }else {
-		                return 0; // Proprietario non ha attività in corso
-		            }
-		        }
-		
-		        } catch (SQLException e) {
-		            return -99; 
-		        }
-		return -99;
-		}
-    		public int ProprietarioHaProgetti(String username) {
-		        String CF = Convert_UsernameToCF(username);
-		        try {
-		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
-		        for (Lotto lotto : lotti) {
-		            Progetto progetto = lotto.getMyProgetto();
-		            if (progetto != null) {
-		                return 1; // Proprietario ha progetti
-		            }
-		        }
-		        return 0; // Proprietario non ha progetti
-		        } catch (SQLException e) {
-		            return -99; 
-		        }
+    		    String CF = Convert_UsernameToCF(username);
+    		    try {
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+    		        for (Lotto lotto : lotti) {
+    		            List<Attivita> attività = attivitaDAO.GetAttivitaOfLotto(lotto.getIdLotto(), CF);
+    		            for (Attivita att : attività) {
+    		                if (att.getNomeAttivita().equalsIgnoreCase("Raccolto")) {
+    		                    return 1; // Ha almeno un raccolto
+    		                }
+    		            }
+    		        }
+    		        return 0; // Nessun raccolto trovato su nessun lotto
+    		    } catch (SQLException e) {
+    		        e.printStackTrace();
+    		    	return -99; // Errore database
+    		    }
     		}
+
+    		public int ProprietarioHaProgetti(String username) {
+    		    String CF = Convert_UsernameToCF(username);
+    		    try {
+    		        List<Lotto> lotti = propDAO.GetLottiProprietario(CF);
+    		        for (Lotto lotto : lotti) {
+    		            Progetto progetto = lotto.getMyProgetto();
+    		            if (progetto != null) {
+    		                return 1; // Ha almeno un progetto
+    		            }
+    		        }
+    		        return 0; // Nessun progetto trovato
+    		    } catch (SQLException e) {
+    		        return -99; // Errore database
+    		    }
+    		}
+
     		
     		// Metodi specifici che creano il frame desiderato e usano il metodo generico
 

@@ -140,7 +140,7 @@ public class Proprietario_logged_in extends JFrame {
 				}else if (validat == -99) {
 					throw new Global_exceptions("", Global_exceptions.Tipo.DB_fault);
 				}
-				TheController.OpenPropAttivitàOrganizza_closeCaller(username, Proprietario_logged_in.this);	
+				TheController.OpenPropAttivitàVisualScheme_closeCaller(username, Proprietario_logged_in.this);
 			} catch (Global_exceptions e1) {
 					JOptionPane.showMessageDialog(
 						null,
@@ -149,12 +149,12 @@ public class Proprietario_logged_in extends JFrame {
 						JOptionPane.ERROR_MESSAGE
 					);
 			}
-        	TheController.OpenPropAttivitàVisualScheme_closeCaller(username, Proprietario_logged_in.this);
+        
 			// qui puoi richiamare il controller
 		});
         JMenuItem voce2_attività = new JMenuItem("organizza attività");
         voce2_attività.addActionListener(e -> {
-        	
+        	TheController.OpenPropAttivitàOrganizza_closeCaller(username, Proprietario_logged_in.this);
         });
         
         popupMenu_4_attività.add(voce1_attività);
