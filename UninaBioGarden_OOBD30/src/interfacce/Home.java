@@ -41,9 +41,20 @@ public class Home extends JFrame {
 	private Image HomeImage;
 	private JTextField txtUninabioGarden;
 	private Controller TheController;
+	private int x, y;
+	private Dimension screenSZ;
 
 	public Home(Controller controller) {
-	    this.TheController = controller;
+		this.TheController = controller;
+		screenSZ = Toolkit.getDefaultToolkit().getScreenSize();
+
+	    // Larghezza e altezza del bottone
+	    int btnW = 400;
+	    int btnH = 100;
+
+	    // Calcolo delle coordinate per centrare orizzontalmente e verticalmente
+	    x = (screenSZ.width  - btnW) / 2;
+	    y = (screenSZ.height - btnH) / 2;
 		setResizable(false);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -84,7 +95,7 @@ public class Home extends JFrame {
 
 	    // Creo JTextField
 	    JLabel HOME_TXT = new JLabel("UNINABIOGARDEN");
-	    HOME_TXT.setBounds(79, 72, 1502, 93);
+	    HOME_TXT.setBounds(screenSZ.width / 2 - screenSZ.width / 4 - 100, y - 600, 1502, 93);
 	    HOME_TXT.setForeground(new Color(255, 255, 102,0));
 	    HOME_TXT.setFont(new Font("Times New Roman", Font.PLAIN, 99));
 	    HOME_TXT.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,8 +112,7 @@ public class Home extends JFrame {
 
 	    // Imposto il colore azzurro con alpha iniziale 0 (trasparente)
 	    Home_small_txt.setForeground(new Color(0, 153, 255, 0));
-
-	    Home_small_txt.setBounds(231, 190, 1195, 167);
+	    Home_small_txt.setBounds(x - 300, y - 400, 1195, 167);
 
 	    // Imposta il ritorno a capo automatico
 	    Home_small_txt.setLineWrap(true);
@@ -124,7 +134,12 @@ public class Home extends JFrame {
 	            
 	        }
 	    });
-	    Enter.setBounds(553, 478, 400, 100);
+	 // Supponiamo che il tuo frame sia settato su tutta la larghezza dello schermo
+	    
+
+	    // Imposti i bounds usando questi valori
+	    Enter.setBounds(x, y, btnW, btnH);
+
 	    Home.add(Enter);
 	    boolean buttontime = false;
 	    // Timer fade-in
